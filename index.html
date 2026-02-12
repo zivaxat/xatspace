@@ -434,32 +434,32 @@
 
         // =========================================================================
         //  LISTA DE IMÁGENES AUTOMÁTICA
-        //  Genera automáticamente los nombres: GIF (1).GIF ... GIF (80).GIF
+        //  Genera automáticamente los nombres: 1.gif, 2.gif ... 80.gif
         // =========================================================================
         
-        // 1. GENERACIÓN DE 80 GIFs
+        // 1. GENERACIÓN DE 80 GIFs (1.gif hasta 80.gif)
         const galleryImages = [];
         for (let i = 1; i <= 80; i++) {
-            galleryImages.push({ src: `GIF (${i}).GIF` });
+            galleryImages.push({ src: `${i}.gif` });
         }
 
         // =========================================================
         //  INSTRUCCIONES PARA AÑADIR MÁS GIFs (DEL 81 EN ADELANTE):
         //  Copia la línea de abajo, quita las // y cambia el 81 por el número.
-        //  galleryImages.push({ src: 'GIF (81).GIF' });
+        //  galleryImages.push({ src: '81.gif' });
         // =========================================================
 
 
-        // 2. GENERACIÓN DE 10 PC BACKS (Modificado a 10 por solicitud)
+        // 2. GENERACIÓN DE 10 PC BACKS (1.png hasta 10.png)
         const pcBackImages = [];
         for (let i = 1; i <= 10; i++) {
-            pcBackImages.push({ src: `PCBACK (${i}).PNG` });
+            pcBackImages.push({ src: `${i}.png` });
         }
 
         // =========================================================
         //  INSTRUCCIONES PARA AÑADIR MÁS FONDOS (DEL 11 EN ADELANTE):
         //  Copia la línea de abajo, quita las // y cambia el 11 por el número.
-        //  pcBackImages.push({ src: 'PCBACK (11).PNG' });
+        //  pcBackImages.push({ src: '11.png' });
         // =========================================================
 
 
