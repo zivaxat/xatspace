@@ -35,7 +35,6 @@
     <style>
         /* --- RESET Y BASES --- */
         body {
-            /* Cambio: Fondo base negro/magenta profundo en lugar de azul oscuro */
             background-color: #050005; 
             color: white;
             min-height: 100vh;
@@ -99,15 +98,37 @@
             .text-ultimate { font-size: 59px; }
         }
 
+        /* --- PESTAÑAS (TABS) GIFS / PC BACKS --- */
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tab-btn.active {
+            background: rgba(255, 0, 255, 0.2);
+            border-color: #ff00ff;
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
         /* --- TARJETAS (SOPORTE SAFARI GLASS) --- */
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
-            /* Importante: -webkit-backdrop-filter para Safari iOS/Mac */
             -webkit-backdrop-filter: blur(5px);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateZ(0); /* Mejora rendimiento renderizado móvil */
+            transform: translateZ(0); 
         }
         .glass-card:hover {
             transform: translateY(-5px) scale(1.02);
@@ -125,7 +146,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /* Cambio: Fondo semitransparente oscuro rosado en lugar de azul */
             background: rgba(20, 5, 20, 0.7); 
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
@@ -157,7 +177,6 @@
             transition: all 0.4s ease;
             box-shadow: 0 0 10px #ff00ff, inset 0 0 10px #ff00ff;
             z-index: 1;
-            /* Evitar highlight azul en tap móvil */
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -207,12 +226,10 @@
         /* --- ESTILOS REPRODUCTOR --- */
         .music-player {
             background: rgba(255, 255, 255, 0.05);
-            /* Soporte Blur Safari */
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 0, 255, 0.2);
             box-shadow: 0 0 15px rgba(255, 0, 255, 0.1);
-            /* Aceleración hardware */
             transform: translateZ(0);
         }
         .music-disc {
@@ -223,17 +240,31 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
+        /* --- SLIDER HORIZONTAL --- */
+        .hide-scroll-bar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .hide-scroll-bar::-webkit-scrollbar {
+            display: none; /* Chrome, Safari y Opera */
+        }
+        
+        .slider-card {
+            flex: 0 0 240px; /* Ancho fijo para móviles */
+            scroll-snap-align: start;
+        }
+        @media (min-width: 768px) {
+            .slider-card {
+                flex: 0 0 280px; /* Ancho fijo para PC */
+            }
+        }
+
         /* --- SCROLLBAR GLASS PINK PERSONALIZADO --- */
-        ::-webkit-scrollbar { 
-            width: 12px; 
-        }
-        ::-webkit-scrollbar-track { 
-            background: rgba(20, 0, 20, 0.3); /* Fondo oscuro semitransparente */
-        }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: rgba(20, 0, 20, 0.3); }
         ::-webkit-scrollbar-thumb { 
-            /* Efecto Glass Pink usando gradiente y bordes */
             background: linear-gradient(180deg, rgba(255, 0, 255, 0.4), rgba(255, 105, 180, 0.6)); 
-            border: 3px solid rgba(0, 0, 0, 0); /* Truco para 'padding' visual usando bg-clip */
+            border: 3px solid rgba(0, 0, 0, 0); 
             background-clip: padding-box;
             border-radius: 10px; 
         }
@@ -257,13 +288,14 @@
 
     <!-- VIDEO DE FONDO -->
     <video autoplay muted loop playsinline id="bg-video" style="filter: blur(10px) brightness(0.6);">
-        <source src="https://cdn.pixabay.com/video/2025/05/22/280970_large.mp4" type="video/mp4">
+        <!-- === NUEVO VIDEO AQUÍ === -->
+        <source src="https://cdn.pixabay.com/video/2025/10/18/310657_large.mp4" type="video/mp4">
     </video>
 
     <!-- PANTALLA DE INGRESO -->
     <div id="entrance-screen">
         <h1 class="text-ultimate mb-4">Ziva</h1>
-        <button id="enter-btn" class="btn-enter">Gallery</button>
+        <button id="enter-btn" class="btn-enter">Ingresar</button>
     </div>
 
     <!-- CONTENIDO PRINCIPAL -->
@@ -273,13 +305,33 @@
 
         <main class="container mx-auto px-4 pb-20 relative z-10">
             
-            <div class="text-center mb-12 mt-4">
+            <div class="text-center mb-8 mt-4">
                 <h1 class="text-ultimate">Ziva</h1>
-                <h2 class="text-5xl font-script text-pink-300 drop-shadow-lg mt-[-20px] relative z-10">Gif</h2>
+                <h2 class="text-5xl font-script text-pink-300 drop-shadow-lg mt-[-20px] relative z-10">Gallery</h2>
             </div>
 
-            <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-20">
-                <!-- JS insertará imágenes aquí -->
+            <!-- === PESTAÑAS (NUEVO) === -->
+            <div class="flex justify-center gap-4 mb-10 z-20 relative">
+                <button id="tab-gifs" class="tab-btn active px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">GIF</button>
+                <button id="tab-pcbacks" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PC BACKS</button>
+            </div>
+
+            <!-- === CONTENEDOR DE LA GALERÍA (SLIDER HORIZONTAL) === -->
+            <div class="relative w-full max-w-[95vw] mx-auto group mb-20">
+                <!-- Botón Deslizar Izquierda (Oculto en móvil, visible en PC) -->
+                <button id="slide-left" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-6 z-20 bg-black/60 hover:bg-pink-600/80 border border-pink-500/50 text-white w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none hidden sm:flex">
+                    <i class="fa-solid fa-chevron-left text-lg"></i>
+                </button>
+
+                <!-- Slider contenedor -->
+                <div id="gallery-slider" class="flex overflow-x-auto gap-6 pb-4 pt-2 snap-x snap-mandatory hide-scroll-bar scroll-smooth px-4">
+                    <!-- JS insertará imágenes aquí dependiendo de la pestaña activa -->
+                </div>
+
+                <!-- Botón Deslizar Derecha (Oculto en móvil, visible en PC) -->
+                <button id="slide-right" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-6 z-20 bg-black/60 hover:bg-pink-600/80 border border-pink-500/50 text-white w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none hidden sm:flex">
+                    <i class="fa-solid fa-chevron-right text-lg"></i>
+                </button>
             </div>
 
             <!-- FOOTER -->
@@ -287,9 +339,7 @@
                 
                 <!-- Perfil -->
                 <div class="relative group cursor-pointer">
-                    <!-- ======================================================= -->
-                    <!-- CAMBIAR IMAGEN DE PERFIL AQUÍ ABAJO (src="...")         -->
-                    <!-- ======================================================= -->
+                    <!-- IMAGEN DE PERFIL -->
                     <div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-pink-500 to-purple-600 shadow-[0_0_30px_rgba(255,0,255,0.4)] transition-transform duration-300 group-hover:scale-105">
                         <img src="https://i.postimg.cc/kGnMYm25/anigif.gif" alt="Ziva Profile" class="w-full h-full rounded-full object-cover">
                     </div>
@@ -327,9 +377,7 @@
                     <button id="play-btn" class="text-pink-400 hover:text-white transition-colors text-xl ml-2 focus:outline-none">
                         <i class="fa-solid fa-play"></i>
                     </button>
-                    <!-- ======================================================= -->
-                    <!-- CAMBIAR URL DE MÚSICA AQUÍ ABAJO (src="...")           -->
-                    <!-- ======================================================= -->
+                    <!-- CAMBIAR URL DE MÚSICA AQUÍ ABAJO (src="...") -->
                     <audio id="audio-player" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
                 </div>
 
@@ -361,11 +409,7 @@
     <!-- Script de Funcionalidad -->
     <script>
         // =========================================================================
-        //  LISTA DE IMÁGENES (SOLO 15 ACTIVAS)
-        //  
-        //  PARA AÑADIR MÁS:
-        //  1. Copia esta línea: { src: 'TU_URL_AQUI' },
-        //  2. Pégala antes del cierre del corchete "]"
+        //  LISTA DE IMÁGENES: GIFS (Pestaña Principal)
         // =========================================================================
         const galleryImages = [
             { src: 'https://i.postimg.cc/kGnMYm25/anigif.gif' },
@@ -383,8 +427,38 @@
             { src: 'https://i.postimg.cc/mr6y7TMr/anigif.gif' },
             { src: 'https://i.postimg.cc/R01gtkd6/anigif.gif' },
             { src: 'https://i.postimg.cc/FHYtjHkf/anigif.gif' },
-            // AÑADIR MÁS AQUÍ...
+            // Añadir más URLs aquí...
         ];
+
+        // =========================================================================
+        //  LISTA DE IMÁGENES: PC BACKS (Pestaña Secundaria)
+        //  Puedes agregar las URLs de tus fondos de pantalla aquí abajo.
+        // =========================================================================
+        const pcBackImages = [
+            { src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop' }, // Ejemplo 1
+            { src: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000&auto=format&fit=crop' }, // Ejemplo 2
+            { src: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=1000&auto=format&fit=crop' }, // Ejemplo 3
+            // Añadir más URLs de PC BACKS aquí...
+        ];
+
+        // --- MANEJO DE PESTAÑAS ---
+        let currentTab = 'gifs'; // 'gifs' o 'pcbacks'
+        const tabGifs = document.getElementById('tab-gifs');
+        const tabPcBacks = document.getElementById('tab-pcbacks');
+
+        tabGifs.addEventListener('click', () => {
+            currentTab = 'gifs';
+            tabGifs.classList.add('active');
+            tabPcBacks.classList.remove('active');
+            renderGallery();
+        });
+
+        tabPcBacks.addEventListener('click', () => {
+            currentTab = 'pcbacks';
+            tabPcBacks.classList.add('active');
+            tabGifs.classList.remove('active');
+            renderGallery();
+        });
 
         // --- EFECTO DE PARTÍCULAS (COMPATIBLE MÓVIL Y ESCRITORIO) ---
         function createParticle(x, y) {
@@ -396,12 +470,10 @@
             setTimeout(() => { particle.remove(); }, 800);
         }
 
-        // Evento Mouse
         document.addEventListener('mousemove', function(e) {
             createParticle(e.pageX, e.pageY);
         });
 
-        // Evento Touch (Móvil)
         document.addEventListener('touchmove', function(e) {
             const touch = e.touches[0];
             createParticle(touch.pageX, touch.pageY);
@@ -415,10 +487,8 @@
 
         enterBtn.addEventListener('click', () => {
             entranceScreen.classList.add('entrance-hidden');
-            // Brillo reducido y blur suave para el fondo principal
             bgVideo.style.filter = "blur(3px) brightness(0.4)";
             mainContent.classList.remove('opacity-0');
-            // Asegurar que el video se reproduce en móviles si estaba pausado
             bgVideo.play().catch(e => console.log("Auto-play prevented"));
         });
 
@@ -441,26 +511,46 @@
             isPlaying = !isPlaying;
         });
 
-        // --- RENDERIZADO DE GALERÍA ---
-        const grid = document.getElementById('gallery-grid');
+        // --- RENDERIZADO DE GALERÍA (DINÁMICO CON SLIDER) ---
+        const slider = document.getElementById('gallery-slider');
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxCaption = document.getElementById('lightbox-caption');
         const closeLightbox = document.getElementById('close-lightbox');
 
+        // Lógica de botones deslizantes
+        const btnLeft = document.getElementById('slide-left');
+        const btnRight = document.getElementById('slide-right');
+
+        btnLeft.addEventListener('click', () => {
+            slider.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+
+        btnRight.addEventListener('click', () => {
+            slider.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+
         function renderGallery() {
-            grid.innerHTML = '';
+            slider.innerHTML = '';
             
-            galleryImages.forEach((item, index) => {
-                const autoTitle = `GIF-${index + 1}`;
+            // Decidir qué lista y qué prefijo usar según la pestaña seleccionada
+            const dataToRender = currentTab === 'gifs' ? galleryImages : pcBackImages;
+            const prefix = currentTab === 'gifs' ? 'GIF' : 'PC BACK';
+
+            dataToRender.forEach((item, index) => {
+                const autoTitle = `${prefix}-${index + 1}`;
                 const card = document.createElement('div');
-                card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer group animate-fade-in';
+                // Se agregan clases para flex, no encogerse (shrink-0) y slider-card
+                card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer group animate-fade-in slider-card shrink-0';
                 card.style.animationDelay = `${index * 30}ms`; 
 
+                // HTML interno de la tarjeta
+                const objectFitClass = currentTab === 'pcbacks' ? 'object-cover w-full h-full' : 'object-contain max-w-full max-h-full';
+
                 card.innerHTML = `
-                    <div class="w-full h-40 md:h-48 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative">
+                    <div class="w-full h-48 md:h-56 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative">
                         <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
-                        <img src="${item.src}" alt="${autoTitle}" loading="lazy" class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                        <img src="${item.src}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <div class="w-full text-center border-t border-white/10 pt-2">
                         <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
@@ -471,7 +561,7 @@
                     openLightbox(item.src, autoTitle);
                 });
 
-                grid.appendChild(card);
+                slider.appendChild(card);
             });
         }
 
@@ -496,6 +586,7 @@
             if(e.target === lightbox) hideLightbox();
         });
 
+        // Inicializar galería
         renderGallery();
 
     </script>
