@@ -410,35 +410,58 @@
     <script>
         // =========================================================================
         //  LISTA DE IMÁGENES: GIFS (Pestaña Principal)
+        //  Configurado para cargar 80 imágenes desde GIF (1).GIF hasta GIF (80).GIF
         // =========================================================================
         const galleryImages = [
-            { src: 'https://i.postimg.cc/kGnMYm25/anigif.gif' },
-            { src: 'https://i.postimg.cc/sx4rFZ7p/anigif.gif' },
-            { src: 'https://i.postimg.cc/6qhMbMMF/anigif.gif' },
-            { src: 'https://i.postimg.cc/yYyYXyfC/F-r-titlu-1.gif' },
-            { src: 'https://i.postimg.cc/d1wQTQGh/anigif.gif' },
-            { src: 'https://i.postimg.cc/Ssg426yP/anigif.gif' },
-            { src: 'https://i.postimg.cc/Wbg2SJSd/anigif.gif' },
-            { src: 'https://i.postimg.cc/5NVc4Kqt/anigif.gif' },
-            { src: 'https://i.postimg.cc/6QbVVtL3/anigif.gif' },
-            { src: 'https://i.postimg.cc/2jsJBqMV/anigif.gif' },
-            { src: 'https://i.postimg.cc/W15J0zr4/anigif.gif' },
-            { src: 'https://i.postimg.cc/G3vvmFMt/anigif.gif' },
-            { src: 'https://i.postimg.cc/mr6y7TMr/anigif.gif' },
-            { src: 'https://i.postimg.cc/R01gtkd6/anigif.gif' },
-            { src: 'https://i.postimg.cc/FHYtjHkf/anigif.gif' },
-            // Añadir más URLs aquí...
+            { src: 'GIF (1).GIF' }, { src: 'GIF (2).GIF' }, { src: 'GIF (3).GIF' }, { src: 'GIF (4).GIF' }, { src: 'GIF (5).GIF' },
+            { src: 'GIF (6).GIF' }, { src: 'GIF (7).GIF' }, { src: 'GIF (8).GIF' }, { src: 'GIF (9).GIF' }, { src: 'GIF (10).GIF' },
+            { src: 'GIF (11).GIF' }, { src: 'GIF (12).GIF' }, { src: 'GIF (13).GIF' }, { src: 'GIF (14).GIF' }, { src: 'GIF (15).GIF' },
+            { src: 'GIF (16).GIF' }, { src: 'GIF (17).GIF' }, { src: 'GIF (18).GIF' }, { src: 'GIF (19).GIF' }, { src: 'GIF (20).GIF' },
+            { src: 'GIF (21).GIF' }, { src: 'GIF (22).GIF' }, { src: 'GIF (23).GIF' }, { src: 'GIF (24).GIF' }, { src: 'GIF (25).GIF' },
+            { src: 'GIF (26).GIF' }, { src: 'GIF (27).GIF' }, { src: 'GIF (28).GIF' }, { src: 'GIF (29).GIF' }, { src: 'GIF (30).GIF' },
+            { src: 'GIF (31).GIF' }, { src: 'GIF (32).GIF' }, { src: 'GIF (33).GIF' }, { src: 'GIF (34).GIF' }, { src: 'GIF (35).GIF' },
+            { src: 'GIF (36).GIF' }, { src: 'GIF (37).GIF' }, { src: 'GIF (38).GIF' }, { src: 'GIF (39).GIF' }, { src: 'GIF (40).GIF' },
+            { src: 'GIF (41).GIF' }, { src: 'GIF (42).GIF' }, { src: 'GIF (43).GIF' }, { src: 'GIF (44).GIF' }, { src: 'GIF (45).GIF' },
+            { src: 'GIF (46).GIF' }, { src: 'GIF (47).GIF' }, { src: 'GIF (48).GIF' }, { src: 'GIF (49).GIF' }, { src: 'GIF (50).GIF' },
+            { src: 'GIF (51).GIF' }, { src: 'GIF (52).GIF' }, { src: 'GIF (53).GIF' }, { src: 'GIF (54).GIF' }, { src: 'GIF (55).GIF' },
+            { src: 'GIF (56).GIF' }, { src: 'GIF (57).GIF' }, { src: 'GIF (58).GIF' }, { src: 'GIF (59).GIF' }, { src: 'GIF (60).GIF' },
+            { src: 'GIF (61).GIF' }, { src: 'GIF (62).GIF' }, { src: 'GIF (63).GIF' }, { src: 'GIF (64).GIF' }, { src: 'GIF (65).GIF' },
+            { src: 'GIF (66).GIF' }, { src: 'GIF (67).GIF' }, { src: 'GIF (68).GIF' }, { src: 'GIF (69).GIF' }, { src: 'GIF (70).GIF' },
+            { src: 'GIF (71).GIF' }, { src: 'GIF (72).GIF' }, { src: 'GIF (73).GIF' }, { src: 'GIF (74).GIF' }, { src: 'GIF (75).GIF' },
+            { src: 'GIF (76).GIF' }, { src: 'GIF (77).GIF' }, { src: 'GIF (78).GIF' }, { src: 'GIF (79).GIF' }, { src: 'GIF (80).GIF' },
+            // =========================================================================
+            // PARA AÑADIR MÁS GIFS, DESCOMENTA (QUITA LAS //) Y CAMBIA EL NÚMERO
+            // Ejemplo:
+            // { src: 'GIF (81).GIF' },
+            // =========================================================================
         ];
 
         // =========================================================================
         //  LISTA DE IMÁGENES: PC BACKS (Pestaña Secundaria)
-        //  Puedes agregar las URLs de tus fondos de pantalla aquí abajo.
+        //  Configurado para cargar 80 imágenes desde PCBACK (1).PNG hasta PCBACK (80).PNG
         // =========================================================================
         const pcBackImages = [
-            { src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop' }, // Ejemplo 1
-            { src: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000&auto=format&fit=crop' }, // Ejemplo 2
-            { src: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=1000&auto=format&fit=crop' }, // Ejemplo 3
-            // Añadir más URLs de PC BACKS aquí...
+            { src: 'PCBACK (1).PNG' }, { src: 'PCBACK (2).PNG' }, { src: 'PCBACK (3).PNG' }, { src: 'PCBACK (4).PNG' }, { src: 'PCBACK (5).PNG' },
+            { src: 'PCBACK (6).PNG' }, { src: 'PCBACK (7).PNG' }, { src: 'PCBACK (8).PNG' }, { src: 'PCBACK (9).PNG' }, { src: 'PCBACK (10).PNG' },
+            { src: 'PCBACK (11).PNG' }, { src: 'PCBACK (12).PNG' }, { src: 'PCBACK (13).PNG' }, { src: 'PCBACK (14).PNG' }, { src: 'PCBACK (15).PNG' },
+            { src: 'PCBACK (16).PNG' }, { src: 'PCBACK (17).PNG' }, { src: 'PCBACK (18).PNG' }, { src: 'PCBACK (19).PNG' }, { src: 'PCBACK (20).PNG' },
+            { src: 'PCBACK (21).PNG' }, { src: 'PCBACK (22).PNG' }, { src: 'PCBACK (23).PNG' }, { src: 'PCBACK (24).PNG' }, { src: 'PCBACK (25).PNG' },
+            { src: 'PCBACK (26).PNG' }, { src: 'PCBACK (27).PNG' }, { src: 'PCBACK (28).PNG' }, { src: 'PCBACK (29).PNG' }, { src: 'PCBACK (30).PNG' },
+            { src: 'PCBACK (31).PNG' }, { src: 'PCBACK (32).PNG' }, { src: 'PCBACK (33).PNG' }, { src: 'PCBACK (34).PNG' }, { src: 'PCBACK (35).PNG' },
+            { src: 'PCBACK (36).PNG' }, { src: 'PCBACK (37).PNG' }, { src: 'PCBACK (38).PNG' }, { src: 'PCBACK (39).PNG' }, { src: 'PCBACK (40).PNG' },
+            { src: 'PCBACK (41).PNG' }, { src: 'PCBACK (42).PNG' }, { src: 'PCBACK (43).PNG' }, { src: 'PCBACK (44).PNG' }, { src: 'PCBACK (45).PNG' },
+            { src: 'PCBACK (46).PNG' }, { src: 'PCBACK (47).PNG' }, { src: 'PCBACK (48).PNG' }, { src: 'PCBACK (49).PNG' }, { src: 'PCBACK (50).PNG' },
+            { src: 'PCBACK (51).PNG' }, { src: 'PCBACK (52).PNG' }, { src: 'PCBACK (53).PNG' }, { src: 'PCBACK (54).PNG' }, { src: 'PCBACK (55).PNG' },
+            { src: 'PCBACK (56).PNG' }, { src: 'PCBACK (57).PNG' }, { src: 'PCBACK (58).PNG' }, { src: 'PCBACK (59).PNG' }, { src: 'PCBACK (60).PNG' },
+            { src: 'PCBACK (61).PNG' }, { src: 'PCBACK (62).PNG' }, { src: 'PCBACK (63).PNG' }, { src: 'PCBACK (64).PNG' }, { src: 'PCBACK (65).PNG' },
+            { src: 'PCBACK (66).PNG' }, { src: 'PCBACK (67).PNG' }, { src: 'PCBACK (68).PNG' }, { src: 'PCBACK (69).PNG' }, { src: 'PCBACK (70).PNG' },
+            { src: 'PCBACK (71).PNG' }, { src: 'PCBACK (72).PNG' }, { src: 'PCBACK (73).PNG' }, { src: 'PCBACK (74).PNG' }, { src: 'PCBACK (75).PNG' },
+            { src: 'PCBACK (76).PNG' }, { src: 'PCBACK (77).PNG' }, { src: 'PCBACK (78).PNG' }, { src: 'PCBACK (79).PNG' }, { src: 'PCBACK (80).PNG' },
+            // =========================================================================
+            // PARA AÑADIR MÁS FONDOS, DESCOMENTA (QUITA LAS //) Y CAMBIA EL NÚMERO
+            // Ejemplo:
+            // { src: 'PCBACK (81).PNG' },
+            // =========================================================================
         ];
 
         // --- MANEJO DE PESTAÑAS ---
