@@ -130,26 +130,6 @@
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
         }
 
-        /* --- ESTILOS ESPECÍFICOS PARA SLIDER (PC BACKS GRANDE) --- */
-        .hide-scroll-bar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .hide-scroll-bar::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .slider-card {
-            /* TAMAÑO GRANDE PARA PC BACKS */
-            flex: 0 0 320px; /* Móvil: Grande */
-            scroll-snap-align: center;
-        }
-        @media (min-width: 768px) {
-            .slider-card {
-                flex: 0 0 500px; /* PC: Muy Grande */
-            }
-        }
-
         /* --- PANTALLA DE INGRESO --- */
         #entrance-screen {
             position: fixed;
@@ -422,7 +402,11 @@
                     </div>
 
                     <!-- CANCIÓN: music.mp3 con LOOP activado -->
-                    <audio id="audio-player" src="music.mp3" loop></audio>
+                    <audio id="audio-player" preload="auto" loop>
+                        <source src="music.mp3" type="audio/mpeg">
+                        <source src="music.mp3" type="audio/mp3">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
                 </div>
 
                 <!-- FIRMA EAM96 -->
@@ -461,14 +445,13 @@
         });
 
         // --- LISTAS DE IMÁGENES AUTOMÁTICAS ---
-        // Genera 1.gif ... 80.gif
         const galleryImages = [];
         for (let i = 1; i <= 80; i++) {
             galleryImages.push({ src: `${i}.gif` });
         }
 
-        // Genera 1.png ... 3.png (más la imagen extra al inicio)
         const pcBackImages = [
+            // IMAGEN AÑADIDA POR SOLICITUD
             { src: 'https://xatimg.com/image/RmByeRQCqLAa.png' }
         ];
         for (let i = 1; i <= 3; i++) {
@@ -526,7 +509,7 @@
             createParticle(touch.pageX, touch.pageY);
         }, { passive: true });
 
-        // --- LÓGICA DE INGRESO (CON AUTO-PLAY) ---
+        // --- LÓGICA DE INGRESO (CON AUTO-PLAY MEJORADO) ---
         const enterBtn = document.getElementById('enter-btn');
         const entranceScreen = document.getElementById('entrance-screen');
         const mainContent = document.getElementById('main-content');
@@ -539,15 +522,21 @@
             
             bgVideo.play().catch(e => console.log("Video auto-play prevented"));
 
-            // AUTO-PLAY MÚSICA (Volumen inicial 50%)
-            audioPlayer.volume = 0.5;
-            audioPlayer.play().then(() => {
-                isPlaying = true;
-                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                musicDisc.classList.add('playing');
-            }).catch(e => {
-                console.log("Audio auto-play prevented (User interaction required)");
-            });
+            // AUTO-PLAY MÚSICA FIX
+            // Sincronizar volumen inicial con el slider (0.5)
+            audioPlayer.volume = parseFloat(volumeSlider.value);
+            
+            const playPromise = audioPlayer.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    isPlaying = true;
+                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    musicDisc.classList.add('playing');
+                }).catch(error => {
+                    console.log("Error al reproducir audio: ", error);
+                });
+            }
         });
 
         // --- REPRODUCTOR DE MÚSICA (BOTÓN Y VOLUMEN) ---
@@ -602,7 +591,6 @@
                     objectFitClass = "object-contain max-w-full max-h-full";
                 } else {
                     // PC BACKS: Grande y sin cortes (object-contain)
-                    // Ancho maximo 450px para ser estético
                     imgContainerClass = "w-full max-w-[90vw] md:max-w-[450px] flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative shadow-2xl";
                     objectFitClass = "w-full h-auto object-contain"; 
                 }
