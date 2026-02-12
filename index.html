@@ -42,6 +42,9 @@
             cursor: default;
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
+            /* Deshabilitar selección de texto */
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         /* --- VIDEO DE FONDO --- */
@@ -135,6 +138,25 @@
             background: rgba(255, 105, 180, 0.15);
             border-color: rgba(255, 105, 180, 0.5);
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+
+        /* --- ESTILOS ESPECÍFICOS PARA SLIDER (PC BACKS) --- */
+        .hide-scroll-bar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .hide-scroll-bar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .slider-card {
+            flex: 0 0 280px; /* Ancho para PC Backs */
+            scroll-snap-align: start;
+        }
+        @media (max-width: 768px) {
+            .slider-card {
+                flex: 0 0 240px;
+            }
         }
 
         /* --- PANTALLA DE INGRESO --- */
@@ -240,25 +262,6 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- SLIDER HORIZONTAL --- */
-        .hide-scroll-bar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-        .hide-scroll-bar::-webkit-scrollbar {
-            display: none; /* Chrome, Safari y Opera */
-        }
-        
-        .slider-card {
-            flex: 0 0 240px; /* Ancho fijo para móviles */
-            scroll-snap-align: start;
-        }
-        @media (min-width: 768px) {
-            .slider-card {
-                flex: 0 0 280px; /* Ancho fijo para PC */
-            }
-        }
-
         /* --- SCROLLBAR GLASS PINK PERSONALIZADO --- */
         ::-webkit-scrollbar { width: 12px; }
         ::-webkit-scrollbar-track { background: rgba(20, 0, 20, 0.3); }
@@ -316,20 +319,21 @@
                 <button id="tab-pcbacks" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PC BACKS</button>
             </div>
 
-            <!-- === CONTENEDOR DE LA GALERÍA (SLIDER HORIZONTAL) === -->
+            <!-- === CONTENEDOR DE LA GALERÍA (HÍBRIDO: GRID O SLIDER) === -->
+            <!-- Nota: La estructura inicial es Grid para GIFs -->
             <div class="relative w-full max-w-[95vw] mx-auto group mb-20">
-                <!-- Botón Deslizar Izquierda (Oculto en móvil, visible en PC) -->
-                <button id="slide-left" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-6 z-20 bg-black/60 hover:bg-pink-600/80 border border-pink-500/50 text-white w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none hidden sm:flex">
+                
+                <!-- Botones Slider (Solo visibles en PC Backs) -->
+                <button id="slide-left" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-6 z-20 bg-black/60 hover:bg-pink-600/80 border border-pink-500/50 text-white w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none hidden">
                     <i class="fa-solid fa-chevron-left text-lg"></i>
                 </button>
 
-                <!-- Slider contenedor -->
-                <div id="gallery-slider" class="flex overflow-x-auto gap-6 pb-4 pt-2 snap-x snap-mandatory hide-scroll-bar scroll-smooth px-4">
-                    <!-- JS insertará imágenes aquí dependiendo de la pestaña activa -->
+                <!-- CONTENEDOR DINÁMICO (Grid o Flex según pestaña) -->
+                <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto">
+                    <!-- JS insertará imágenes aquí -->
                 </div>
 
-                <!-- Botón Deslizar Derecha (Oculto en móvil, visible en PC) -->
-                <button id="slide-right" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-6 z-20 bg-black/60 hover:bg-pink-600/80 border border-pink-500/50 text-white w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none hidden sm:flex">
+                <button id="slide-right" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-6 z-20 bg-black/60 hover:bg-pink-600/80 border border-pink-500/50 text-white w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none hidden">
                     <i class="fa-solid fa-chevron-right text-lg"></i>
                 </button>
             </div>
@@ -408,43 +412,74 @@
 
     <!-- Script de Funcionalidad -->
     <script>
+        // --- BLOQUEO DE SEGURIDAD (Click Derecho y F12) ---
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            // F12
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+            }
+            // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (Chrome DevTools)
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+                e.preventDefault();
+            }
+            // Ctrl+U (Ver fuente)
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+            }
+        });
+
         // =========================================================================
         //  LISTA DE IMÁGENES AUTOMÁTICA
-        //  Genera automáticamente los nombres: 1.gif, 2.gif ... 80.gif
-        //  y 1.png, 2.png ... 80.png
+        //  Genera automáticamente los nombres: GIF (1).GIF ... GIF (80).GIF
         // =========================================================================
         
-        // 1. GENERACIÓN DE 80 GIFs (1.gif a 80.gif)
+        // 1. GENERACIÓN DE 80 GIFs
         const galleryImages = [];
         for (let i = 1; i <= 80; i++) {
-            galleryImages.push({ src: `${i}.gif` });
+            galleryImages.push({ src: `GIF (${i}).GIF` });
         }
 
         // =========================================================
         //  INSTRUCCIONES PARA AÑADIR MÁS GIFs (DEL 81 EN ADELANTE):
         //  Copia la línea de abajo, quita las // y cambia el 81 por el número.
-        //  galleryImages.push({ src: '81.gif' });
+        //  galleryImages.push({ src: 'GIF (81).GIF' });
         // =========================================================
 
 
-        // 2. GENERACIÓN DE 80 PC BACKS (1.png a 80.png)
+        // 2. GENERACIÓN DE 10 PC BACKS (Modificado a 10 por solicitud)
         const pcBackImages = [];
-        for (let i = 1; i <= 80; i++) {
-            // Nota: Se asume extensión .png para los fondos
-            pcBackImages.push({ src: `${i}.png` });
+        for (let i = 1; i <= 10; i++) {
+            pcBackImages.push({ src: `PCBACK (${i}).PNG` });
         }
 
         // =========================================================
-        //  INSTRUCCIONES PARA AÑADIR MÁS FONDOS (DEL 81 EN ADELANTE):
-        //  Copia la línea de abajo, quita las // y cambia el 81 por el número.
-        //  pcBackImages.push({ src: '81.png' });
+        //  INSTRUCCIONES PARA AÑADIR MÁS FONDOS (DEL 11 EN ADELANTE):
+        //  Copia la línea de abajo, quita las // y cambia el 11 por el número.
+        //  pcBackImages.push({ src: 'PCBACK (11).PNG' });
         // =========================================================
 
 
-        // --- MANEJO DE PESTAÑAS ---
-        let currentTab = 'gifs'; // 'gifs' o 'pcbacks'
+        // --- MANEJO DE PESTAÑAS Y ESTRUCTURA DINÁMICA ---
+        let currentTab = 'gifs'; 
         const tabGifs = document.getElementById('tab-gifs');
         const tabPcBacks = document.getElementById('tab-pcbacks');
+        const galleryContainer = document.getElementById('gallery-container');
+        const btnSlideLeft = document.getElementById('slide-left');
+        const btnSlideRight = document.getElementById('slide-right');
+        
+        // --- ELEMENTOS LIGHTBOX (VARIABLES GLOBALES DEFINIDAS AQUI) ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeLightbox = document.getElementById('close-lightbox');
+
+        // CLASES PARA CADA MODO
+        const gridClasses = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto";
+        const sliderClasses = "flex overflow-x-auto gap-6 pb-4 pt-2 snap-x snap-mandatory hide-scroll-bar scroll-smooth px-4";
 
         tabGifs.addEventListener('click', () => {
             currentTab = 'gifs';
@@ -460,7 +495,7 @@
             renderGallery();
         });
 
-        // --- EFECTO DE PARTÍCULAS (COMPATIBLE MÓVIL Y ESCRITORIO) ---
+        // --- EFECTO DE PARTÍCULAS ---
         function createParticle(x, y) {
             const particle = document.createElement('div');
             particle.classList.add('cursor-trail');
@@ -511,51 +546,73 @@
             isPlaying = !isPlaying;
         });
 
-        // --- RENDERIZADO DE GALERÍA (DINÁMICO CON SLIDER) ---
-        const slider = document.getElementById('gallery-slider');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxCaption = document.getElementById('lightbox-caption');
-        const closeLightbox = document.getElementById('close-lightbox');
-
-        // Lógica de botones deslizantes
-        const btnLeft = document.getElementById('slide-left');
-        const btnRight = document.getElementById('slide-right');
-
-        btnLeft.addEventListener('click', () => {
-            slider.scrollBy({ left: -300, behavior: 'smooth' });
+        // --- CONTROLES SLIDER (SOLO PARA PC BACKS) ---
+        btnSlideLeft.addEventListener('click', () => {
+            galleryContainer.scrollBy({ left: -300, behavior: 'smooth' });
         });
 
-        btnRight.addEventListener('click', () => {
-            slider.scrollBy({ left: 300, behavior: 'smooth' });
+        btnSlideRight.addEventListener('click', () => {
+            galleryContainer.scrollBy({ left: 300, behavior: 'smooth' });
         });
 
+        // --- RENDERIZADO HÍBRIDO ---
         function renderGallery() {
-            slider.innerHTML = '';
+            galleryContainer.innerHTML = '';
             
-            // Decidir qué lista y qué prefijo usar según la pestaña seleccionada
+            // 1. CONFIGURAR EL CONTENEDOR SEGÚN EL MODO
+            if (currentTab === 'gifs') {
+                // Modo Grid Vertical
+                galleryContainer.className = gridClasses;
+                // Ocultar botones de slider
+                btnSlideLeft.classList.add('hidden');
+                btnSlideRight.classList.add('hidden');
+                // En móviles quitamos la clase flex para botones (sm:flex) si existiera
+                btnSlideLeft.classList.remove('sm:flex');
+                btnSlideRight.classList.remove('sm:flex');
+            } else {
+                // Modo Slider Horizontal (PC Backs)
+                galleryContainer.className = sliderClasses;
+                // Mostrar botones de slider (en PC)
+                btnSlideLeft.classList.remove('hidden');
+                btnSlideRight.classList.remove('hidden');
+                btnSlideLeft.classList.add('sm:flex');
+                btnSlideRight.classList.add('sm:flex');
+            }
+
             const dataToRender = currentTab === 'gifs' ? galleryImages : pcBackImages;
             const prefix = currentTab === 'gifs' ? 'GIF' : 'PC BACK';
 
             dataToRender.forEach((item, index) => {
-                const autoTitle = `${prefix} ${index + 1}`; // Ejemplo: GIF 1
+                const autoTitle = `${prefix} ${index + 1}`; 
                 
                 const card = document.createElement('div');
-                card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer group animate-fade-in slider-card shrink-0';
-                card.style.animationDelay = `${index * 30}ms`; 
+                
+                // 2. CONFIGURAR TARJETA SEGÚN MODO
+                if (currentTab === 'gifs') {
+                    // Estilo compacto vertical
+                    card.className = 'glass-card rounded-lg p-2 flex flex-col items-center justify-between cursor-pointer group animate-fade-in hover:z-10 relative';
+                } else {
+                    // Estilo slider horizontal
+                    card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer group animate-fade-in slider-card shrink-0';
+                }
+                
+                card.style.animationDelay = `${index * 20}ms`; 
 
-                // HTML interno de la tarjeta
+                // 3. CONFIGURAR IMAGEN SEGÚN MODO
+                // GIFs: altura compacta vertical. PC Backs: altura normal.
+                const imgContainerClass = currentTab === 'gifs' 
+                    ? "w-full h-32 md:h-40 flex items-center justify-center overflow-hidden rounded-md bg-black/20 mb-2 relative"
+                    : "w-full h-48 md:h-56 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative";
+
                 const objectFitClass = currentTab === 'pcbacks' ? 'object-cover w-full h-full' : 'object-contain max-w-full max-h-full';
 
-                // Importante: Usamos encodeURI para evitar problemas con espacios si existieran,
-                // aunque con nombres como 1.gif ya no es estrictamente necesario, es buena práctica.
                 card.innerHTML = `
-                    <div class="w-full h-48 md:h-56 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative">
+                    <div class="${imgContainerClass}">
                         <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
                         <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
                     </div>
-                    <div class="w-full text-center border-t border-white/10 pt-2">
-                        <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
+                    <div class="w-full text-center border-t border-white/10 pt-1">
+                        <span class="text-pink-300 font-bold text-[10px] sm:text-xs tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
                     </div>
                 `;
 
@@ -563,7 +620,7 @@
                     openLightbox(item.src, autoTitle);
                 });
 
-                slider.appendChild(card);
+                galleryContainer.appendChild(card);
             });
         }
 
@@ -594,3 +651,4 @@
     </script>
 </body>
 </html>
+
