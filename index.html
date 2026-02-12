@@ -42,7 +42,6 @@
             cursor: default;
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
-            /* Deshabilitar selección de texto */
             user-select: none;
             -webkit-user-select: none;
         }
@@ -60,33 +59,24 @@
             transform: translateZ(0); 
         }
 
-        /* --- ESTILO TÍTULO ZIVA (COMPATIBILIDAD TOTAL) --- */
+        /* --- ESTILO TÍTULO ZIVA --- */
         .text-ultimate {
             display: inline-block; 
             font-family: 'Pinyon Script', cursive;
             font-size: 118px;
             font-weight: 900;
             text-align: center;
-            
-            /* Gradiente Rosa */
             background-color: #ff29d1;
             background-image: repeating-linear-gradient(45deg, #ff29d1 0px, #ff29d1 10px, #ff57db 10px, #ff57db 20px);
             background-size: 200% 200%;
-            
-            /* Recorte del texto - Prefijos vitales para Safari/Chrome/Firefox */
             color: transparent;
             -webkit-text-fill-color: transparent;
             -webkit-background-clip: text;
-            -moz-background-clip: text; /* Firefox Legacy */
+            -moz-background-clip: text; 
             background-clip: text;
-            
-            /* Borde y Brillo */
             -webkit-text-stroke: 0;
             filter: drop-shadow(0 0 10px #570044);
-            
-            /* Animación */
             animation: stripe-move-d1 3s linear infinite;
-            
             margin: 0;
             line-height: 1.2;
             padding: 0 10px; 
@@ -101,7 +91,7 @@
             .text-ultimate { font-size: 59px; }
         }
 
-        /* --- PESTAÑAS (TABS) GIFS / PC BACKS --- */
+        /* --- PESTAÑAS (TABS) --- */
         .tab-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -124,7 +114,7 @@
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* --- TARJETAS (SOPORTE SAFARI GLASS) --- */
+        /* --- TARJETAS --- */
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
             -webkit-backdrop-filter: blur(5px);
@@ -138,25 +128,6 @@
             background: rgba(255, 105, 180, 0.15);
             border-color: rgba(255, 105, 180, 0.5);
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-        }
-
-        /* --- ESTILOS ESPECÍFICOS PARA SLIDER (PC BACKS) --- */
-        .hide-scroll-bar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .hide-scroll-bar::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .slider-card {
-            flex: 0 0 280px; /* Ancho para PC Backs */
-            scroll-snap-align: start;
-        }
-        @media (max-width: 768px) {
-            .slider-card {
-                flex: 0 0 240px;
-            }
         }
 
         /* --- PANTALLA DE INGRESO --- */
@@ -245,7 +216,7 @@
             100% { opacity: 0; transform: scale(0.1) translate(0, 10px); }
         }
         
-        /* --- ESTILOS REPRODUCTOR --- */
+        /* --- ESTILOS REPRODUCTOR & VOLUMEN --- */
         .music-player {
             background: rgba(255, 255, 255, 0.05);
             -webkit-backdrop-filter: blur(10px);
@@ -262,7 +233,60 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- SCROLLBAR GLASS PINK PERSONALIZADO --- */
+        /* Estilo del Slider de Volumen (Glass/Pink) */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 80px;
+            background: transparent;
+            margin-left: 15px;
+        }
+        
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        /* Track (Barra) Chrome/Safari */
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+        
+        /* Thumb (Bolita) Chrome/Safari */
+        input[type=range]::-webkit-slider-thumb {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            background: #ff00ff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -4px; /* Centrar verticalmente */
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* Track Firefox */
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+
+        /* Thumb Firefox */
+        input[type=range]::-moz-range-thumb {
+            height: 12px;
+            width: 12px;
+            border: none;
+            border-radius: 50%;
+            background: #ff00ff;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* --- SCROLLBAR GLASS PINK --- */
         ::-webkit-scrollbar { width: 12px; }
         ::-webkit-scrollbar-track { background: rgba(20, 0, 20, 0.3); }
         ::-webkit-scrollbar-thumb { 
@@ -280,7 +304,6 @@
         .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Lightbox soporte IOS */
         #lightbox {
             -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
@@ -291,7 +314,6 @@
 
     <!-- VIDEO DE FONDO -->
     <video autoplay muted loop playsinline id="bg-video" style="filter: blur(10px) brightness(0.6);">
-        <!-- === NUEVO VIDEO AQUÍ === -->
         <source src="https://cdn.pixabay.com/video/2025/10/18/310657_large.mp4" type="video/mp4">
     </video>
 
@@ -313,29 +335,18 @@
                 <h2 class="text-5xl font-script text-pink-300 drop-shadow-lg mt-[-20px] relative z-10">Gallery</h2>
             </div>
 
-            <!-- === PESTAÑAS (NUEVO) === -->
+            <!-- PESTAÑAS -->
             <div class="flex justify-center gap-4 mb-10 z-20 relative">
                 <button id="tab-gifs" class="tab-btn active px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">GIF</button>
                 <button id="tab-pcbacks" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PCBACK</button>
             </div>
 
-            <!-- === CONTENEDOR DE LA GALERÍA (HÍBRIDO: GRID O SLIDER) === -->
-            <!-- Nota: La estructura inicial es Grid para GIFs -->
+            <!-- CONTENEDOR DE LA GALERÍA -->
             <div class="relative w-full max-w-[95vw] mx-auto group mb-20">
-                
-                <!-- Botones Slider (Solo visibles en PC Backs) -->
-                <button id="slide-left" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-6 z-20 bg-black/60 hover:bg-pink-600/80 border border-pink-500/50 text-white w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none hidden">
-                    <i class="fa-solid fa-chevron-left text-lg"></i>
-                </button>
-
-                <!-- CONTENEDOR DINÁMICO (Grid o Flex según pestaña) -->
+                <!-- CONTENEDOR DINÁMICO -->
                 <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto">
                     <!-- JS insertará imágenes aquí -->
                 </div>
-
-                <button id="slide-right" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-6 z-20 bg-black/60 hover:bg-pink-600/80 border border-pink-500/50 text-white w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none hidden">
-                    <i class="fa-solid fa-chevron-right text-lg"></i>
-                </button>
             </div>
 
             <!-- FOOTER -->
@@ -343,8 +354,8 @@
                 
                 <!-- Perfil -->
                 <div class="relative group cursor-pointer">
-                    <!-- IMAGEN DE PERFIL -->
                     <div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-pink-500 to-purple-600 shadow-[0_0_30px_rgba(255,0,255,0.4)] transition-transform duration-300 group-hover:scale-105">
+                        <!-- Usa aquí una de tus imágenes como placeholder de perfil -->
                         <img src="https://i.postimg.cc/kGnMYm25/anigif.gif" alt="Ziva Profile" class="w-full h-full rounded-full object-cover">
                     </div>
                     
@@ -368,21 +379,30 @@
                     <span class="text-pink-100 font-sans text-sm font-bold tracking-wider uppercase group-hover:text-white">Find me</span>
                 </a>
 
-                <!-- REPRODUCTOR DE MÚSICA -->
-                <div class="mt-8 mb-4 music-player px-6 py-3 rounded-full flex items-center gap-4">
+                <!-- REPRODUCTOR DE MÚSICA CON VOLUMEN -->
+                <div class="mt-8 mb-4 music-player px-6 py-3 rounded-full flex items-center gap-4 flex-wrap justify-center sm:flex-nowrap">
                     <div id="music-disc" class="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center music-disc">
                         <i class="fa-solid fa-music text-[10px] text-white"></i>
                     </div>
                     <div class="flex flex-col">
                         <span class="text-xs text-pink-200 font-bold uppercase tracking-wider">Now Playing</span>
-                        <!-- CAMBIAR NOMBRE CANCIÓN AQUÍ -->
                         <span class="text-[10px] text-white/60">Ziva's Favorite Song</span>
                     </div>
-                    <button id="play-btn" class="text-pink-400 hover:text-white transition-colors text-xl ml-2 focus:outline-none">
-                        <i class="fa-solid fa-play"></i>
-                    </button>
-                    <!-- CAMBIAR URL DE MÚSICA AQUÍ ABAJO (src="...") -->
-                    <audio id="audio-player" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+                    
+                    <div class="flex items-center gap-2 ml-0 sm:ml-2">
+                        <button id="play-btn" class="text-pink-400 hover:text-white transition-colors text-xl focus:outline-none">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                        
+                        <!-- BARRA DE VOLUMEN -->
+                        <div class="flex items-center gap-1 group">
+                            <i class="fa-solid fa-volume-high text-xs text-pink-400/70"></i>
+                            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                        </div>
+                    </div>
+
+                    <!-- CANCIÓN: Asegúrate de subir 'music.mp3' a GitHub -->
+                    <audio id="audio-player" src="music.mp3"></audio>
                 </div>
 
                 <!-- FIRMA EAM96 -->
@@ -412,75 +432,51 @@
 
     <!-- Script de Funcionalidad -->
     <script>
-        // --- BLOQUEO DE SEGURIDAD (Click Derecho y F12) ---
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
+        // --- BLOQUEO DE SEGURIDAD ---
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
         document.addEventListener('keydown', function(e) {
-            // F12
-            if (e.key === 'F12' || e.keyCode === 123) {
-                e.preventDefault();
-            }
-            // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (Chrome DevTools)
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
-                e.preventDefault();
-            }
-            // Ctrl+U (Ver fuente)
-            if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-            }
+            if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) { e.preventDefault(); }
+            if (e.ctrlKey && e.key === 'u') { e.preventDefault(); }
         });
 
-        // =========================================================================
-        //  LISTA DE IMÁGENES AUTOMÁTICA
-        //  Genera automáticamente los nombres: 1.gif, 2.gif ... 80.gif
-        // =========================================================================
-        
-        // 1. GENERACIÓN DE 80 GIFs (1.gif hasta 80.gif)
+        // --- LISTAS DE IMÁGENES AUTOMÁTICAS ---
+        // Genera 1.gif ... 80.gif
         const galleryImages = [];
         for (let i = 1; i <= 80; i++) {
             galleryImages.push({ src: `${i}.gif` });
         }
 
-        // =========================================================
-        //  INSTRUCCIONES PARA AÑADIR MÁS GIFs (DEL 81 EN ADELANTE):
-        //  Copia la línea de abajo, quita las // y cambia el 81 por el número.
-        //  galleryImages.push({ src: '81.gif' });
-        // =========================================================
-
-
-        // 2. GENERACIÓN DE 10 PC BACKS (1.png hasta 10.png)
-        const pcBackImages = [];
-        for (let i = 1; i <= 10; i++) {
+        // Genera 1.png ... 3.png (más la imagen extra al inicio)
+        const pcBackImages = [
+            { src: 'https://xatimg.com/image/RmByeRQCqLAa.png' }
+        ];
+        for (let i = 1; i <= 3; i++) {
             pcBackImages.push({ src: `${i}.png` });
         }
 
-        // =========================================================
-        //  INSTRUCCIONES PARA AÑADIR MÁS FONDOS (DEL 11 EN ADELANTE):
-        //  Copia la línea de abajo, quita las // y cambia el 11 por el número.
-        //  pcBackImages.push({ src: '11.png' });
-        // =========================================================
-
-
-        // --- MANEJO DE PESTAÑAS Y ESTRUCTURA DINÁMICA ---
+        // --- VARIABLES GLOBALES ---
         let currentTab = 'gifs'; 
         const tabGifs = document.getElementById('tab-gifs');
         const tabPcBacks = document.getElementById('tab-pcbacks');
         const galleryContainer = document.getElementById('gallery-container');
-        const btnSlideLeft = document.getElementById('slide-left');
-        const btnSlideRight = document.getElementById('slide-right');
         
-        // --- ELEMENTOS LIGHTBOX (VARIABLES GLOBALES DEFINIDAS AQUI) ---
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxCaption = document.getElementById('lightbox-caption');
         const closeLightbox = document.getElementById('close-lightbox');
 
+        const audioPlayer = document.getElementById('audio-player');
+        const musicDisc = document.getElementById('music-disc');
+        const playBtn = document.getElementById('play-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        let isPlaying = false;
+
         // CLASES PARA CADA MODO
         const gridClasses = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto";
-        const sliderClasses = "flex overflow-x-auto gap-6 pb-4 pt-2 snap-x snap-mandatory hide-scroll-bar scroll-smooth px-4";
+        const stackClasses = "flex flex-col items-center gap-10 pb-20 mx-auto w-full"; 
 
+        // --- MANEJO DE PESTAÑAS ---
         tabGifs.addEventListener('click', () => {
             currentTab = 'gifs';
             tabGifs.classList.add('active');
@@ -504,17 +500,13 @@
             document.body.appendChild(particle);
             setTimeout(() => { particle.remove(); }, 800);
         }
-
-        document.addEventListener('mousemove', function(e) {
-            createParticle(e.pageX, e.pageY);
-        });
-
-        document.addEventListener('touchmove', function(e) {
+        document.addEventListener('mousemove', (e) => createParticle(e.pageX, e.pageY));
+        document.addEventListener('touchmove', (e) => {
             const touch = e.touches[0];
             createParticle(touch.pageX, touch.pageY);
         }, { passive: true });
 
-        // --- LÓGICA DE INGRESO ---
+        // --- LÓGICA DE INGRESO (CON AUTO-PLAY) ---
         const enterBtn = document.getElementById('enter-btn');
         const entranceScreen = document.getElementById('entrance-screen');
         const mainContent = document.getElementById('main-content');
@@ -524,15 +516,21 @@
             entranceScreen.classList.add('entrance-hidden');
             bgVideo.style.filter = "blur(3px) brightness(0.4)";
             mainContent.classList.remove('opacity-0');
-            bgVideo.play().catch(e => console.log("Auto-play prevented"));
+            
+            bgVideo.play().catch(e => console.log("Video auto-play prevented"));
+
+            // AUTO-PLAY MÚSICA (Volumen inicial 50%)
+            audioPlayer.volume = 0.5;
+            audioPlayer.play().then(() => {
+                isPlaying = true;
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                musicDisc.classList.add('playing');
+            }).catch(e => {
+                console.log("Audio auto-play prevented (User interaction required)");
+            });
         });
 
-        // --- REPRODUCTOR DE MÚSICA ---
-        const playBtn = document.getElementById('play-btn');
-        const audioPlayer = document.getElementById('audio-player');
-        const musicDisc = document.getElementById('music-disc');
-        let isPlaying = false;
-
+        // --- REPRODUCTOR DE MÚSICA (BOTÓN Y VOLUMEN) ---
         playBtn.addEventListener('click', () => {
             if (isPlaying) {
                 audioPlayer.pause();
@@ -546,37 +544,18 @@
             isPlaying = !isPlaying;
         });
 
-        // --- CONTROLES SLIDER (SOLO PARA PC BACKS) ---
-        btnSlideLeft.addEventListener('click', () => {
-            galleryContainer.scrollBy({ left: -300, behavior: 'smooth' });
+        volumeSlider.addEventListener('input', (e) => {
+            audioPlayer.volume = e.target.value;
         });
 
-        btnSlideRight.addEventListener('click', () => {
-            galleryContainer.scrollBy({ left: 300, behavior: 'smooth' });
-        });
-
-        // --- RENDERIZADO HÍBRIDO ---
+        // --- RENDERIZADO HÍBRIDO (GRID / STACK) ---
         function renderGallery() {
             galleryContainer.innerHTML = '';
             
-            // 1. CONFIGURAR EL CONTENEDOR SEGÚN EL MODO
             if (currentTab === 'gifs') {
-                // Modo Grid Vertical
                 galleryContainer.className = gridClasses;
-                // Ocultar botones de slider
-                btnSlideLeft.classList.add('hidden');
-                btnSlideRight.classList.add('hidden');
-                // En móviles quitamos la clase flex para botones (sm:flex) si existiera
-                btnSlideLeft.classList.remove('sm:flex');
-                btnSlideRight.classList.remove('sm:flex');
             } else {
-                // Modo Slider Horizontal (PC Backs)
-                galleryContainer.className = sliderClasses;
-                // Mostrar botones de slider (en PC)
-                btnSlideLeft.classList.remove('hidden');
-                btnSlideRight.classList.remove('hidden');
-                btnSlideLeft.classList.add('sm:flex');
-                btnSlideRight.classList.add('sm:flex');
+                galleryContainer.className = stackClasses;
             }
 
             const dataToRender = currentTab === 'gifs' ? galleryImages : pcBackImages;
@@ -587,32 +566,34 @@
                 
                 const card = document.createElement('div');
                 
-                // 2. CONFIGURAR TARJETA SEGÚN MODO
                 if (currentTab === 'gifs') {
-                    // Estilo compacto vertical
                     card.className = 'glass-card rounded-lg p-2 flex flex-col items-center justify-between cursor-pointer group animate-fade-in hover:z-10 relative';
                 } else {
-                    // Estilo slider horizontal
-                    card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer group animate-fade-in slider-card shrink-0';
+                    card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer group animate-fade-in relative';
                 }
                 
-                card.style.animationDelay = `${index * 20}ms`; 
+                card.style.animationDelay = `${index * 50}ms`; 
 
-                // 3. CONFIGURAR IMAGEN SEGÚN MODO
-                // GIFs: altura compacta vertical. PC Backs: altura normal.
-                const imgContainerClass = currentTab === 'gifs' 
-                    ? "w-full h-32 md:h-40 flex items-center justify-center overflow-hidden rounded-md bg-black/20 mb-2 relative"
-                    : "w-full h-48 md:h-56 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative";
+                let imgContainerClass = "";
+                let objectFitClass = "";
 
-                const objectFitClass = currentTab === 'pcbacks' ? 'object-cover w-full h-full' : 'object-contain max-w-full max-h-full';
+                if (currentTab === 'gifs') {
+                    imgContainerClass = "w-full h-32 md:h-40 flex items-center justify-center overflow-hidden rounded-md bg-black/20 mb-2 relative";
+                    objectFitClass = "object-contain max-w-full max-h-full";
+                } else {
+                    // PC BACKS: Grande y sin cortes (object-contain)
+                    // Ancho maximo 450px para ser estético
+                    imgContainerClass = "w-full max-w-[90vw] md:max-w-[450px] flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative shadow-2xl";
+                    objectFitClass = "w-full h-auto object-contain"; 
+                }
 
                 card.innerHTML = `
                     <div class="${imgContainerClass}">
                         <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
-                        <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
+                        <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-105">
                     </div>
-                    <div class="w-full text-center border-t border-white/10 pt-1">
-                        <span class="text-pink-300 font-bold text-[10px] sm:text-xs tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
+                    <div class="w-full text-center border-t border-white/10 pt-2">
+                        <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
                     </div>
                 `;
 
@@ -651,6 +632,4 @@
     </script>
 </body>
 </html>
-
-
 
