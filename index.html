@@ -130,6 +130,26 @@
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
         }
 
+        /* --- ESTILOS ESPECÍFICOS PARA SLIDER (PC BACKS GRANDE) --- */
+        .hide-scroll-bar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .hide-scroll-bar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .slider-card {
+            /* TAMAÑO GRANDE PARA PC BACKS */
+            flex: 0 0 320px; /* Móvil: Grande */
+            scroll-snap-align: center;
+        }
+        @media (min-width: 768px) {
+            .slider-card {
+                flex: 0 0 500px; /* PC: Muy Grande */
+            }
+        }
+
         /* --- PANTALLA DE INGRESO --- */
         #entrance-screen {
             position: fixed;
@@ -401,8 +421,8 @@
                         </div>
                     </div>
 
-                    <!-- CANCIÓN: Asegúrate de subir 'music.mp3' a GitHub -->
-                    <audio id="audio-player" src="music.mp3"></audio>
+                    <!-- CANCIÓN: music.mp3 con LOOP activado -->
+                    <audio id="audio-player" src="music.mp3" loop></audio>
                 </div>
 
                 <!-- FIRMA EAM96 -->
