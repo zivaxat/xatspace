@@ -409,66 +409,39 @@
     <!-- Script de Funcionalidad -->
     <script>
         // =========================================================================
-        //  LISTA DE IMÁGENES: GIFS (Pestaña Principal)
-        //  Configurado para cargar 80 imágenes desde GIF (1).GIF hasta GIF (80).GIF
+        //  LISTA DE IMÁGENES AUTOMÁTICA
+        //  Genera automáticamente:
+        //  - GIF (1).GIF hasta GIF (80).GIF
+        //  - PCBACK (1).PNG hasta PCBACK (80).PNG
         // =========================================================================
-        const galleryImages = [
-            { src: 'GIF (1).GIF' }, { src: 'GIF (2).GIF' }, { src: 'GIF (3).GIF' }, { src: 'GIF (4).GIF' }, { src: 'GIF (5).GIF' },
-            { src: 'GIF (6).GIF' }, { src: 'GIF (7).GIF' }, { src: 'GIF (8).GIF' }, { src: 'GIF (9).GIF' }, { src: 'GIF (10).GIF' },
-            { src: 'GIF (11).GIF' }, { src: 'GIF (12).GIF' }, { src: 'GIF (13).GIF' }, { src: 'GIF (14).GIF' }, { src: 'GIF (15).GIF' },
-            { src: 'GIF (16).GIF' }, { src: 'GIF (17).GIF' }, { src: 'GIF (18).GIF' }, { src: 'GIF (19).GIF' }, { src: 'GIF (20).GIF' },
-            { src: 'GIF (21).GIF' }, { src: 'GIF (22).GIF' }, { src: 'GIF (23).GIF' }, { src: 'GIF (24).GIF' }, { src: 'GIF (25).GIF' },
-            { src: 'GIF (26).GIF' }, { src: 'GIF (27).GIF' }, { src: 'GIF (28).GIF' }, { src: 'GIF (29).GIF' }, { src: 'GIF (30).GIF' },
-            { src: 'GIF (31).GIF' }, { src: 'GIF (32).GIF' }, { src: 'GIF (33).GIF' }, { src: 'GIF (34).GIF' }, { src: 'GIF (35).GIF' },
-            { src: 'GIF (36).GIF' }, { src: 'GIF (37).GIF' }, { src: 'GIF (38).GIF' }, { src: 'GIF (39).GIF' }, { src: 'GIF (40).GIF' },
-            { src: 'GIF (41).GIF' }, { src: 'GIF (42).GIF' }, { src: 'GIF (43).GIF' }, { src: 'GIF (44).GIF' }, { src: 'GIF (45).GIF' },
-            { src: 'GIF (46).GIF' }, { src: 'GIF (47).GIF' }, { src: 'GIF (48).GIF' }, { src: 'GIF (49).GIF' }, { src: 'GIF (50).GIF' },
-            { src: 'GIF (51).GIF' }, { src: 'GIF (52).GIF' }, { src: 'GIF (53).GIF' }, { src: 'GIF (54).GIF' }, { src: 'GIF (55).GIF' },
-            { src: 'GIF (56).GIF' }, { src: 'GIF (57).GIF' }, { src: 'GIF (58).GIF' }, { src: 'GIF (59).GIF' }, { src: 'GIF (60).GIF' },
-            { src: 'GIF (61).GIF' }, { src: 'GIF (62).GIF' }, { src: 'GIF (63).GIF' }, { src: 'GIF (64).GIF' }, { src: 'GIF (65).GIF' },
-            { src: 'GIF (66).GIF' }, { src: 'GIF (67).GIF' }, { src: 'GIF (68).GIF' }, { src: 'GIF (69).GIF' }, { src: 'GIF (70).GIF' },
-            { src: 'GIF (71).GIF' }, { src: 'GIF (72).GIF' }, { src: 'GIF (73).GIF' }, { src: 'GIF (74).GIF' }, { src: 'GIF (75).GIF' },
-            { src: 'GIF (76).GIF' }, { src: 'GIF (77).GIF' }, { src: 'GIF (78).GIF' }, { src: 'GIF (79).GIF' }, { src: 'GIF (80).GIF' },
-            // =========================================================================
-            // INSTRUCCIONES PARA AÑADIR MÁS GIFS EN EL FUTURO:
-            // 1. Quita las dos barras "//" de la línea de abajo.
-            // 2. Copia la línea completa: { src: 'GIF (81).GIF' },
-            // 3. Pégala y ve cambiando el número a 82, 83, 84, etc.
-            //
-            // // { src: 'GIF (81).GIF' },
-            // =========================================================================
-        ];
+        
+        // 1. GENERACIÓN DE 80 GIFs
+        const galleryImages = [];
+        for (let i = 1; i <= 80; i++) {
+            // Nota: Se respeta el espacio "GIF (1).GIF"
+            galleryImages.push({ src: `GIF (${i}).GIF` });
+        }
 
-        // =========================================================================
-        //  LISTA DE IMÁGENES: PC BACKS (Pestaña Secundaria)
-        //  Configurado para cargar 80 imágenes desde PCBACK (1).PNG hasta PCBACK (80).PNG
-        // =========================================================================
-        const pcBackImages = [
-            { src: 'PCBACK (1).PNG' }, { src: 'PCBACK (2).PNG' }, { src: 'PCBACK (3).PNG' }, { src: 'PCBACK (4).PNG' }, { src: 'PCBACK (5).PNG' },
-            { src: 'PCBACK (6).PNG' }, { src: 'PCBACK (7).PNG' }, { src: 'PCBACK (8).PNG' }, { src: 'PCBACK (9).PNG' }, { src: 'PCBACK (10).PNG' },
-            { src: 'PCBACK (11).PNG' }, { src: 'PCBACK (12).PNG' }, { src: 'PCBACK (13).PNG' }, { src: 'PCBACK (14).PNG' }, { src: 'PCBACK (15).PNG' },
-            { src: 'PCBACK (16).PNG' }, { src: 'PCBACK (17).PNG' }, { src: 'PCBACK (18).PNG' }, { src: 'PCBACK (19).PNG' }, { src: 'PCBACK (20).PNG' },
-            { src: 'PCBACK (21).PNG' }, { src: 'PCBACK (22).PNG' }, { src: 'PCBACK (23).PNG' }, { src: 'PCBACK (24).PNG' }, { src: 'PCBACK (25).PNG' },
-            { src: 'PCBACK (26).PNG' }, { src: 'PCBACK (27).PNG' }, { src: 'PCBACK (28).PNG' }, { src: 'PCBACK (29).PNG' }, { src: 'PCBACK (30).PNG' },
-            { src: 'PCBACK (31).PNG' }, { src: 'PCBACK (32).PNG' }, { src: 'PCBACK (33).PNG' }, { src: 'PCBACK (34).PNG' }, { src: 'PCBACK (35).PNG' },
-            { src: 'PCBACK (36).PNG' }, { src: 'PCBACK (37).PNG' }, { src: 'PCBACK (38).PNG' }, { src: 'PCBACK (39).PNG' }, { src: 'PCBACK (40).PNG' },
-            { src: 'PCBACK (41).PNG' }, { src: 'PCBACK (42).PNG' }, { src: 'PCBACK (43).PNG' }, { src: 'PCBACK (44).PNG' }, { src: 'PCBACK (45).PNG' },
-            { src: 'PCBACK (46).PNG' }, { src: 'PCBACK (47).PNG' }, { src: 'PCBACK (48).PNG' }, { src: 'PCBACK (49).PNG' }, { src: 'PCBACK (50).PNG' },
-            { src: 'PCBACK (51).PNG' }, { src: 'PCBACK (52).PNG' }, { src: 'PCBACK (53).PNG' }, { src: 'PCBACK (54).PNG' }, { src: 'PCBACK (55).PNG' },
-            { src: 'PCBACK (56).PNG' }, { src: 'PCBACK (57).PNG' }, { src: 'PCBACK (58).PNG' }, { src: 'PCBACK (59).PNG' }, { src: 'PCBACK (60).PNG' },
-            { src: 'PCBACK (61).PNG' }, { src: 'PCBACK (62).PNG' }, { src: 'PCBACK (63).PNG' }, { src: 'PCBACK (64).PNG' }, { src: 'PCBACK (65).PNG' },
-            { src: 'PCBACK (66).PNG' }, { src: 'PCBACK (67).PNG' }, { src: 'PCBACK (68).PNG' }, { src: 'PCBACK (69).PNG' }, { src: 'PCBACK (70).PNG' },
-            { src: 'PCBACK (71).PNG' }, { src: 'PCBACK (72).PNG' }, { src: 'PCBACK (73).PNG' }, { src: 'PCBACK (74).PNG' }, { src: 'PCBACK (75).PNG' },
-            { src: 'PCBACK (76).PNG' }, { src: 'PCBACK (77).PNG' }, { src: 'PCBACK (78).PNG' }, { src: 'PCBACK (79).PNG' }, { src: 'PCBACK (80).PNG' },
-            // =========================================================================
-            // INSTRUCCIONES PARA AÑADIR MÁS FONDOS EN EL FUTURO:
-            // 1. Quita las dos barras "//" de la línea de abajo.
-            // 2. Copia la línea completa: { src: 'PCBACK (81).PNG' },
-            // 3. Pégala y ve cambiando el número a 82, 83, 84, etc.
-            //
-            // // { src: 'PCBACK (81).PNG' },
-            // =========================================================================
-        ];
+        // =========================================================
+        //  INSTRUCCIONES PARA AGREGAR MÁS GIFs A FUTURO (DEL 81 EN ADELANTE):
+        //  Copia la línea de abajo, quita las // y cambia el 81 por el número que quieras.
+        //  galleryImages.push({ src: 'GIF (81).GIF' });
+        // =========================================================
+
+
+        // 2. GENERACIÓN DE 80 PC BACKS
+        const pcBackImages = [];
+        for (let i = 1; i <= 80; i++) {
+            // Nota: Se respeta el espacio "PCBACK (1).PNG"
+            pcBackImages.push({ src: `PCBACK (${i}).PNG` });
+        }
+
+        // =========================================================
+        //  INSTRUCCIONES PARA AGREGAR MÁS FONDOS A FUTURO (DEL 81 EN ADELANTE):
+        //  Copia la línea de abajo, quita las // y cambia el 81 por el número que quieras.
+        //  pcBackImages.push({ src: 'PCBACK (81).PNG' });
+        // =========================================================
+
 
         // --- MANEJO DE PESTAÑAS ---
         let currentTab = 'gifs'; // 'gifs' o 'pcbacks'
@@ -567,19 +540,25 @@
             const prefix = currentTab === 'gifs' ? 'GIF' : 'PC BACK';
 
             dataToRender.forEach((item, index) => {
-                const autoTitle = `${prefix}-${index + 1}`;
+                // Título: se suma 1 al índice porque el loop puede ser de 0 a 79 o manual
+                // Si usamos el array automático, el nombre se extrae del src o se calcula.
+                // Para mantener consistencia simple:
+                const autoTitle = `${prefix} ${index + 1}`; // Ejemplo: GIF 1
+                
                 const card = document.createElement('div');
-                // Se agregan clases para flex, no encogerse (shrink-0) y slider-card
                 card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer group animate-fade-in slider-card shrink-0';
                 card.style.animationDelay = `${index * 30}ms`; 
 
                 // HTML interno de la tarjeta
                 const objectFitClass = currentTab === 'pcbacks' ? 'object-cover w-full h-full' : 'object-contain max-w-full max-h-full';
 
+                // NOTA IMPORTANTE: Usamos item.src directo. 
+                // El navegador se encarga de codificar el espacio en la petición HTTP.
+                // Si el archivo en GitHub se llama "GIF (1).GIF", esto funcionará.
                 card.innerHTML = `
                     <div class="w-full h-48 md:h-56 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative">
                         <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
-                        <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
+                        <img src="${item.src}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <div class="w-full text-center border-t border-white/10 pt-2">
                         <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
