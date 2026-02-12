@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZIVA - Gallery</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <!-- Iconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        script: ['Pinyon Script', 'cursive'],
+                    },
+                    colors: {
+                        neonPink: "#ff00ff",
+                        deepPurple: "#1a0b2e",
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- RESET Y BASES --- */
+        body {
+            /* Cambio: Fondo base negro/magenta profundo en lugar de azul oscuro */
+            background-color: #050005; 
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: default;
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- VIDEO DE FONDO --- */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -50;
+            transition: filter 1.5s ease;
+            transform: translateZ(0); 
+        }
+
+        /* --- ESTILO TÍTULO ZIVA (COMPATIBILIDAD TOTAL) --- */
+        .text-ultimate {
+            display: inline-block; 
+            font-family: 'Pinyon Script', cursive;
+            font-size: 118px;
+            font-weight: 900;
+            text-align: center;
+            
+            /* Gradiente Rosa */
+            background-color: #ff29d1;
+            background-image: repeating-linear-gradient(45deg, #ff29d1 0px, #ff29d1 10px, #ff57db 10px, #ff57db 20px);
+            background-size: 200% 200%;
+            
+            /* Recorte del texto - Prefijos vitales para Safari/Chrome/Firefox */
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -moz-background-clip: text; /* Firefox Legacy */
+            background-clip: text;
+            
+            /* Borde y Brillo */
+            -webkit-text-stroke: 0;
+            filter: drop-shadow(0 0 10px #570044);
+            
+            /* Animación */
+            animation: stripe-move-d1 3s linear infinite;
+            
+            margin: 0;
+            line-height: 1.2;
+            padding: 0 10px; 
+        }
+
+        @keyframes stripe-move-d1 { 
+            0% { background-position: 0% 0%; } 
+            100% { background-position: 200% 200%; } 
+        }
+
+        @media (max-width: 768px) {
+            .text-ultimate { font-size: 59px; }
+        }
+
+        /* --- TARJETAS (SOPORTE SAFARI GLASS) --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            /* Importante: -webkit-backdrop-filter para Safari iOS/Mac */
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateZ(0); /* Mejora rendimiento renderizado móvil */
+        }
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(255, 105, 180, 0.15);
+            border-color: rgba(255, 105, 180, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+
+        /* --- PANTALLA DE INGRESO --- */
+        #entrance-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Cambio: Fondo semitransparente oscuro rosado en lugar de azul */
+            background: rgba(20, 5, 20, 0.7); 
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            transition: all 1s ease-in-out;
+        }
+
+        .entrance-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+        }
+
+        /* --- BOTÓN INGRESAR --- */
+        .btn-enter {
+            position: relative;
+            margin-top: 2rem;
+            padding: 15px 50px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            background: transparent;
+            border: 2px solid #ff00ff;
+            border-radius: 50px;
+            text-transform: uppercase;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 10px #ff00ff, inset 0 0 10px #ff00ff;
+            z-index: 1;
+            /* Evitar highlight azul en tap móvil */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-enter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn-enter:hover::before {
+            left: 100%;
+            transition: 0.7s;
+        }
+
+        .btn-enter:hover {
+            background: rgba(255, 0, 255, 0.2);
+            box-shadow: 0 0 50px #ff00ff, inset 0 0 20px #ff00ff;
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
+            border-color: #fff;
+        }
+
+        /* --- PARTICULAS DEL CURSOR --- */
+        .cursor-trail {
+            position: absolute; 
+            width: 8px;
+            height: 8px;
+            background: #ff00ff;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+            animation: fadeOutParticle 0.8s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes fadeOutParticle {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.1) translate(0, 10px); }
+        }
+        
+        /* --- ESTILOS REPRODUCTOR --- */
+        .music-player {
+            background: rgba(255, 255, 255, 0.05);
+            /* Soporte Blur Safari */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.1);
+            /* Aceleración hardware */
+            transform: translateZ(0);
+        }
+        .music-disc {
+            animation-play-state: paused;
+        }
+        .music-disc.playing {
+            animation: spin 3s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- SCROLLBAR GLASS PINK PERSONALIZADO --- */
+        ::-webkit-scrollbar { 
+            width: 12px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: rgba(20, 0, 20, 0.3); /* Fondo oscuro semitransparente */
+        }
+        ::-webkit-scrollbar-thumb { 
+            /* Efecto Glass Pink usando gradiente y bordes */
+            background: linear-gradient(180deg, rgba(255, 0, 255, 0.4), rgba(255, 105, 180, 0.6)); 
+            border: 3px solid rgba(0, 0, 0, 0); /* Truco para 'padding' visual usando bg-clip */
+            background-clip: padding-box;
+            border-radius: 10px; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(255, 0, 255, 0.7), rgba(255, 105, 180, 0.9)); 
+            border: 3px solid rgba(0, 0, 0, 0);
+            background-clip: padding-box;
+        }
+        
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Lightbox soporte IOS */
+        #lightbox {
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VIDEO DE FONDO -->
+    <video autoplay muted loop playsinline id="bg-video" style="filter: blur(10px) brightness(0.6);">
+        <source src="https://cdn.pixabay.com/video/2025/05/22/280970_large.mp4" type="video/mp4">
+    </video>
+
+    <!-- PANTALLA DE INGRESO -->
+    <div id="entrance-screen">
+        <h1 class="text-ultimate mb-4">Ziva</h1>
+        <button id="enter-btn" class="btn-enter">Gallery</button>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="main-content" class="opacity-0 transition-opacity duration-1000 delay-500">
+        
+        <div style="height: 65px; width: 100%;"></div>
+
+        <main class="container mx-auto px-4 pb-20 relative z-10">
+            
+            <div class="text-center mb-12 mt-4">
+                <h1 class="text-ultimate">Ziva</h1>
+                <h2 class="text-5xl font-script text-pink-300 drop-shadow-lg mt-[-20px] relative z-10">Gif</h2>
+            </div>
+
+            <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-20">
+                <!-- JS insertará imágenes aquí -->
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="flex flex-col items-center justify-center mt-20 mb-10 pb-5 border-t border-pink-500/20 pt-10">
+                
+                <!-- Perfil -->
+                <div class="relative group cursor-pointer">
+                    <!-- ======================================================= -->
+                    <!-- CAMBIAR IMAGEN DE PERFIL AQUÍ ABAJO (src="...")         -->
+                    <!-- ======================================================= -->
+                    <div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-pink-500 to-purple-600 shadow-[0_0_30px_rgba(255,0,255,0.4)] transition-transform duration-300 group-hover:scale-105">
+                        <img src="https://i.postimg.cc/kGnMYm25/anigif.gif" alt="Ziva Profile" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    
+                    <div class="absolute bottom-2 right-2 flex items-center justify-center">
+                        <span class="relative flex h-5 w-5">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-5 w-5 bg-green-500 border-2 border-black"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Nombre e ID -->
+                <div class="mt-4 text-center">
+                    <h3 class="text-3xl text-white font-script tracking-wide">Ziva</h3>
+                    <p class="text-pink-300/80 font-sans text-sm tracking-widest mt-1">(1531238343)</p>
+                </div>
+
+                <!-- Botón Find Me -->
+                <a href="https://xat.com/trade" target="_blank" class="mt-6 flex items-center gap-2 px-6 py-2 bg-black/40 hover:bg-pink-600/20 border border-pink-500/50 rounded-full transition-all duration-300 group">
+                    <i class="fa-solid fa-magnifying-glass text-pink-400 group-hover:text-white transition-colors"></i>
+                    <span class="text-pink-100 font-sans text-sm font-bold tracking-wider uppercase group-hover:text-white">Find me</span>
+                </a>
+
+                <!-- REPRODUCTOR DE MÚSICA -->
+                <div class="mt-8 mb-4 music-player px-6 py-3 rounded-full flex items-center gap-4">
+                    <div id="music-disc" class="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center music-disc">
+                        <i class="fa-solid fa-music text-[10px] text-white"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-pink-200 font-bold uppercase tracking-wider">Now Playing</span>
+                        <!-- CAMBIAR NOMBRE CANCIÓN AQUÍ -->
+                        <span class="text-[10px] text-white/60">Ziva's Favorite Song</span>
+                    </div>
+                    <button id="play-btn" class="text-pink-400 hover:text-white transition-colors text-xl ml-2 focus:outline-none">
+                        <i class="fa-solid fa-play"></i>
+                    </button>
+                    <!-- ======================================================= -->
+                    <!-- CAMBIAR URL DE MÚSICA AQUÍ ABAJO (src="...")           -->
+                    <!-- ======================================================= -->
+                    <audio id="audio-player" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+                </div>
+
+                <!-- FIRMA EAM96 -->
+                <div class="mt-4 text-center">
+                    <p class="text-[10px] text-gray-500/50 font-sans tracking-[0.2em] hover:text-pink-500/50 transition-colors duration-500 cursor-default">
+                        &copy;2026 Eam96 Xatspace Design
+                    </p>
+                </div>
+
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Modal Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[200] bg-black/90 backdrop-blur-xl hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="relative max-w-4xl w-full flex flex-col items-center">
+            <button id="close-lightbox" class="absolute -top-12 right-0 text-white hover:text-pink-500 transition-colors focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <img id="lightbox-img" src="" alt="Full size" class="max-h-[80vh] w-auto rounded-lg border-2 border-pink-500/50 shadow-[0_0_50px_rgba(255,0,255,0.3)]">
+            <p id="lightbox-caption" class="mt-4 text-2xl text-white font-script tracking-wider"></p>
+        </div>
+    </div>
+
+    <!-- Script de Funcionalidad -->
+    <script>
+        // =========================================================================
+        //  LISTA DE IMÁGENES (SOLO 15 ACTIVAS)
+        //  
+        //  PARA AÑADIR MÁS:
+        //  1. Copia esta línea: { src: 'TU_URL_AQUI' },
+        //  2. Pégala antes del cierre del corchete "]"
+        // =========================================================================
+        const galleryImages = [
+            { src: 'https://i.postimg.cc/kGnMYm25/anigif.gif' },
+            { src: 'https://i.postimg.cc/sx4rFZ7p/anigif.gif' },
+            { src: 'https://i.postimg.cc/6qhMbMMF/anigif.gif' },
+            { src: 'https://i.postimg.cc/yYyYXyfC/F-r-titlu-1.gif' },
+            { src: 'https://i.postimg.cc/d1wQTQGh/anigif.gif' },
+            { src: 'https://i.postimg.cc/Ssg426yP/anigif.gif' },
+            { src: 'https://i.postimg.cc/Wbg2SJSd/anigif.gif' },
+            { src: 'https://i.postimg.cc/5NVc4Kqt/anigif.gif' },
+            { src: 'https://i.postimg.cc/6QbVVtL3/anigif.gif' },
+            { src: 'https://i.postimg.cc/2jsJBqMV/anigif.gif' },
+            { src: 'https://i.postimg.cc/W15J0zr4/anigif.gif' },
+            { src: 'https://i.postimg.cc/G3vvmFMt/anigif.gif' },
+            { src: 'https://i.postimg.cc/mr6y7TMr/anigif.gif' },
+            { src: 'https://i.postimg.cc/R01gtkd6/anigif.gif' },
+            { src: 'https://i.postimg.cc/FHYtjHkf/anigif.gif' },
+            // AÑADIR MÁS AQUÍ...
+        ];
+
+        // --- EFECTO DE PARTÍCULAS (COMPATIBLE MÓVIL Y ESCRITORIO) ---
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.classList.add('cursor-trail');
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.body.appendChild(particle);
+            setTimeout(() => { particle.remove(); }, 800);
+        }
+
+        // Evento Mouse
+        document.addEventListener('mousemove', function(e) {
+            createParticle(e.pageX, e.pageY);
+        });
+
+        // Evento Touch (Móvil)
+        document.addEventListener('touchmove', function(e) {
+            const touch = e.touches[0];
+            createParticle(touch.pageX, touch.pageY);
+        }, { passive: true });
+
+        // --- LÓGICA DE INGRESO ---
+        const enterBtn = document.getElementById('enter-btn');
+        const entranceScreen = document.getElementById('entrance-screen');
+        const mainContent = document.getElementById('main-content');
+        const bgVideo = document.getElementById('bg-video');
+
+        enterBtn.addEventListener('click', () => {
+            entranceScreen.classList.add('entrance-hidden');
+            // Brillo reducido y blur suave para el fondo principal
+            bgVideo.style.filter = "blur(3px) brightness(0.4)";
+            mainContent.classList.remove('opacity-0');
+            // Asegurar que el video se reproduce en móviles si estaba pausado
+            bgVideo.play().catch(e => console.log("Auto-play prevented"));
+        });
+
+        // --- REPRODUCTOR DE MÚSICA ---
+        const playBtn = document.getElementById('play-btn');
+        const audioPlayer = document.getElementById('audio-player');
+        const musicDisc = document.getElementById('music-disc');
+        let isPlaying = false;
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audioPlayer.pause();
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                musicDisc.classList.remove('playing');
+            } else {
+                audioPlayer.play();
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                musicDisc.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // --- RENDERIZADO DE GALERÍA ---
+        const grid = document.getElementById('gallery-grid');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeLightbox = document.getElementById('close-lightbox');
+
+        function renderGallery() {
+            grid.innerHTML = '';
+            
+            galleryImages.forEach((item, index) => {
+                const autoTitle = `GIF-${index + 1}`;
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-between cursor-pointer group animate-fade-in';
+                card.style.animationDelay = `${index * 30}ms`; 
+
+                card.innerHTML = `
+                    <div class="w-full h-40 md:h-48 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative">
+                        <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
+                        <img src="${item.src}" alt="${autoTitle}" loading="lazy" class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="w-full text-center border-t border-white/10 pt-2">
+                        <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    openLightbox(item.src, autoTitle);
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // --- LIGHTBOX ---
+        function openLightbox(src, title) {
+            lightboxImg.src = src;
+            lightboxCaption.textContent = title;
+            lightbox.classList.remove('hidden');
+            setTimeout(() => { lightbox.classList.remove('opacity-0'); }, 10);
+        }
+
+        function hideLightbox() {
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                lightboxImg.src = '';
+            }, 300);
+        }
+
+        closeLightbox.addEventListener('click', hideLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if(e.target === lightbox) hideLightbox();
+        });
+
+        renderGallery();
+
+    </script>
+</body>
+</html>
