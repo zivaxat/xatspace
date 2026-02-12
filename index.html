@@ -410,36 +410,34 @@
     <script>
         // =========================================================================
         //  LISTA DE IMÁGENES AUTOMÁTICA
-        //  Genera automáticamente:
-        //  - GIF (1).GIF hasta GIF (80).GIF
-        //  - PCBACK (1).PNG hasta PCBACK (80).PNG
+        //  Genera automáticamente los nombres: 1.gif, 2.gif ... 80.gif
+        //  y 1.png, 2.png ... 80.png
         // =========================================================================
         
-        // 1. GENERACIÓN DE 80 GIFs
+        // 1. GENERACIÓN DE 80 GIFs (1.gif a 80.gif)
         const galleryImages = [];
         for (let i = 1; i <= 80; i++) {
-            // Nota: Se respeta el espacio "GIF (1).GIF"
-            galleryImages.push({ src: `GIF (${i}).GIF` });
+            galleryImages.push({ src: `${i}.gif` });
         }
 
         // =========================================================
-        //  INSTRUCCIONES PARA AGREGAR MÁS GIFs A FUTURO (DEL 81 EN ADELANTE):
-        //  Copia la línea de abajo, quita las // y cambia el 81 por el número que quieras.
-        //  galleryImages.push({ src: 'GIF (81).GIF' });
+        //  INSTRUCCIONES PARA AÑADIR MÁS GIFs (DEL 81 EN ADELANTE):
+        //  Copia la línea de abajo, quita las // y cambia el 81 por el número.
+        //  galleryImages.push({ src: '81.gif' });
         // =========================================================
 
 
-        // 2. GENERACIÓN DE 80 PC BACKS
+        // 2. GENERACIÓN DE 80 PC BACKS (1.png a 80.png)
         const pcBackImages = [];
         for (let i = 1; i <= 80; i++) {
-            // Nota: Se respeta el espacio "PCBACK (1).PNG"
-            pcBackImages.push({ src: `PCBACK (${i}).PNG` });
+            // Nota: Se asume extensión .png para los fondos
+            pcBackImages.push({ src: `${i}.png` });
         }
 
         // =========================================================
-        //  INSTRUCCIONES PARA AGREGAR MÁS FONDOS A FUTURO (DEL 81 EN ADELANTE):
-        //  Copia la línea de abajo, quita las // y cambia el 81 por el número que quieras.
-        //  pcBackImages.push({ src: 'PCBACK (81).PNG' });
+        //  INSTRUCCIONES PARA AÑADIR MÁS FONDOS (DEL 81 EN ADELANTE):
+        //  Copia la línea de abajo, quita las // y cambia el 81 por el número.
+        //  pcBackImages.push({ src: '81.png' });
         // =========================================================
 
 
@@ -540,9 +538,6 @@
             const prefix = currentTab === 'gifs' ? 'GIF' : 'PC BACK';
 
             dataToRender.forEach((item, index) => {
-                // Título: se suma 1 al índice porque el loop puede ser de 0 a 79 o manual
-                // Si usamos el array automático, el nombre se extrae del src o se calcula.
-                // Para mantener consistencia simple:
                 const autoTitle = `${prefix} ${index + 1}`; // Ejemplo: GIF 1
                 
                 const card = document.createElement('div');
@@ -552,13 +547,12 @@
                 // HTML interno de la tarjeta
                 const objectFitClass = currentTab === 'pcbacks' ? 'object-cover w-full h-full' : 'object-contain max-w-full max-h-full';
 
-                // NOTA IMPORTANTE: Usamos item.src directo. 
-                // El navegador se encarga de codificar el espacio en la petición HTTP.
-                // Si el archivo en GitHub se llama "GIF (1).GIF", esto funcionará.
+                // Importante: Usamos encodeURI para evitar problemas con espacios si existieran,
+                // aunque con nombres como 1.gif ya no es estrictamente necesario, es buena práctica.
                 card.innerHTML = `
                     <div class="w-full h-48 md:h-56 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative">
                         <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
-                        <img src="${item.src}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
+                        <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <div class="w-full text-center border-t border-white/10 pt-2">
                         <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
