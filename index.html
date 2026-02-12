@@ -430,9 +430,12 @@
             { src: 'GIF (71).GIF' }, { src: 'GIF (72).GIF' }, { src: 'GIF (73).GIF' }, { src: 'GIF (74).GIF' }, { src: 'GIF (75).GIF' },
             { src: 'GIF (76).GIF' }, { src: 'GIF (77).GIF' }, { src: 'GIF (78).GIF' }, { src: 'GIF (79).GIF' }, { src: 'GIF (80).GIF' },
             // =========================================================================
-            // PARA AÑADIR MÁS GIFS, DESCOMENTA (QUITA LAS //) Y CAMBIA EL NÚMERO
-            // Ejemplo:
-            // { src: 'GIF (81).GIF' },
+            // INSTRUCCIONES PARA AÑADIR MÁS GIFS EN EL FUTURO:
+            // 1. Quita las dos barras "//" de la línea de abajo.
+            // 2. Copia la línea completa: { src: 'GIF (81).GIF' },
+            // 3. Pégala y ve cambiando el número a 82, 83, 84, etc.
+            //
+            // // { src: 'GIF (81).GIF' },
             // =========================================================================
         ];
 
@@ -458,9 +461,12 @@
             { src: 'PCBACK (71).PNG' }, { src: 'PCBACK (72).PNG' }, { src: 'PCBACK (73).PNG' }, { src: 'PCBACK (74).PNG' }, { src: 'PCBACK (75).PNG' },
             { src: 'PCBACK (76).PNG' }, { src: 'PCBACK (77).PNG' }, { src: 'PCBACK (78).PNG' }, { src: 'PCBACK (79).PNG' }, { src: 'PCBACK (80).PNG' },
             // =========================================================================
-            // PARA AÑADIR MÁS FONDOS, DESCOMENTA (QUITA LAS //) Y CAMBIA EL NÚMERO
-            // Ejemplo:
-            // { src: 'PCBACK (81).PNG' },
+            // INSTRUCCIONES PARA AÑADIR MÁS FONDOS EN EL FUTURO:
+            // 1. Quita las dos barras "//" de la línea de abajo.
+            // 2. Copia la línea completa: { src: 'PCBACK (81).PNG' },
+            // 3. Pégala y ve cambiando el número a 82, 83, 84, etc.
+            //
+            // // { src: 'PCBACK (81).PNG' },
             // =========================================================================
         ];
 
@@ -573,7 +579,7 @@
                 card.innerHTML = `
                     <div class="w-full h-48 md:h-56 flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative">
                         <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
-                        <img src="${item.src}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
+                        <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <div class="w-full text-center border-t border-white/10 pt-2">
                         <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
