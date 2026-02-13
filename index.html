@@ -130,6 +130,26 @@
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
         }
 
+        /* --- ESTILOS ESPECÍFICOS PARA SLIDER (PC BACKS GRANDE) --- */
+        .hide-scroll-bar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .hide-scroll-bar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .slider-card {
+            /* TAMAÑO GRANDE PARA PC BACKS */
+            flex: 0 0 320px; /* Móvil: Grande */
+            scroll-snap-align: center;
+        }
+        @media (min-width: 768px) {
+            .slider-card {
+                flex: 0 0 500px; /* PC: Muy Grande */
+            }
+        }
+
         /* --- PANTALLA DE INGRESO --- */
         #entrance-screen {
             position: fixed;
@@ -339,6 +359,7 @@
             <div class="flex justify-center gap-4 mb-10 z-20 relative">
                 <button id="tab-gifs" class="tab-btn active px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">GIF</button>
                 <button id="tab-pcbacks" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PCBACK</button>
+                <button id="tab-fondos" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">FONDOS</button>
             </div>
 
             <!-- CONTENEDOR DE LA GALERÍA -->
@@ -450,19 +471,23 @@
             galleryImages.push({ src: `${i}.gif` });
         }
 
-        const pcBackImages = [
-            // IMAGEN AÑADIDA POR SOLICITUD
-            { src: 'imagen aquí' }
-        ];
-        // Agregar las imágenes locales (1.png a 3.png) DESPUÉS de la imagen especial
-        for (let i = 1; i <= 3; i++) {
+        const pcBackImages = [];
+        // Genera 3 imágenes para PC BACKS (1.png a 3.png)
+        for (let i = 1; i <= 4; i++) {
             pcBackImages.push({ src: `${i}.png` });
+        }
+
+        // --- NUEVA LISTA PARA FONDOS (FONDO1.png, FONDO2.png, etc.) ---
+        const fondosImages = [];
+        for (let i = 1; i <= 4; i++) { // Cambia el 3 por la cantidad de fondos que subas
+            fondosImages.push({ src: `FONDO${i}.png` });
         }
 
         // --- VARIABLES GLOBALES ---
         let currentTab = 'gifs'; 
         const tabGifs = document.getElementById('tab-gifs');
         const tabPcBacks = document.getElementById('tab-pcbacks');
+        const tabFondos = document.getElementById('tab-fondos'); // Nuevo botón
         const galleryContainer = document.getElementById('gallery-container');
         
         const lightbox = document.getElementById('lightbox');
@@ -478,23 +503,34 @@
 
         // CLASES PARA CADA MODO
         const gifsGridClasses = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto";
-        // NUEVA CLASE PARA PC BACKS: 4 COLUMNAS, CENTRADO
         const pcBacksGridClasses = "grid grid-cols-2 md:grid-cols-4 gap-4 mx-auto w-fit justify-items-center";
 
         // --- MANEJO DE PESTAÑAS ---
         tabGifs.addEventListener('click', () => {
             currentTab = 'gifs';
-            tabGifs.classList.add('active');
-            tabPcBacks.classList.remove('active');
+            updateActiveTab(tabGifs);
             renderGallery();
         });
 
         tabPcBacks.addEventListener('click', () => {
             currentTab = 'pcbacks';
-            tabPcBacks.classList.add('active');
-            tabGifs.classList.remove('active');
+            updateActiveTab(tabPcBacks);
             renderGallery();
         });
+
+        // NUEVO LISTENER PARA FONDOS
+        tabFondos.addEventListener('click', () => {
+            currentTab = 'fondos';
+            updateActiveTab(tabFondos);
+            renderGallery();
+        });
+
+        function updateActiveTab(activeButton) {
+            // Remover active de todos
+            [tabGifs, tabPcBacks, tabFondos].forEach(btn => btn.classList.remove('active'));
+            // Añadir al actual
+            activeButton.classList.add('active');
+        }
 
         // --- EFECTO DE PARTÍCULAS ---
         function createParticle(x, y) {
@@ -558,19 +594,31 @@
             audioPlayer.volume = e.target.value;
         });
 
-        // --- RENDERIZADO HÍBRIDO (GRID / GRID 4-COL) ---
+        // --- RENDERIZADO HÍBRIDO ---
         function renderGallery() {
             galleryContainer.innerHTML = '';
             
             if (currentTab === 'gifs') {
                 galleryContainer.className = gifsGridClasses;
             } else {
-                // PC BACKS: Usa el nuevo estilo de grid de 4 columnas
+                // PC BACKS y FONDOS comparten el mismo estilo de cuadrícula
                 galleryContainer.className = pcBacksGridClasses;
             }
 
-            const dataToRender = currentTab === 'gifs' ? galleryImages : pcBackImages;
-            const prefix = currentTab === 'gifs' ? 'GIF' : 'PC BACK';
+            // Seleccionar array de datos según la pestaña
+            let dataToRender;
+            let prefix;
+
+            if (currentTab === 'gifs') {
+                dataToRender = galleryImages;
+                prefix = 'GIF';
+            } else if (currentTab === 'pcbacks') {
+                dataToRender = pcBackImages;
+                prefix = 'PC BACK';
+            } else { // FONDOS
+                dataToRender = fondosImages;
+                prefix = 'FONDO';
+            }
 
             dataToRender.forEach((item, index) => {
                 const autoTitle = `${prefix} ${index + 1}`; 
@@ -582,15 +630,13 @@
                 let objectFitClass = "";
 
                 if (currentTab === 'gifs') {
-                    // Estilo GIFs (original)
+                    // Estilo GIFs
                     card.className = 'glass-card rounded-lg p-2 flex flex-col items-center justify-between cursor-pointer group animate-fade-in hover:z-10 relative';
                     imgContainerClass = "w-full h-32 md:h-40 flex items-center justify-center overflow-hidden rounded-md bg-black/20 mb-2 relative";
                     objectFitClass = "object-contain max-w-full max-h-full";
                 } else {
-                    // PC BACKS: 176px x 146px Fijo, Object Contain (sin recorte)
+                    // Estilo PC BACKS y FONDOS (Iguales)
                     card.className = 'glass-card rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer group animate-fade-in relative';
-                    
-                    // Aquí aplicamos el tamaño EXACTO solicitado: 176px ancho x 146px alto
                     imgContainerClass = "w-[176px] h-[146px] flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-2 relative shadow-lg";
                     objectFitClass = "w-full h-full object-contain"; 
                 }
@@ -640,5 +686,6 @@
     </script>
 </body>
 </html>
+
 
 
