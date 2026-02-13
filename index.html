@@ -454,6 +454,7 @@
             // IMAGEN AÑADIDA POR SOLICITUD
             { src: 'https://xatimg.com/image/RmByeRQCqLAa.png' }
         ];
+        // Agregar las imágenes locales (1.png a 3.png) DESPUÉS de la imagen especial
         for (let i = 1; i <= 3; i++) {
             pcBackImages.push({ src: `${i}.png` });
         }
@@ -476,8 +477,9 @@
         let isPlaying = false;
 
         // CLASES PARA CADA MODO
-        const gridClasses = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto";
-        const stackClasses = "flex flex-col items-center gap-10 pb-20 mx-auto w-full"; 
+        const gifsGridClasses = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto";
+        // NUEVA CLASE PARA PC BACKS: 4 COLUMNAS, CENTRADO
+        const pcBacksGridClasses = "grid grid-cols-2 md:grid-cols-4 gap-4 mx-auto w-fit justify-items-center";
 
         // --- MANEJO DE PESTAÑAS ---
         tabGifs.addEventListener('click', () => {
@@ -523,7 +525,6 @@
             bgVideo.play().catch(e => console.log("Video auto-play prevented"));
 
             // AUTO-PLAY MÚSICA FIX
-            // Sincronizar volumen inicial con el slider (0.5)
             audioPlayer.volume = parseFloat(volumeSlider.value);
             
             const playPromise = audioPlayer.play();
@@ -557,14 +558,15 @@
             audioPlayer.volume = e.target.value;
         });
 
-        // --- RENDERIZADO HÍBRIDO (GRID / STACK) ---
+        // --- RENDERIZADO HÍBRIDO (GRID / GRID 4-COL) ---
         function renderGallery() {
             galleryContainer.innerHTML = '';
             
             if (currentTab === 'gifs') {
-                galleryContainer.className = gridClasses;
+                galleryContainer.className = gifsGridClasses;
             } else {
-                galleryContainer.className = stackClasses;
+                // PC BACKS: Usa el nuevo estilo de grid de 4 columnas
+                galleryContainer.className = pcBacksGridClasses;
             }
 
             const dataToRender = currentTab === 'gifs' ? galleryImages : pcBackImages;
@@ -574,25 +576,23 @@
                 const autoTitle = `${prefix} ${index + 1}`; 
                 
                 const card = document.createElement('div');
-                
-                if (currentTab === 'gifs') {
-                    card.className = 'glass-card rounded-lg p-2 flex flex-col items-center justify-between cursor-pointer group animate-fade-in hover:z-10 relative';
-                } else {
-                    card.className = 'glass-card rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer group animate-fade-in relative';
-                }
-                
                 card.style.animationDelay = `${index * 50}ms`; 
 
                 let imgContainerClass = "";
                 let objectFitClass = "";
 
                 if (currentTab === 'gifs') {
+                    // Estilo GIFs (original)
+                    card.className = 'glass-card rounded-lg p-2 flex flex-col items-center justify-between cursor-pointer group animate-fade-in hover:z-10 relative';
                     imgContainerClass = "w-full h-32 md:h-40 flex items-center justify-center overflow-hidden rounded-md bg-black/20 mb-2 relative";
                     objectFitClass = "object-contain max-w-full max-h-full";
                 } else {
-                    // PC BACKS: Grande y sin cortes (object-contain)
-                    imgContainerClass = "w-full max-w-[90vw] md:max-w-[450px] flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-3 relative shadow-2xl";
-                    objectFitClass = "w-full h-auto object-contain"; 
+                    // PC BACKS: 176px x 146px Fijo, Object Contain (sin recorte)
+                    card.className = 'glass-card rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer group animate-fade-in relative';
+                    
+                    // Aquí aplicamos el tamaño EXACTO solicitado: 176px ancho x 146px alto
+                    imgContainerClass = "w-[176px] h-[146px] flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-2 relative shadow-lg";
+                    objectFitClass = "w-full h-full object-contain"; 
                 }
 
                 card.innerHTML = `
