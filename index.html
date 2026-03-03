@@ -471,12 +471,40 @@
             galleryImages.push({ src: `${i}.gif` });
         }
 
-        const pcBackImages = [];
-        // Genera 3 imágenes para PC BACKS (1.png a 3.png)
-        for (let i = 1; i <= 7; i++) {
-            pcBackImages.push({ src: `${i}.png` });
+    const pcBackImages = [];
+
+function imageExists(url) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+    });
+
+}
+
+async function loadImages(max) {
+    for (let i = 1; i <= max; i++) {
+
+        let pngPath = `${i}.png`;
+        let gifPath = `${i}.gif`;
+
+        if (await imageExists(pngPath)) {
+            pcBackImages.push({ src: pngPath });
+        } 
+        else if (await imageExists(gifPath)) {
+            pcBackImages.push({ src: gifPath });
         }
 
+    }
+
+    console.log(pcBackImages);
+}
+
+// Cambia el número máximo según las imágenes que tengas
+loadImages(7);
+
+        
         // --- NUEVA LISTA PARA FONDOS (FONDO1.png, FONDO2.png, etc.) ---
         const fondosImages = [];
         for (let i = 1; i <= 4; i++) { // Cambia el 3 por la cantidad de fondos que subas
@@ -686,6 +714,7 @@
     </script>
 </body>
 </html>
+
 
 
 
