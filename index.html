@@ -471,7 +471,7 @@
             galleryImages.push({ src: `${i}.gif` });
         }
 
-    const pcBackImages = [];
+ const pcBackImages = [];
 
 function imageExists(url) {
     return new Promise((resolve) => {
@@ -480,13 +480,12 @@ function imageExists(url) {
         img.onerror = () => resolve(false);
         img.src = url;
     });
-
 }
 
 async function loadImages(max) {
     for (let i = 1; i <= max; i++) {
 
-        let pngPath = `${i}.png`;
+        let pngPath = `pc${i}.png`;
         let gifPath = `pc${i}.gif`;
 
         if (await imageExists(pngPath)) {
@@ -501,9 +500,7 @@ async function loadImages(max) {
     console.log(pcBackImages);
 }
 
-// Cambia el número máximo según las imágenes que tengas
 loadImages(7);
-
         
         // --- NUEVA LISTA PARA FONDOS (FONDO1.png, FONDO2.png, etc.) ---
         const fondosImages = [];
@@ -714,6 +711,7 @@ loadImages(7);
     </script>
 </body>
 </html>
+
 
 
 
