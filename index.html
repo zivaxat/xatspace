@@ -482,8 +482,11 @@ function imageExists(url) {
     });
 }
 
-async function loadImages(max) {
-    for (let i = 1; i <= max; i++) {
+async function loadImages() {
+
+    let i = 1;
+
+    while (true) {
 
         let pngPath = `pc${i}.png`;
         let gifPath = `pc${i}.gif`;
@@ -493,8 +496,12 @@ async function loadImages(max) {
         } 
         else if (await imageExists(gifPath)) {
             pcBackImages.push({ src: gifPath });
+        } 
+        else {
+            break; // ya no hay más imágenes
         }
 
+        i++;
     }
 
     console.log(pcBackImages);
@@ -711,6 +718,7 @@ loadImages(7);
     </script>
 </body>
 </html>
+
 
 
 
