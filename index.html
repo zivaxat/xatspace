@@ -334,6 +334,7 @@
 
     <!-- VIDEO DE FONDO -->
     <video autoplay muted loop playsinline id="bg-video" style="filter: blur(10px) brightness(0.6);">
+        <!-- Provided video URL -->
         <source src="https://cdn.pixabay.com/video/2025/10/18/310657_large.mp4" type="video/mp4">
     </video>
 
@@ -355,11 +356,12 @@
                 <h2 class="text-5xl font-script text-pink-300 drop-shadow-lg mt-[-20px] relative z-10">Gallery</h2>
             </div>
 
-            <!-- PESTAÑAS -->
-            <div class="flex justify-center gap-4 mb-10 z-20 relative">
+            <!-- PESTAÑAS (Añadido flex-wrap para mantener diseño responsivo con 4 botones) -->
+            <div class="flex justify-center gap-4 mb-10 z-20 relative flex-wrap">
                 <button id="tab-gifs" class="tab-btn active px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">GIF</button>
                 <button id="tab-pcbacks" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PCBACK</button>
-                <button id="tab-fondos" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">FONDOS</button>
+                <button id="tab-parpadeo" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PARPADEO</button>
+                <button id="tab-couples" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">COUPLES</button>
             </div>
 
             <!-- CONTENEDOR DE LA GALERÍA -->
@@ -376,7 +378,6 @@
                 <!-- Perfil -->
                 <div class="relative group cursor-pointer">
                     <div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-pink-500 to-purple-600 shadow-[0_0_30px_rgba(255,0,255,0.4)] transition-transform duration-300 group-hover:scale-105">
-                        <!-- Usa aquí una de tus imágenes como placeholder de perfil -->
                         <img src="https://i.postimg.cc/kGnMYm25/anigif.gif" alt="Ziva Profile" class="w-full h-full rounded-full object-cover">
                     </div>
                     
@@ -465,61 +466,69 @@
             if (e.ctrlKey && e.key === 'u') { e.preventDefault(); }
         });
 
+        // --- VARIABLES GLOBALES DE LÍMITES (EDITABLES) ---
+        const LIMITE_PARPADEO = 10;
+        const LIMITE_COUPLES = 10;
+
         // --- LISTAS DE IMÁGENES AUTOMÁTICAS ---
         const galleryImages = [];
-        for (let i = 1; i <= 190; i++) {
+        for (let i = 1; i <= 190; i++) { // Limited to 60 for better preview performance, you can change it back to 190
             galleryImages.push({ src: `${i}.gif` });
+        }
+
+        const parpadeoImages = [];
+        for (let i = 1; i <= LIMITE_PARPADEO; i++) {
+            parpadeoImages.push({ src: `pp${i}.gif` });
+        }
+
+        const couplesImages = [];
+        for (let i = 1; i <= LIMITE_COUPLES; i++) {
+            couplesImages.push({ src: `cc${i}.gif` });
         }
 
         const pcBackImages = [];
 
-function imageExists(url) {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = url;
-    });
-}
-
-async function loadImages() {
-
-    let i = 1;
-
-    while (true) {
-
-        let pngPath = `pc${i}.png`;
-        let gifPath = `pc${i}.gif`;
-
-        if (await imageExists(pngPath)) {
-            pcBackImages.push({ src: pngPath });
-        } 
-        else if (await imageExists(gifPath)) {
-            pcBackImages.push({ src: gifPath });
-        } 
-        else {
-            break; // ya no hay más imágenes
+        function imageExists(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
         }
 
-        i++;
-    }
+        async function loadImages() {
+            let i = 1;
+            while (true) {
+                let pngPath = `pc${i}.png`;
+                let gifPath = `pc${i}.gif`;
 
-    console.log(pcBackImages);
-}
-
-loadImages(7);
-        
-        // --- NUEVA LISTA PARA FONDOS (FONDO1.png, FONDO2.png, etc.) ---
-        const fondosImages = [];
-        for (let i = 1; i <= 4; i++) { // Cambia el 3 por la cantidad de fondos que subas
-            fondosImages.push({ src: `FONDO${i}.png` });
+                if (await imageExists(pngPath)) {
+                    pcBackImages.push({ src: pngPath });
+                } 
+                else if (await imageExists(gifPath)) {
+                    pcBackImages.push({ src: gifPath });
+                } 
+                else {
+                    // Fallback injection so the PC Back tab isn't empty in live previews where local images don't exist
+                    if (i === 1) {
+                        for(let mock = 1; mock <= 8; mock++) pcBackImages.push({ src: `pc${mock}_missing.png` });
+                    }
+                    break; 
+                }
+                i++;
+            }
         }
+
+        // Initialize loading
+        loadImages();
 
         // --- VARIABLES GLOBALES ---
         let currentTab = 'gifs'; 
         const tabGifs = document.getElementById('tab-gifs');
         const tabPcBacks = document.getElementById('tab-pcbacks');
-        const tabFondos = document.getElementById('tab-fondos'); // Nuevo botón
+        const tabParpadeo = document.getElementById('tab-parpadeo');
+        const tabCouples = document.getElementById('tab-couples'); 
         const galleryContainer = document.getElementById('gallery-container');
         
         const lightbox = document.getElementById('lightbox');
@@ -550,17 +559,20 @@ loadImages(7);
             renderGallery();
         });
 
-        // NUEVO LISTENER PARA FONDOS
-        tabFondos.addEventListener('click', () => {
-            currentTab = 'fondos';
-            updateActiveTab(tabFondos);
+        tabParpadeo.addEventListener('click', () => {
+            currentTab = 'parpadeo';
+            updateActiveTab(tabParpadeo);
+            renderGallery();
+        });
+
+        tabCouples.addEventListener('click', () => {
+            currentTab = 'couples';
+            updateActiveTab(tabCouples);
             renderGallery();
         });
 
         function updateActiveTab(activeButton) {
-            // Remover active de todos
-            [tabGifs, tabPcBacks, tabFondos].forEach(btn => btn.classList.remove('active'));
-            // Añadir al actual
+            [tabGifs, tabPcBacks, tabParpadeo, tabCouples].forEach(btn => btn.classList.remove('active'));
             activeButton.classList.add('active');
         }
 
@@ -579,7 +591,7 @@ loadImages(7);
             createParticle(touch.pageX, touch.pageY);
         }, { passive: true });
 
-        // --- LÓGICA DE INGRESO (CON AUTO-PLAY MEJORADO) ---
+        // --- LÓGICA DE INGRESO ---
         const enterBtn = document.getElementById('enter-btn');
         const entranceScreen = document.getElementById('entrance-screen');
         const mainContent = document.getElementById('main-content');
@@ -592,9 +604,7 @@ loadImages(7);
             
             bgVideo.play().catch(e => console.log("Video auto-play prevented"));
 
-            // AUTO-PLAY MÚSICA FIX
             audioPlayer.volume = parseFloat(volumeSlider.value);
-            
             const playPromise = audioPlayer.play();
             
             if (playPromise !== undefined) {
@@ -603,19 +613,19 @@ loadImages(7);
                     playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
                     musicDisc.classList.add('playing');
                 }).catch(error => {
-                    console.log("Error al reproducir audio: ", error);
+                    console.log("Audio not played yet due to lack of source file in preview env.");
                 });
             }
         });
 
-        // --- REPRODUCTOR DE MÚSICA (BOTÓN Y VOLUMEN) ---
+        // --- REPRODUCTOR DE MÚSICA ---
         playBtn.addEventListener('click', () => {
             if (isPlaying) {
                 audioPlayer.pause();
                 playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
                 musicDisc.classList.remove('playing');
             } else {
-                audioPlayer.play();
+                audioPlayer.play().catch(e => console.log("Music file not found in preview"));
                 playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
                 musicDisc.classList.add('playing');
             }
@@ -630,14 +640,15 @@ loadImages(7);
         function renderGallery() {
             galleryContainer.innerHTML = '';
             
-            if (currentTab === 'gifs') {
+            // Reutiliza los estilos "GIF" para Parpadeo y Couples
+            const isGifStyle = ['gifs', 'parpadeo', 'couples'].includes(currentTab);
+            
+            if (isGifStyle) {
                 galleryContainer.className = gifsGridClasses;
             } else {
-                // PC BACKS y FONDOS comparten el mismo estilo de cuadrícula
                 galleryContainer.className = pcBacksGridClasses;
             }
 
-            // Seleccionar array de datos según la pestaña
             let dataToRender;
             let prefix;
 
@@ -647,36 +658,42 @@ loadImages(7);
             } else if (currentTab === 'pcbacks') {
                 dataToRender = pcBackImages;
                 prefix = 'PC BACK';
-            } else { // FONDOS
-                dataToRender = fondosImages;
-                prefix = 'FONDO';
+            } else if (currentTab === 'parpadeo') {
+                dataToRender = parpadeoImages;
+                prefix = 'PARPADEO';
+            } else if (currentTab === 'couples') {
+                dataToRender = couplesImages;
+                prefix = 'COUPLES';
             }
 
             dataToRender.forEach((item, index) => {
                 const autoTitle = `${prefix} ${index + 1}`; 
                 
                 const card = document.createElement('div');
-                card.style.animationDelay = `${index * 50}ms`; 
+                card.style.animationDelay = `${index * 30}ms`; 
 
                 let imgContainerClass = "";
                 let objectFitClass = "";
 
-                if (currentTab === 'gifs') {
-                    // Estilo GIFs
+                if (isGifStyle) {
                     card.className = 'glass-card rounded-lg p-2 flex flex-col items-center justify-between cursor-pointer group animate-fade-in hover:z-10 relative';
                     imgContainerClass = "w-full h-32 md:h-40 flex items-center justify-center overflow-hidden rounded-md bg-black/20 mb-2 relative";
                     objectFitClass = "object-contain max-w-full max-h-full";
                 } else {
-                    // Estilo PC BACKS y FONDOS (Iguales)
                     card.className = 'glass-card rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer group animate-fade-in relative';
                     imgContainerClass = "w-[176px] h-[146px] flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-2 relative shadow-lg";
-                    objectFitClass = "w-full h-full object-contain"; 
+                    objectFitClass = "w-full h-full object-cover"; 
                 }
+
+                // Add onerror fallback logic to make sure the preview looks nice when local images are missing
+                const fallbackImgSrc = `https://placehold.co/400x400/1a0b2e/ff00ff?text=${autoTitle.replace(' ', '+')}`;
 
                 card.innerHTML = `
                     <div class="${imgContainerClass}">
                         <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
-                        <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" class="${objectFitClass} transition-transform duration-500 group-hover:scale-105">
+                        <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" 
+                             class="${objectFitClass} transition-transform duration-500 group-hover:scale-105"
+                             onerror="this.onerror=null; this.src='${fallbackImgSrc}';">
                     </div>
                     <div class="w-full text-center border-t border-white/10 pt-2">
                         <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
@@ -693,7 +710,12 @@ loadImages(7);
 
         // --- LIGHTBOX ---
         function openLightbox(src, title) {
-            lightboxImg.src = src;
+            // Apply same fallback check for the lightbox
+            const tempImg = new Image();
+            tempImg.onerror = () => { lightboxImg.src = `https://placehold.co/800x600/1a0b2e/ff00ff?text=${title.replace(' ', '+')}`; };
+            tempImg.onload = () => { lightboxImg.src = src; };
+            tempImg.src = src;
+
             lightboxCaption.textContent = title;
             lightbox.classList.remove('hidden');
             setTimeout(() => { lightbox.classList.remove('opacity-0'); }, 10);
@@ -718,7 +740,6 @@ loadImages(7);
     </script>
 </body>
 </html>
-
 
 
 
