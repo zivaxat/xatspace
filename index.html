@@ -466,7 +466,8 @@
             if (e.ctrlKey && e.key === 'u') { e.preventDefault(); }
         });
 
-        // --- VARIABLES GLOBALES DE LÍMITES (EDITABLES) ---
+        // --- VARIABLES GLOBALES DE LÍMITES PC(PCBACK) (EDITABLES) ---
+        const MAX_PC = 30;
         const LIMITE_PARPADEO = 10;
         const LIMITE_COUPLES = 10;
 
@@ -487,41 +488,9 @@
         }
 
         const pcBackImages = [];
-
-        function imageExists(url) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => resolve(true);
-                img.onerror = () => resolve(false);
-                img.src = url;
-            });
+        for (let i = 1; i <= MAX_PC; i++) {
+            pcBackImages.push({ src: `pc${i}.gif` });
         }
-
-        async function loadImages() {
-            let i = 1;
-            while (true) {
-                let pngPath = `pc${i}.png`;
-                let gifPath = `pc${i}.gif`;
-
-                if (await imageExists(pngPath)) {
-                    pcBackImages.push({ src: pngPath });
-                } 
-                else if (await imageExists(gifPath)) {
-                    pcBackImages.push({ src: gifPath });
-                } 
-                else {
-                    // Fallback injection so the PC Back tab isn't empty in live previews where local images don't exist
-                    if (i === 1) {
-                        for(let mock = 1; mock <= 8; mock++) pcBackImages.push({ src: `pc${mock}_missing.png` });
-                    }
-                    break; 
-                }
-                i++;
-            }
-        }
-
-        // Initialize loading
-        loadImages();
 
         // --- VARIABLES GLOBALES ---
         let currentTab = 'gifs'; 
@@ -740,7 +709,6 @@
     </script>
 </body>
 </html>
-
 
 
 
