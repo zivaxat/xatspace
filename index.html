@@ -3,12 +3,843 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Angie · XS</title>
+  <title>Ziva · Gallery</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <!-- Evita el parpadeo sin estilos mientras carga el CSS (que está abajo del todo) -->
+  <style>html { background: #130a17; } body { visibility: hidden; }</style>
+</head>
+<body class="locked">
+
+  <!-- ============================================================
+       CONTENIDO: pantalla de entrada, reproductor, menú y secciones
+       (más abajo: SCRIPT y, al final del todo, los ESTILOS)
+       ============================================================ -->
+
+  <!-- PANTALLA DE ENTRADA: el clic en Enter permite que empiece la música.
+       Para quitarla, borra este bloque y el código "PANTALLA DE ENTRADA" del script. -->
+  <div class="entrance" id="entrance" role="dialog" aria-modal="true" aria-label="Entrada">
+    <div class="brand brand--hero">Ziva · Gallery</div>
+    <button class="enter-btn" id="enter-btn" type="button">Enter</button>
+  </div>
+
+
+  <div class="page">
+
+    <header class="topbar">
+      <div class="brand">Ziva</div>
+
+      <label class="theme-toggle" for="dark-mode-switch">
+        <span class="switch">
+          <input type="checkbox" id="dark-mode-switch" aria-label="Cambiar entre modo oscuro y modo claro">
+          <span class="track"></span>
+          <span class="knob">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 18h6"/>
+              <path d="M10 21.5h4"/>
+              <path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.6.5.9 1.2.9 1.9V16h6v-.1c0-.7.3-1.4.9-1.9A6.5 6.5 0 0 0 12 2.5z"/>
+            </svg>
+          </span>
+        </span>
+      </label>
+    </header>
+
+    <!-- REPRODUCTOR: asoma por detrás del menú -->
+    <div class="player-wrap">
+      <div class="music-player" id="music-player">
+        <div class="disc" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>
+        </div>
+        <div class="player-meta">
+          <span class="np">Now Playing</span>
+          <span class="song">Favorite Song</span>
+        </div>
+        <button class="play-btn" id="play-btn" type="button" aria-label="Reproducir música">
+          <svg class="ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+        </button>
+        <div class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <input class="vol" id="volume-slider" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Volumen">
+        <audio id="audio-player" preload="metadata" loop>
+          <source src="music.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <button class="tab" role="tab" id="tab1" data-tab="1" aria-controls="tabcontent1" aria-selected="true">GIF</button>
+      <button class="tab" role="tab" id="tab2" data-tab="2" aria-controls="tabcontent2" aria-selected="false" tabindex="-1">GIF 2 PHOTOS</button>
+      <button class="tab" role="tab" id="tab3" data-tab="3" aria-controls="tabcontent3" aria-selected="false" tabindex="-1">Parpadeo</button>
+      <button class="tab" role="tab" id="tab4" data-tab="4" aria-controls="tabcontent4" aria-selected="false" tabindex="-1">Pcback</button>
+      <button class="tab" role="tab" id="tab5" data-tab="5" aria-controls="tabcontent5" aria-selected="false" tabindex="-1">PstyleGif</button>
+      <button class="tab" role="tab" id="tab6" data-tab="6" aria-controls="tabcontent6" aria-selected="false" tabindex="-1">GIF Halloween</button>
+      <button class="tab" role="tab" id="tab7" data-tab="7" aria-controls="tabcontent7" aria-selected="false" tabindex="-1">GIF Winter</button>
+      <button class="tab" role="tab" id="tab8" data-tab="8" aria-controls="tabcontent8" aria-selected="false" tabindex="-1">GIF Easter</button>
+      <button class="tab" role="tab" id="tab9" data-tab="9" aria-controls="tabcontent9" aria-selected="false" tabindex="-1">Pcback Easter</button>
+      <button class="tab" role="tab" id="tab10" data-tab="10" aria-controls="tabcontent10" aria-selected="false" tabindex="-1">Pcback Winter</button>
+      <button class="tab" role="tab" id="tab11" data-tab="11" aria-controls="tabcontent11" aria-selected="false" tabindex="-1">Pcback Halloween</button>
+    </nav>
+
+    <main>
+
+      <!-- TAB 1: GIF -->
+      <section id="tabcontent1" class="panel" role="tabpanel" aria-labelledby="tab1">
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Archivos de esta sección: 1.gif, 2.gif... -->
+        <div class="grid grid--gif">
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="1.gif" alt="GIF 1"></div><figcaption>GIF 1</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="2.gif" alt="GIF 2"></div><figcaption>GIF 2</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="3.gif" alt="GIF 3"></div><figcaption>GIF 3</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="4.gif" alt="GIF 4"></div><figcaption>GIF 4</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="5.gif" alt="GIF 5"></div><figcaption>GIF 5</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="6.gif" alt="GIF 6"></div><figcaption>GIF 6</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="7.gif" alt="GIF 7"></div><figcaption>GIF 7</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="8.gif" alt="GIF 8"></div><figcaption>GIF 8</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="9.gif" alt="GIF 9"></div><figcaption>GIF 9</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="10.gif" alt="GIF 10"></div><figcaption>GIF 10</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="11.gif" alt="GIF 11"></div><figcaption>GIF 11</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="12.gif" alt="GIF 12"></div><figcaption>GIF 12</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="13.gif" alt="GIF 13"></div><figcaption>GIF 13</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="14.gif" alt="GIF 14"></div><figcaption>GIF 14</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="15.gif" alt="GIF 15"></div><figcaption>GIF 15</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="16.gif" alt="GIF 16"></div><figcaption>GIF 16</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="17.gif" alt="GIF 17"></div><figcaption>GIF 17</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="18.gif" alt="GIF 18"></div><figcaption>GIF 18</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="19.gif" alt="GIF 19"></div><figcaption>GIF 19</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="20.gif" alt="GIF 20"></div><figcaption>GIF 20</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="21.gif" alt="GIF 21"></div><figcaption>GIF 21</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="22.gif" alt="GIF 22"></div><figcaption>GIF 22</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="23.gif" alt="GIF 23"></div><figcaption>GIF 23</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="24.gif" alt="GIF 24"></div><figcaption>GIF 24</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="25.gif" alt="GIF 25"></div><figcaption>GIF 25</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="26.gif" alt="GIF 26"></div><figcaption>GIF 26</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="27.gif" alt="GIF 27"></div><figcaption>GIF 27</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="28.gif" alt="GIF 28"></div><figcaption>GIF 28</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="29.gif" alt="GIF 29"></div><figcaption>GIF 29</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="30.gif" alt="GIF 30"></div><figcaption>GIF 30</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="31.gif" alt="GIF 31"></div><figcaption>GIF 31</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="32.gif" alt="GIF 32"></div><figcaption>GIF 32</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="33.gif" alt="GIF 33"></div><figcaption>GIF 33</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="34.gif" alt="GIF 34"></div><figcaption>GIF 34</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="35.gif" alt="GIF 35"></div><figcaption>GIF 35</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="36.gif" alt="GIF 36"></div><figcaption>GIF 36</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="37.gif" alt="GIF 37"></div><figcaption>GIF 37</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="38.gif" alt="GIF 38"></div><figcaption>GIF 38</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="39.gif" alt="GIF 39"></div><figcaption>GIF 39</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="40.gif" alt="GIF 40"></div><figcaption>GIF 40</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="41.gif" alt="GIF 41"></div><figcaption>GIF 41</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="42.gif" alt="GIF 42"></div><figcaption>GIF 42</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="43.gif" alt="GIF 43"></div><figcaption>GIF 43</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="44.gif" alt="GIF 44"></div><figcaption>GIF 44</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="45.gif" alt="GIF 45"></div><figcaption>GIF 45</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="46.gif" alt="GIF 46"></div><figcaption>GIF 46</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="47.gif" alt="GIF 47"></div><figcaption>GIF 47</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="48.gif" alt="GIF 48"></div><figcaption>GIF 48</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="49.gif" alt="GIF 49"></div><figcaption>GIF 49</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="50.gif" alt="GIF 50"></div><figcaption>GIF 50</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="51.gif" alt="GIF 51"></div><figcaption>GIF 51</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="52.gif" alt="GIF 52"></div><figcaption>GIF 52</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="53.gif" alt="GIF 53"></div><figcaption>GIF 53</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="54.gif" alt="GIF 54"></div><figcaption>GIF 54</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="55.gif" alt="GIF 55"></div><figcaption>GIF 55</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="56.gif" alt="GIF 56"></div><figcaption>GIF 56</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="57.gif" alt="GIF 57"></div><figcaption>GIF 57</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="58.gif" alt="GIF 58"></div><figcaption>GIF 58</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="59.gif" alt="GIF 59"></div><figcaption>GIF 59</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="60.gif" alt="GIF 60"></div><figcaption>GIF 60</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="61.gif" alt="GIF 61"></div><figcaption>GIF 61</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="62.gif" alt="GIF 62"></div><figcaption>GIF 62</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="63.gif" alt="GIF 63"></div><figcaption>GIF 63</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="64.gif" alt="GIF 64"></div><figcaption>GIF 64</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="65.gif" alt="GIF 65"></div><figcaption>GIF 65</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="66.gif" alt="GIF 66"></div><figcaption>GIF 66</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="67.gif" alt="GIF 67"></div><figcaption>GIF 67</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="68.gif" alt="GIF 68"></div><figcaption>GIF 68</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="69.gif" alt="GIF 69"></div><figcaption>GIF 69</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="70.gif" alt="GIF 70"></div><figcaption>GIF 70</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="71.gif" alt="GIF 71"></div><figcaption>GIF 71</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="72.gif" alt="GIF 72"></div><figcaption>GIF 72</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="73.gif" alt="GIF 73"></div><figcaption>GIF 73</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="74.gif" alt="GIF 74"></div><figcaption>GIF 74</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="75.gif" alt="GIF 75"></div><figcaption>GIF 75</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="76.gif" alt="GIF 76"></div><figcaption>GIF 76</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="77.gif" alt="GIF 77"></div><figcaption>GIF 77</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="78.gif" alt="GIF 78"></div><figcaption>GIF 78</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="79.gif" alt="GIF 79"></div><figcaption>GIF 79</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="80.gif" alt="GIF 80"></div><figcaption>GIF 80</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="81.gif" alt="GIF 81"></div><figcaption>GIF 81</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="82.gif" alt="GIF 82"></div><figcaption>GIF 82</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="83.gif" alt="GIF 83"></div><figcaption>GIF 83</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="84.gif" alt="GIF 84"></div><figcaption>GIF 84</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="85.gif" alt="GIF 85"></div><figcaption>GIF 85</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="86.gif" alt="GIF 86"></div><figcaption>GIF 86</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="87.gif" alt="GIF 87"></div><figcaption>GIF 87</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="88.gif" alt="GIF 88"></div><figcaption>GIF 88</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="89.gif" alt="GIF 89"></div><figcaption>GIF 89</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="90.gif" alt="GIF 90"></div><figcaption>GIF 90</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="91.gif" alt="GIF 91"></div><figcaption>GIF 91</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="92.gif" alt="GIF 92"></div><figcaption>GIF 92</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="93.gif" alt="GIF 93"></div><figcaption>GIF 93</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="94.gif" alt="GIF 94"></div><figcaption>GIF 94</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="95.gif" alt="GIF 95"></div><figcaption>GIF 95</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="96.gif" alt="GIF 96"></div><figcaption>GIF 96</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="97.gif" alt="GIF 97"></div><figcaption>GIF 97</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="98.gif" alt="GIF 98"></div><figcaption>GIF 98</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="99.gif" alt="GIF 99"></div><figcaption>GIF 99</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="100.gif" alt="GIF 100"></div><figcaption>GIF 100</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="101.gif" alt="GIF 101"></div><figcaption>GIF 101</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="102.gif" alt="GIF 102"></div><figcaption>GIF 102</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="103.gif" alt="GIF 103"></div><figcaption>GIF 103</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="104.gif" alt="GIF 104"></div><figcaption>GIF 104</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="105.gif" alt="GIF 105"></div><figcaption>GIF 105</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="106.gif" alt="GIF 106"></div><figcaption>GIF 106</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="107.gif" alt="GIF 107"></div><figcaption>GIF 107</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="108.gif" alt="GIF 108"></div><figcaption>GIF 108</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="109.gif" alt="GIF 109"></div><figcaption>GIF 109</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="110.gif" alt="GIF 110"></div><figcaption>GIF 110</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="111.gif" alt="GIF 111"></div><figcaption>GIF 111</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="112.gif" alt="GIF 112"></div><figcaption>GIF 112</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="113.gif" alt="GIF 113"></div><figcaption>GIF 113</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="114.gif" alt="GIF 114"></div><figcaption>GIF 114</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="115.gif" alt="GIF 115"></div><figcaption>GIF 115</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="116.gif" alt="GIF 116"></div><figcaption>GIF 116</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="117.gif" alt="GIF 117"></div><figcaption>GIF 117</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="118.gif" alt="GIF 118"></div><figcaption>GIF 118</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="119.gif" alt="GIF 119"></div><figcaption>GIF 119</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="120.gif" alt="GIF 120"></div><figcaption>GIF 120</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="121.gif" alt="GIF 121"></div><figcaption>GIF 121</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="122.gif" alt="GIF 122"></div><figcaption>GIF 122</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="123.gif" alt="GIF 123"></div><figcaption>GIF 123</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="124.gif" alt="GIF 124"></div><figcaption>GIF 124</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="125.gif" alt="GIF 125"></div><figcaption>GIF 125</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="126.gif" alt="GIF 126"></div><figcaption>GIF 126</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="127.gif" alt="GIF 127"></div><figcaption>GIF 127</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="128.gif" alt="GIF 128"></div><figcaption>GIF 128</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="129.gif" alt="GIF 129"></div><figcaption>GIF 129</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="130.gif" alt="GIF 130"></div><figcaption>GIF 130</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="131.gif" alt="GIF 131"></div><figcaption>GIF 131</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="132.gif" alt="GIF 132"></div><figcaption>GIF 132</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="133.gif" alt="GIF 133"></div><figcaption>GIF 133</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="134.gif" alt="GIF 134"></div><figcaption>GIF 134</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="135.gif" alt="GIF 135"></div><figcaption>GIF 135</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="136.gif" alt="GIF 136"></div><figcaption>GIF 136</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="137.gif" alt="GIF 137"></div><figcaption>GIF 137</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="138.gif" alt="GIF 138"></div><figcaption>GIF 138</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="139.gif" alt="GIF 139"></div><figcaption>GIF 139</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="140.gif" alt="GIF 140"></div><figcaption>GIF 140</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="141.gif" alt="GIF 141"></div><figcaption>GIF 141</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="142.gif" alt="GIF 142"></div><figcaption>GIF 142</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="143.gif" alt="GIF 143"></div><figcaption>GIF 143</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="144.gif" alt="GIF 144"></div><figcaption>GIF 144</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="145.gif" alt="GIF 145"></div><figcaption>GIF 145</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="146.gif" alt="GIF 146"></div><figcaption>GIF 146</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="147.gif" alt="GIF 147"></div><figcaption>GIF 147</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="148.gif" alt="GIF 148"></div><figcaption>GIF 148</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="149.gif" alt="GIF 149"></div><figcaption>GIF 149</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="150.gif" alt="GIF 150"></div><figcaption>GIF 150</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="151.gif" alt="GIF 151"></div><figcaption>GIF 151</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="152.gif" alt="GIF 152"></div><figcaption>GIF 152</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="153.gif" alt="GIF 153"></div><figcaption>GIF 153</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="154.gif" alt="GIF 154"></div><figcaption>GIF 154</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="155.gif" alt="GIF 155"></div><figcaption>GIF 155</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="156.gif" alt="GIF 156"></div><figcaption>GIF 156</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="157.gif" alt="GIF 157"></div><figcaption>GIF 157</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="158.gif" alt="GIF 158"></div><figcaption>GIF 158</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="159.gif" alt="GIF 159"></div><figcaption>GIF 159</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="160.gif" alt="GIF 160"></div><figcaption>GIF 160</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="161.gif" alt="GIF 161"></div><figcaption>GIF 161</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="162.gif" alt="GIF 162"></div><figcaption>GIF 162</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="163.gif" alt="GIF 163"></div><figcaption>GIF 163</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="164.gif" alt="GIF 164"></div><figcaption>GIF 164</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="165.gif" alt="GIF 165"></div><figcaption>GIF 165</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="166.gif" alt="GIF 166"></div><figcaption>GIF 166</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="167.gif" alt="GIF 167"></div><figcaption>GIF 167</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="168.gif" alt="GIF 168"></div><figcaption>GIF 168</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="169.gif" alt="GIF 169"></div><figcaption>GIF 169</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="170.gif" alt="GIF 170"></div><figcaption>GIF 170</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="171.gif" alt="GIF 171"></div><figcaption>GIF 171</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="172.gif" alt="GIF 172"></div><figcaption>GIF 172</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="173.gif" alt="GIF 173"></div><figcaption>GIF 173</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="174.gif" alt="GIF 174"></div><figcaption>GIF 174</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="175.gif" alt="GIF 175"></div><figcaption>GIF 175</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="176.gif" alt="GIF 176"></div><figcaption>GIF 176</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="177.gif" alt="GIF 177"></div><figcaption>GIF 177</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="178.gif" alt="GIF 178"></div><figcaption>GIF 178</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="179.gif" alt="GIF 179"></div><figcaption>GIF 179</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="180.gif" alt="GIF 180"></div><figcaption>GIF 180</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="181.gif" alt="GIF 181"></div><figcaption>GIF 181</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="182.gif" alt="GIF 182"></div><figcaption>GIF 182</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="183.gif" alt="GIF 183"></div><figcaption>GIF 183</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="184.gif" alt="GIF 184"></div><figcaption>GIF 184</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="185.gif" alt="GIF 185"></div><figcaption>GIF 185</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="186.gif" alt="GIF 186"></div><figcaption>GIF 186</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="187.gif" alt="GIF 187"></div><figcaption>GIF 187</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="188.gif" alt="GIF 188"></div><figcaption>GIF 188</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="189.gif" alt="GIF 189"></div><figcaption>GIF 189</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="190.gif" alt="GIF 190"></div><figcaption>GIF 190</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="191.gif" alt="GIF 191"></div><figcaption>GIF 191</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="192.gif" alt="GIF 192"></div><figcaption>GIF 192</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="193.gif" alt="GIF 193"></div><figcaption>GIF 193</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="194.gif" alt="GIF 194"></div><figcaption>GIF 194</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="195.gif" alt="GIF 195"></div><figcaption>GIF 195</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 2: GIF 2 PHOTOS -->
+      <section id="tabcontent2" class="panel" role="tabpanel" aria-labelledby="tab2" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Imágenes de relleno: sustitúyelas por las tuyas -->
+        <div class="grid grid--gif">
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 1"></div><figcaption>GIF 2 PHOTOS 1</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 2"></div><figcaption>GIF 2 PHOTOS 2</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 3"></div><figcaption>GIF 2 PHOTOS 3</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 4"></div><figcaption>GIF 2 PHOTOS 4</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 5"></div><figcaption>GIF 2 PHOTOS 5</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 6"></div><figcaption>GIF 2 PHOTOS 6</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 7"></div><figcaption>GIF 2 PHOTOS 7</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 8"></div><figcaption>GIF 2 PHOTOS 8</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 9"></div><figcaption>GIF 2 PHOTOS 9</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 10"></div><figcaption>GIF 2 PHOTOS 10</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 11"></div><figcaption>GIF 2 PHOTOS 11</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF 2 PHOTOS 12"></div><figcaption>GIF 2 PHOTOS 12</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 3: Parpadeo -->
+      <section id="tabcontent3" class="panel" role="tabpanel" aria-labelledby="tab3" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Archivos de esta sección: pp1.gif, pp2.gif... -->
+        <div class="grid grid--gif">
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp1.gif" alt="Parpadeo 1"></div><figcaption>Parpadeo 1</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp2.gif" alt="Parpadeo 2"></div><figcaption>Parpadeo 2</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp3.gif" alt="Parpadeo 3"></div><figcaption>Parpadeo 3</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp4.gif" alt="Parpadeo 4"></div><figcaption>Parpadeo 4</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp5.gif" alt="Parpadeo 5"></div><figcaption>Parpadeo 5</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp6.gif" alt="Parpadeo 6"></div><figcaption>Parpadeo 6</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp7.gif" alt="Parpadeo 7"></div><figcaption>Parpadeo 7</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp8.gif" alt="Parpadeo 8"></div><figcaption>Parpadeo 8</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp9.gif" alt="Parpadeo 9"></div><figcaption>Parpadeo 9</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp10.gif" alt="Parpadeo 10"></div><figcaption>Parpadeo 10</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp11.gif" alt="Parpadeo 11"></div><figcaption>Parpadeo 11</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp12.gif" alt="Parpadeo 12"></div><figcaption>Parpadeo 12</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp13.gif" alt="Parpadeo 13"></div><figcaption>Parpadeo 13</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp14.gif" alt="Parpadeo 14"></div><figcaption>Parpadeo 14</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp15.gif" alt="Parpadeo 15"></div><figcaption>Parpadeo 15</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp16.gif" alt="Parpadeo 16"></div><figcaption>Parpadeo 16</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp17.gif" alt="Parpadeo 17"></div><figcaption>Parpadeo 17</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="pp18.gif" alt="Parpadeo 18"></div><figcaption>Parpadeo 18</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 4: Pcback -->
+      <section id="tabcontent4" class="panel" role="tabpanel" aria-labelledby="tab4" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Archivos de esta sección: pc1.gif, pc2.gif... -->
+        <div class="grid grid--backs">
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc1.gif" alt="Pcback 1"></button><figcaption>Pcback 1</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc2.gif" alt="Pcback 2"></button><figcaption>Pcback 2</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc3.gif" alt="Pcback 3"></button><figcaption>Pcback 3</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc4.gif" alt="Pcback 4"></button><figcaption>Pcback 4</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc5.gif" alt="Pcback 5"></button><figcaption>Pcback 5</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc6.gif" alt="Pcback 6"></button><figcaption>Pcback 6</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc7.gif" alt="Pcback 7"></button><figcaption>Pcback 7</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc8.gif" alt="Pcback 8"></button><figcaption>Pcback 8</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc9.gif" alt="Pcback 9"></button><figcaption>Pcback 9</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc10.gif" alt="Pcback 10"></button><figcaption>Pcback 10</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc11.gif" alt="Pcback 11"></button><figcaption>Pcback 11</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc12.gif" alt="Pcback 12"></button><figcaption>Pcback 12</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc13.gif" alt="Pcback 13"></button><figcaption>Pcback 13</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc14.gif" alt="Pcback 14"></button><figcaption>Pcback 14</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc15.gif" alt="Pcback 15"></button><figcaption>Pcback 15</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc16.gif" alt="Pcback 16"></button><figcaption>Pcback 16</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc17.gif" alt="Pcback 17"></button><figcaption>Pcback 17</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc18.gif" alt="Pcback 18"></button><figcaption>Pcback 18</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc19.gif" alt="Pcback 19"></button><figcaption>Pcback 19</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc20.gif" alt="Pcback 20"></button><figcaption>Pcback 20</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc21.gif" alt="Pcback 21"></button><figcaption>Pcback 21</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc22.gif" alt="Pcback 22"></button><figcaption>Pcback 22</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc23.gif" alt="Pcback 23"></button><figcaption>Pcback 23</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc24.gif" alt="Pcback 24"></button><figcaption>Pcback 24</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc25.gif" alt="Pcback 25"></button><figcaption>Pcback 25</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc26.gif" alt="Pcback 26"></button><figcaption>Pcback 26</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc27.gif" alt="Pcback 27"></button><figcaption>Pcback 27</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc28.gif" alt="Pcback 28"></button><figcaption>Pcback 28</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc29.gif" alt="Pcback 29"></button><figcaption>Pcback 29</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc30.gif" alt="Pcback 30"></button><figcaption>Pcback 30</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc31.gif" alt="Pcback 31"></button><figcaption>Pcback 31</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc32.gif" alt="Pcback 32"></button><figcaption>Pcback 32</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc33.gif" alt="Pcback 33"></button><figcaption>Pcback 33</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc34.gif" alt="Pcback 34"></button><figcaption>Pcback 34</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc35.gif" alt="Pcback 35"></button><figcaption>Pcback 35</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc36.gif" alt="Pcback 36"></button><figcaption>Pcback 36</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc37.gif" alt="Pcback 37"></button><figcaption>Pcback 37</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc38.gif" alt="Pcback 38"></button><figcaption>Pcback 38</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc39.gif" alt="Pcback 39"></button><figcaption>Pcback 39</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc40.gif" alt="Pcback 40"></button><figcaption>Pcback 40</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc41.gif" alt="Pcback 41"></button><figcaption>Pcback 41</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc42.gif" alt="Pcback 42"></button><figcaption>Pcback 42</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc43.gif" alt="Pcback 43"></button><figcaption>Pcback 43</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc44.gif" alt="Pcback 44"></button><figcaption>Pcback 44</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc45.gif" alt="Pcback 45"></button><figcaption>Pcback 45</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc46.gif" alt="Pcback 46"></button><figcaption>Pcback 46</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc47.gif" alt="Pcback 47"></button><figcaption>Pcback 47</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc48.gif" alt="Pcback 48"></button><figcaption>Pcback 48</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc49.gif" alt="Pcback 49"></button><figcaption>Pcback 49</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc50.gif" alt="Pcback 50"></button><figcaption>Pcback 50</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc51.gif" alt="Pcback 51"></button><figcaption>Pcback 51</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc52.gif" alt="Pcback 52"></button><figcaption>Pcback 52</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc53.gif" alt="Pcback 53"></button><figcaption>Pcback 53</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc54.gif" alt="Pcback 54"></button><figcaption>Pcback 54</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc55.gif" alt="Pcback 55"></button><figcaption>Pcback 55</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc56.gif" alt="Pcback 56"></button><figcaption>Pcback 56</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc57.gif" alt="Pcback 57"></button><figcaption>Pcback 57</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc58.gif" alt="Pcback 58"></button><figcaption>Pcback 58</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc59.gif" alt="Pcback 59"></button><figcaption>Pcback 59</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc60.gif" alt="Pcback 60"></button><figcaption>Pcback 60</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc61.gif" alt="Pcback 61"></button><figcaption>Pcback 61</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc62.gif" alt="Pcback 62"></button><figcaption>Pcback 62</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc63.gif" alt="Pcback 63"></button><figcaption>Pcback 63</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc64.gif" alt="Pcback 64"></button><figcaption>Pcback 64</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc65.gif" alt="Pcback 65"></button><figcaption>Pcback 65</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc66.gif" alt="Pcback 66"></button><figcaption>Pcback 66</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc67.gif" alt="Pcback 67"></button><figcaption>Pcback 67</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc68.gif" alt="Pcback 68"></button><figcaption>Pcback 68</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc69.gif" alt="Pcback 69"></button><figcaption>Pcback 69</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc70.gif" alt="Pcback 70"></button><figcaption>Pcback 70</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc71.gif" alt="Pcback 71"></button><figcaption>Pcback 71</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc72.gif" alt="Pcback 72"></button><figcaption>Pcback 72</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc73.gif" alt="Pcback 73"></button><figcaption>Pcback 73</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc74.gif" alt="Pcback 74"></button><figcaption>Pcback 74</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc75.gif" alt="Pcback 75"></button><figcaption>Pcback 75</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc76.gif" alt="Pcback 76"></button><figcaption>Pcback 76</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc77.gif" alt="Pcback 77"></button><figcaption>Pcback 77</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc78.gif" alt="Pcback 78"></button><figcaption>Pcback 78</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc79.gif" alt="Pcback 79"></button><figcaption>Pcback 79</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="pc80.gif" alt="Pcback 80"></button><figcaption>Pcback 80</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 5: PstyleGif -->
+      <section id="tabcontent5" class="panel" role="tabpanel" aria-labelledby="tab5" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Archivos de esta sección: ps1.gif, ps2.gif... -->
+        <div class="grid grid--gifs">
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps1.gif" alt="Pstyle 1"></button><figcaption>Pstyle 1</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps2.gif" alt="Pstyle 2"></button><figcaption>Pstyle 2</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps3.gif" alt="Pstyle 3"></button><figcaption>Pstyle 3</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps4.gif" alt="Pstyle 4"></button><figcaption>Pstyle 4</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps5.gif" alt="Pstyle 5"></button><figcaption>Pstyle 5</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps6.gif" alt="Pstyle 6"></button><figcaption>Pstyle 6</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps7.gif" alt="Pstyle 7"></button><figcaption>Pstyle 7</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps8.gif" alt="Pstyle 8"></button><figcaption>Pstyle 8</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps9.gif" alt="Pstyle 9"></button><figcaption>Pstyle 9</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps10.gif" alt="Pstyle 10"></button><figcaption>Pstyle 10</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps11.gif" alt="Pstyle 11"></button><figcaption>Pstyle 11</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps12.gif" alt="Pstyle 12"></button><figcaption>Pstyle 12</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps13.gif" alt="Pstyle 13"></button><figcaption>Pstyle 13</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps14.gif" alt="Pstyle 14"></button><figcaption>Pstyle 14</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps15.gif" alt="Pstyle 15"></button><figcaption>Pstyle 15</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps16.gif" alt="Pstyle 16"></button><figcaption>Pstyle 16</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps17.gif" alt="Pstyle 17"></button><figcaption>Pstyle 17</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps18.gif" alt="Pstyle 18"></button><figcaption>Pstyle 18</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps19.gif" alt="Pstyle 19"></button><figcaption>Pstyle 19</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps20.gif" alt="Pstyle 20"></button><figcaption>Pstyle 20</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps21.gif" alt="Pstyle 21"></button><figcaption>Pstyle 21</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps22.gif" alt="Pstyle 22"></button><figcaption>Pstyle 22</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps23.gif" alt="Pstyle 23"></button><figcaption>Pstyle 23</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps24.gif" alt="Pstyle 24"></button><figcaption>Pstyle 24</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps25.gif" alt="Pstyle 25"></button><figcaption>Pstyle 25</figcaption></figure>
+          <figure class="cell"><button class="item item--gif" type="button"><img loading="lazy" src="ps26.gif" alt="Pstyle 26"></button><figcaption>Pstyle 26</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 6: GIF Halloween -->
+      <section id="tabcontent6" class="panel" role="tabpanel" aria-labelledby="tab6" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Imágenes de relleno: sustitúyelas por las tuyas -->
+        <div class="grid grid--gif">
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 1"></div><figcaption>GIF Halloween 1</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 2"></div><figcaption>GIF Halloween 2</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 3"></div><figcaption>GIF Halloween 3</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 4"></div><figcaption>GIF Halloween 4</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 5"></div><figcaption>GIF Halloween 5</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 6"></div><figcaption>GIF Halloween 6</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 7"></div><figcaption>GIF Halloween 7</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 8"></div><figcaption>GIF Halloween 8</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 9"></div><figcaption>GIF Halloween 9</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 10"></div><figcaption>GIF Halloween 10</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 11"></div><figcaption>GIF Halloween 11</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Halloween 12"></div><figcaption>GIF Halloween 12</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 7: GIF Winter -->
+      <section id="tabcontent7" class="panel" role="tabpanel" aria-labelledby="tab7" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Imágenes de relleno: sustitúyelas por las tuyas -->
+        <div class="grid grid--gif">
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 1"></div><figcaption>GIF Winter 1</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 2"></div><figcaption>GIF Winter 2</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 3"></div><figcaption>GIF Winter 3</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 4"></div><figcaption>GIF Winter 4</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 5"></div><figcaption>GIF Winter 5</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 6"></div><figcaption>GIF Winter 6</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 7"></div><figcaption>GIF Winter 7</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 8"></div><figcaption>GIF Winter 8</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 9"></div><figcaption>GIF Winter 9</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 10"></div><figcaption>GIF Winter 10</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 11"></div><figcaption>GIF Winter 11</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Winter 12"></div><figcaption>GIF Winter 12</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 8: GIF Easter -->
+      <section id="tabcontent8" class="panel" role="tabpanel" aria-labelledby="tab8" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Imágenes de relleno: sustitúyelas por las tuyas -->
+        <div class="grid grid--gif">
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 1"></div><figcaption>GIF Easter 1</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 2"></div><figcaption>GIF Easter 2</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 3"></div><figcaption>GIF Easter 3</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 4"></div><figcaption>GIF Easter 4</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 5"></div><figcaption>GIF Easter 5</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 6"></div><figcaption>GIF Easter 6</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 7"></div><figcaption>GIF Easter 7</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 8"></div><figcaption>GIF Easter 8</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 9"></div><figcaption>GIF Easter 9</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 10"></div><figcaption>GIF Easter 10</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 11"></div><figcaption>GIF Easter 11</figcaption></figure>
+          <figure class="cell"><div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="GIF Easter 12"></div><figcaption>GIF Easter 12</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 9: Pcback Easter -->
+      <section id="tabcontent9" class="panel" role="tabpanel" aria-labelledby="tab9" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Imágenes de relleno: sustitúyelas por las tuyas -->
+        <div class="grid grid--backs">
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Easter 1"></button><figcaption>Pcback Easter 1</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Easter 2"></button><figcaption>Pcback Easter 2</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Easter 3"></button><figcaption>Pcback Easter 3</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Easter 4"></button><figcaption>Pcback Easter 4</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Easter 5"></button><figcaption>Pcback Easter 5</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Easter 6"></button><figcaption>Pcback Easter 6</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 10: Pcback Winter -->
+      <section id="tabcontent10" class="panel" role="tabpanel" aria-labelledby="tab10" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Imágenes de relleno: sustitúyelas por las tuyas -->
+        <div class="grid grid--backs">
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Winter 1"></button><figcaption>Pcback Winter 1</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Winter 2"></button><figcaption>Pcback Winter 2</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Winter 3"></button><figcaption>Pcback Winter 3</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Winter 4"></button><figcaption>Pcback Winter 4</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Winter 5"></button><figcaption>Pcback Winter 5</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Winter 6"></button><figcaption>Pcback Winter 6</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- TAB 11: Pcback Halloween -->
+      <section id="tabcontent11" class="panel" role="tabpanel" aria-labelledby="tab11" hidden>
+        <!-- Para añadir uno: copia una línea de <figure>, cambia el archivo (src) y el número (alt y figcaption). Imágenes de relleno: sustitúyelas por las tuyas -->
+        <div class="grid grid--backs">
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Halloween 1"></button><figcaption>Pcback Halloween 1</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Halloween 2"></button><figcaption>Pcback Halloween 2</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Halloween 3"></button><figcaption>Pcback Halloween 3</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Halloween 4"></button><figcaption>Pcback Halloween 4</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Halloween 5"></button><figcaption>Pcback Halloween 5</figcaption></figure>
+          <figure class="cell"><button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Pcback Halloween 6"></button><figcaption>Pcback Halloween 6</figcaption></figure>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Visor de imágenes -->
+  <dialog class="lightbox" id="lightbox" aria-label="Vista ampliada">
+    <button class="close" type="button" aria-label="Cerrar">&times;</button>
+    <img alt="">
+  </dialog>
+
+  <!-- ============================================================
+       SCRIPT: pestañas, visor de imágenes, tema claro/oscuro, reproductor, entrada y cursor
+       ============================================================ -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var root = document.documentElement;
+      var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+      var panels = Array.prototype.slice.call(document.querySelectorAll(".panel"));
+      var themeSwitch = document.getElementById("dark-mode-switch");
+
+      /* ---------- TABS ---------- */
+      function activateTab(tab, moveFocus) {
+        var target = tab.getAttribute("data-tab");
+
+        tabs.forEach(function (t) {
+          var selected = t === tab;
+          t.setAttribute("aria-selected", selected ? "true" : "false");
+          t.tabIndex = selected ? 0 : -1;
+        });
+
+        panels.forEach(function (p) {
+          p.hidden = p.id !== "tabcontent" + target;
+        });
+
+        if (moveFocus) tab.focus();
+      }
+
+      tabs.forEach(function (tab, i) {
+        tab.addEventListener("click", function () { activateTab(tab, false); });
+
+        // Navegación con flechas, Inicio y Fin
+        tab.addEventListener("keydown", function (e) {
+          var next = null;
+          if (e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+          if (e.key === "ArrowLeft")  next = tabs[(i - 1 + tabs.length) % tabs.length];
+          if (e.key === "Home") next = tabs[0];
+          if (e.key === "End")  next = tabs[tabs.length - 1];
+          if (next) { e.preventDefault(); activateTab(next, true); }
+        });
+      });
+
+      /* ---------- MODO OSCURO (por defecto) ---------- */
+      function applyTheme(dark) {
+        root.setAttribute("data-theme", dark ? "dark" : "light");
+        themeSwitch.checked = !dark;
+      }
+
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      applyTheme(saved ? saved === "dark" : true);
+
+      themeSwitch.addEventListener("change", function () {
+        var dark = !this.checked;
+        applyTheme(dark);
+        try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
+      });
+
+      /* ---------- VISOR DE IMÁGENES ---------- */
+      var lightbox = document.getElementById("lightbox");
+      var lightboxImg = lightbox.querySelector("img");
+
+      document.addEventListener("click", function (e) {
+        var item = e.target.closest ? e.target.closest(".item") : null;
+        if (!item) return;
+        var img = item.querySelector("img");
+        lightboxImg.src = img.currentSrc || img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.showModal();
+      });
+
+      lightbox.querySelector(".close").addEventListener("click", function () { lightbox.close(); });
+      lightbox.addEventListener("click", function (e) {
+        if (e.target === lightbox) lightbox.close();
+      });
+
+
+      /* ---------- REPRODUCTOR ---------- */
+      var audio = document.getElementById("audio-player");
+      var playerBox = document.getElementById("music-player");
+      var playBtn = document.getElementById("play-btn");
+      var volume = document.getElementById("volume-slider");
+
+      audio.volume = parseFloat(volume.value);
+
+      /* ---------- MÚSICA AUTOMÁTICA ---------- */
+      /* true = suena sola; false = solo con el botón.
+         Los navegadores no dejan sonar sin que el visitante haga algo antes,
+         así que empieza con el primer clic, toque o tecla en la página. */
+      var AUTOPLAY = true;
+      var userPaused = false;
+      var startEvents = ["pointerdown", "pointerup", "touchend", "keydown"];
+
+      function stopWaiting() {
+        startEvents.forEach(function (ev) { document.removeEventListener(ev, startMusic, true); });
+      }
+
+      function startMusic(e) {
+        // Si el primer gesto es sobre el propio reproductor, manda el botón
+        if (e && e.target && e.target.closest && e.target.closest("#music-player")) { stopWaiting(); return; }
+        if (userPaused) { stopWaiting(); return; }
+        if (audio.networkState === 3 || audio.error) { stopWaiting(); return; }
+        audio.play().then(stopWaiting).catch(function () {});
+      }
+
+      if (AUTOPLAY) {
+        // Intento directo (algunos navegadores lo permiten) y, si no, al primer gesto
+        audio.play().catch(function () {});
+        startEvents.forEach(function (ev) { document.addEventListener(ev, startMusic, true); });
+      }
+
+      /* ---------- PANTALLA DE ENTRADA ---------- */
+      var entrance = document.getElementById("entrance");
+      var enterBtn = document.getElementById("enter-btn");
+
+      if (entrance && enterBtn) {
+        enterBtn.addEventListener("click", function () {
+          entrance.classList.add("is-hidden");
+          document.body.classList.remove("locked");
+          setTimeout(function () { entrance.hidden = true; }, 850);
+
+          // El clic en Enter es el gesto que permite reproducir el audio
+          if (AUTOPLAY && !userPaused && audio.networkState !== 3 && !audio.error) {
+            audio.play().catch(function () {});
+          }
+        });
+        enterBtn.focus();
+      } else {
+        document.body.classList.remove("locked");
+      }
+
+      var songLabel = playerBox.querySelector(".song");
+      var songText = songLabel.textContent;
+
+      // Si el audio no se encuentra o no se puede reproducir, lo indica en el propio reproductor
+      function audioFailed() {
+        playerBox.classList.remove("playing");
+        songLabel.textContent = "No se encuentra music.mp3";
+      }
+
+      audio.querySelectorAll("source").forEach(function (src) {
+        src.addEventListener("error", audioFailed);
+      });
+      audio.addEventListener("error", audioFailed);
+      audio.addEventListener("loadedmetadata", function () { songLabel.textContent = songText; });
+      window.addEventListener("load", function () {
+        if (audio.networkState === 3 || audio.error) audioFailed();
+      });
+
+      playBtn.addEventListener("click", function () {
+        if (audio.paused) {
+          // networkState 3 = el navegador no encontró ninguna fuente de audio
+          if (audio.networkState === 3 || audio.error) { audioFailed(); return; }
+          audio.play().catch(audioFailed);
+        } else {
+          userPaused = true;
+          audio.pause();
+        }
+      });
+
+      audio.addEventListener("play", function () {
+        playerBox.classList.add("playing");
+        playBtn.setAttribute("aria-label", "Pausar música");
+      });
+
+      audio.addEventListener("pause", function () {
+        playerBox.classList.remove("playing");
+        playBtn.setAttribute("aria-label", "Reproducir música");
+      });
+
+      volume.addEventListener("input", function () {
+        audio.volume = parseFloat(volume.value);
+      });
+
+      /* ---------- CURSOR ROSADO CON ESTELA ---------- */
+      var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      var calmMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (finePointer && !calmMotion) {
+        var canvas = document.createElement("canvas");
+        canvas.className = "cursor-fx";
+        canvas.setAttribute("aria-hidden", "true");
+        document.body.appendChild(canvas);
+        var ctx = canvas.getContext("2d");
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        var resize = function () {
+          canvas.width = window.innerWidth * dpr;
+          canvas.height = window.innerHeight * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+        resize();
+        window.addEventListener("resize", resize);
+
+        var TRAIL_MS = 420;
+        var points = [];
+        var mouse = { x: 0, y: 0 };
+        var orb = { x: 0, y: 0 };
+        var active = false;
+        var hot = false;
+        var scale = 1;
+
+        document.addEventListener("mousemove", function (e) {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+          if (!active) { orb.x = mouse.x; orb.y = mouse.y; active = true; }
+          points.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+          if (points.length > 80) points.shift();
+          hot = !!(e.target.closest && e.target.closest("a, button, label, input, .item"));
+        });
+
+        document.documentElement.addEventListener("mouseleave", function () {
+          active = false;
+          points.length = 0;
+        });
+
+        var frame = function (now) {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+          if (active) {
+            var dark = root.getAttribute("data-theme") !== "light";
+            ctx.globalCompositeOperation = dark ? "lighter" : "source-over";
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+
+            while (points.length && now - points[0].t > TRAIL_MS) points.shift();
+
+            // Estela
+            for (var i = 1; i < points.length; i++) {
+              var a = points[i - 1];
+              var b = points[i];
+              var life = 1 - (now - b.t) / TRAIL_MS;
+              if (life <= 0) continue;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.strokeStyle = "rgba(255, 79, 216, " + (0.85 * life) + ")";
+              ctx.lineWidth = 2 + 7 * life;
+              ctx.shadowColor = "#ff4fd8";
+              ctx.shadowBlur = 16 * life;
+              ctx.stroke();
+            }
+
+            // Orbe brillante que sigue al ratón con un pequeño retraso
+            orb.x += (mouse.x - orb.x) * 0.22;
+            orb.y += (mouse.y - orb.y) * 0.22;
+            scale += ((hot ? 1.7 : 1) - scale) * 0.2;
+
+            ctx.shadowBlur = 0;
+            var r = 18 * scale;
+            var g = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, r);
+            g.addColorStop(0, "rgba(255, 122, 230, 0.65)");
+            g.addColorStop(1, "rgba(255, 79, 216, 0)");
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(orb.x, orb.y, r, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (hot) {
+              ctx.strokeStyle = "rgba(255, 154, 240, 0.9)";
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.arc(orb.x, orb.y, 14 * scale, 0, Math.PI * 2);
+              ctx.stroke();
+            }
+
+            ctx.shadowColor = "#ff4fd8";
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = "#fff0fb";
+            ctx.beginPath();
+            ctx.arc(orb.x, orb.y, 3, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      }
+
+    });
+  </script>
+
+  <!-- ============================================================
+       ESTILOS (CSS): colores, tamaños y diseño de la plantilla
+       ============================================================ -->
   <style>
     /* ============ FUENTES (propias primero, Google Fonts como respaldo) ============
        Para que se vea idéntico en cualquier navegador y sin depender de internet,
@@ -417,17 +1248,6 @@
 
     .cell:hover figcaption { color: var(--text); }
 
-    .grid--empty { display: block; max-width: none; }
-
-    .empty-note {
-      padding: 20px;
-      text-align: center;
-      font-size: .95rem;
-      color: var(--muted);
-      background: var(--surface-2);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-md);
-    }
 
     /* ============ REPRODUCTOR (asoma por detrás del menú) ============ */
     .player-wrap {
@@ -736,573 +1556,10 @@
       pointer-events: none;
       z-index: 9999;
     }
+
+    /* Muestra la página cuando el CSS ya está cargado */
+    body { visibility: visible; }
   </style>
-</head>
-<body class="locked">
 
-  <!-- PANTALLA DE ENTRADA: el clic en Enter permite que empiece la música.
-       Para quitarla, borra este bloque y el código "PANTALLA DE ENTRADA" del script. -->
-  <div class="entrance" id="entrance" role="dialog" aria-modal="true" aria-label="Entrada">
-    <div class="brand brand--hero">Ziva</div>
-    <button class="enter-btn" id="enter-btn" type="button">Enter</button>
-  </div>
-
-
-  <div class="page">
-
-    <header class="topbar">
-      <div class="brand">Ziva · Gallery</div>
-
-      <label class="theme-toggle" for="dark-mode-switch">
-        <span class="switch">
-          <input type="checkbox" id="dark-mode-switch" aria-label="Cambiar entre modo oscuro y modo claro">
-          <span class="track"></span>
-          <span class="knob">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M9 18h6"/>
-              <path d="M10 21.5h4"/>
-              <path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.6.5.9 1.2.9 1.9V16h6v-.1c0-.7.3-1.4.9-1.9A6.5 6.5 0 0 0 12 2.5z"/>
-            </svg>
-          </span>
-        </span>
-      </label>
-    </header>
-
-    <!-- REPRODUCTOR: asoma por detrás del menú -->
-    <div class="player-wrap">
-      <div class="music-player" id="music-player">
-        <div class="disc" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>
-        </div>
-        <div class="player-meta">
-          <span class="np">Now Playing</span>
-          <span class="song">Favorite Song</span>
-        </div>
-        <button class="play-btn" id="play-btn" type="button" aria-label="Reproducir música">
-          <svg class="ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-          <svg class="ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
-        </button>
-        <div class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-        <input class="vol" id="volume-slider" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Volumen">
-        <audio id="audio-player" preload="metadata" loop>
-          <source src="music.mp3" type="audio/mpeg">
-        </audio>
-      </div>
-    </div>
-
-    <nav class="tabs" role="tablist" aria-label="Secciones">
-      <button class="tab" role="tab" id="tab1" data-tab="1" aria-controls="tabcontent1" aria-selected="true">GIF</button>
-      <button class="tab" role="tab" id="tab2" data-tab="2" aria-controls="tabcontent2" aria-selected="false" tabindex="-1">GIF 2 PHOTOS</button>
-      <button class="tab" role="tab" id="tab3" data-tab="3" aria-controls="tabcontent3" aria-selected="false" tabindex="-1">Parpadeo</button>
-      <button class="tab" role="tab" id="tab4" data-tab="4" aria-controls="tabcontent4" aria-selected="false" tabindex="-1">Pcback</button>
-      <button class="tab" role="tab" id="tab5" data-tab="5" aria-controls="tabcontent5" aria-selected="false" tabindex="-1">PstyleGif</button>
-      <button class="tab" role="tab" id="tab6" data-tab="6" aria-controls="tabcontent6" aria-selected="false" tabindex="-1">GIF Halloween</button>
-      <button class="tab" role="tab" id="tab7" data-tab="7" aria-controls="tabcontent7" aria-selected="false" tabindex="-1">GIF Winter</button>
-      <button class="tab" role="tab" id="tab8" data-tab="8" aria-controls="tabcontent8" aria-selected="false" tabindex="-1">GIF Easter</button>
-      <button class="tab" role="tab" id="tab9" data-tab="9" aria-controls="tabcontent9" aria-selected="false" tabindex="-1">Pcback Easter</button>
-      <button class="tab" role="tab" id="tab10" data-tab="10" aria-controls="tabcontent10" aria-selected="false" tabindex="-1">Pcback Winter</button>
-      <button class="tab" role="tab" id="tab11" data-tab="11" aria-controls="tabcontent11" aria-selected="false" tabindex="-1">Pcback Halloween</button>
-    </nav>
-
-    <main>
-
-      <!-- TAB 1: GIF -->
-      <section id="tabcontent1" class="panel" role="tabpanel" aria-labelledby="tab1">
-        <div class="grid grid--gif" data-gallery="gif"></div>
-      </section>
-
-      <!-- TAB 2: GIF 2 PHOTOS -->
-      <section id="tabcontent2" class="panel" role="tabpanel" aria-labelledby="tab2" hidden>
-        <div class="grid grid--gif" data-label="GIF 2 PHOTOS">
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 1"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 2"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 3"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 4"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 5"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 6"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 7"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 8"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 9"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 10"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 11"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 12"></div>
-        </div>
-      </section>
-
-      <!-- TAB 3: Parpadeo -->
-      <section id="tabcontent3" class="panel" role="tabpanel" aria-labelledby="tab3" hidden>
-        <div class="grid grid--gif" data-gallery="parpadeo"></div>
-      </section>
-
-      <!-- TAB 4: Pcback -->
-      <section id="tabcontent4" class="panel" role="tabpanel" aria-labelledby="tab4" hidden>
-        <div class="grid grid--backs" data-gallery="pcback"></div>
-      </section>
-
-      <!-- TAB 5: PstyleGif -->
-      <section id="tabcontent5" class="panel" role="tabpanel" aria-labelledby="tab5" hidden>
-        <div class="grid grid--gifs" data-gallery="pstyle"></div>
-      </section>
-
-      <!-- TAB 6: GIF Halloween -->
-      <section id="tabcontent6" class="panel" role="tabpanel" aria-labelledby="tab6" hidden>
-        <div class="grid grid--gif" data-label="GIF Halloween">
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 1"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 2"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 3"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 4"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 5"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 6"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 7"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 8"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 9"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 10"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 11"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 12"></div>
-        </div>
-      </section>
-
-      <!-- TAB 7: GIF Winter -->
-      <section id="tabcontent7" class="panel" role="tabpanel" aria-labelledby="tab7" hidden>
-        <div class="grid grid--gif" data-label="GIF Winter">
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 1"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 2"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 3"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 4"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 5"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 6"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 7"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 8"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 9"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 10"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 11"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 12"></div>
-        </div>
-      </section>
-
-      <!-- TAB 8: GIF Easter -->
-      <section id="tabcontent8" class="panel" role="tabpanel" aria-labelledby="tab8" hidden>
-        <div class="grid grid--gif" data-label="GIF Easter">
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 1"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 2"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 3"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 4"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 5"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 6"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 7"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 8"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 9"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 10"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 11"></div>
-          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 12"></div>
-        </div>
-      </section>
-
-      <!-- TAB 9: Pcback Easter -->
-      <section id="tabcontent9" class="panel" role="tabpanel" aria-labelledby="tab9" hidden>
-        <div class="grid grid--backs" data-label="Pcback Easter">
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 1"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 2"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 3"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 4"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 5"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 6"></button>
-        </div>
-      </section>
-
-      <!-- TAB 10: Pcback Winter -->
-      <section id="tabcontent10" class="panel" role="tabpanel" aria-labelledby="tab10" hidden>
-        <div class="grid grid--backs" data-label="Pcback Winter">
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 1"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 2"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 3"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 4"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 5"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 6"></button>
-        </div>
-      </section>
-
-      <!-- TAB 11: Pcback Halloween -->
-      <section id="tabcontent11" class="panel" role="tabpanel" aria-labelledby="tab11" hidden>
-        <div class="grid grid--backs" data-label="Pcback Halloween">
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 1"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 2"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 3"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 4"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 5"></button>
-          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 6"></button>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- Visor de imágenes -->
-  <dialog class="lightbox" id="lightbox" aria-label="Vista ampliada">
-    <button class="close" type="button" aria-label="Cerrar">&times;</button>
-    <img alt="">
-  </dialog>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var root = document.documentElement;
-      var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
-      var panels = Array.prototype.slice.call(document.querySelectorAll(".panel"));
-      var themeSwitch = document.getElementById("dark-mode-switch");
-
-      /* ---------- TABS ---------- */
-      function activateTab(tab, moveFocus) {
-        var target = tab.getAttribute("data-tab");
-
-        tabs.forEach(function (t) {
-          var selected = t === tab;
-          t.setAttribute("aria-selected", selected ? "true" : "false");
-          t.tabIndex = selected ? 0 : -1;
-        });
-
-        panels.forEach(function (p) {
-          p.hidden = p.id !== "tabcontent" + target;
-        });
-
-        if (moveFocus) tab.focus();
-      }
-
-      tabs.forEach(function (tab, i) {
-        tab.addEventListener("click", function () { activateTab(tab, false); });
-
-        // Navegación con flechas, Inicio y Fin
-        tab.addEventListener("keydown", function (e) {
-          var next = null;
-          if (e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
-          if (e.key === "ArrowLeft")  next = tabs[(i - 1 + tabs.length) % tabs.length];
-          if (e.key === "Home") next = tabs[0];
-          if (e.key === "End")  next = tabs[tabs.length - 1];
-          if (next) { e.preventDefault(); activateTab(next, true); }
-        });
-      });
-
-      /* ---------- MODO OSCURO (por defecto) ---------- */
-      function applyTheme(dark) {
-        root.setAttribute("data-theme", dark ? "dark" : "light");
-        themeSwitch.checked = !dark;
-      }
-
-      var saved = null;
-      try { saved = localStorage.getItem("theme"); } catch (e) {}
-      applyTheme(saved ? saved === "dark" : true);
-
-      themeSwitch.addEventListener("change", function () {
-        var dark = !this.checked;
-        applyTheme(dark);
-        try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
-      });
-
-      /* ---------- GALERÍAS AUTOMÁTICAS ---------- */
-      /* BASE_PATH = carpeta donde están tus imágenes, relativa a este index.html.
-         "" = la misma carpeta que el index.html.  Ejemplo: "gifs/" si las metes en una carpeta llamada gifs.
-         Cambia "count" por el número de archivos que tengas en cada sección.
-         Nombres: GIF 1.gif, 2.gif...  |  Parpadeo pp1.gif...  |  Pcback pc1.gif...  |  Pstyle ps1.gif... */
-      var BASE_PATH = "";
-
-      var GALLERIES = {
-        gif:      { prefix: "",   count: 195, ext: "gif", type: "gif",    label: "GIF" },
-        parpadeo: { prefix: "pp", count: 18,  ext: "gif", type: "gif",    label: "Parpadeo" },
-        pcback:   { prefix: "pc", count: 80,  ext: "gif", type: "back",   label: "Pcback" },
-        pstyle:   { prefix: "ps", count: 26,  ext: "gif", type: "banner", label: "Pstyle" }
-      };
-
-      document.querySelectorAll("[data-gallery]").forEach(function (box) {
-        var cfg = GALLERIES[box.getAttribute("data-gallery")];
-        if (!cfg) return;
-
-        var settled = 0;
-        var loaded = 0;
-
-        function checkDone() {
-          settled++;
-          if (settled < cfg.count || loaded > 0) return;
-          // Ninguna imagen cargó: mostramos un aviso en vez de dejar la sección vacía
-          box.classList.add("grid--empty");
-          var note = document.createElement("p");
-          note.className = "empty-note";
-          note.textContent = "No se encuentran las imágenes de esta sección. Busca " +
-            BASE_PATH + cfg.prefix + "1." + cfg.ext + ", " + BASE_PATH + cfg.prefix + "2." + cfg.ext +
-            "… en la misma carpeta que el index.html (o cambia BASE_PATH en el script).";
-          box.appendChild(note);
-        }
-
-        for (var i = 1; i <= cfg.count; i++) {
-          var img = document.createElement("img");
-          img.loading = "lazy";
-          img.decoding = "async";
-          img.alt = cfg.label + " " + i;
-
-          var el;
-          if (cfg.type === "gif") {
-            el = document.createElement("div");
-            el.className = "gif-box";
-          } else {
-            el = document.createElement("button");
-            el.type = "button";
-            el.className = "item " + (cfg.type === "back" ? "item--back" : "item--gif");
-          }
-
-          // Cada diseño va con su título numerado debajo (el número coincide con el del archivo)
-          var cell = document.createElement("figure");
-          cell.className = "cell";
-          var cap = document.createElement("figcaption");
-          cap.textContent = cfg.label + " " + i;
-
-          // Si falta algún archivo suelto, su caja se elimina sin dejar iconos rotos
-          img.addEventListener("error", (function (node) {
-            return function () { node.remove(); checkDone(); };
-          })(cell));
-          img.addEventListener("load", function () { loaded++; checkDone(); });
-
-          img.src = BASE_PATH + cfg.prefix + i + "." + cfg.ext;
-          el.appendChild(img);
-          cell.appendChild(el);
-          cell.appendChild(cap);
-          box.appendChild(cell);
-        }
-      });
-
-      /* Secciones con imágenes de relleno: también numeradas (GIF Halloween 1, 2, 3...) */
-      document.querySelectorAll(".grid[data-label]:not([data-gallery])").forEach(function (grid) {
-        var label = grid.getAttribute("data-label");
-        Array.prototype.slice.call(grid.children).forEach(function (el, idx) {
-          var cell = document.createElement("figure");
-          cell.className = "cell";
-          var cap = document.createElement("figcaption");
-          cap.textContent = label + " " + (idx + 1);
-          grid.insertBefore(cell, el);
-          cell.appendChild(el);
-          cell.appendChild(cap);
-        });
-      });
-
-      /* ---------- VISOR DE IMÁGENES ---------- */
-      var lightbox = document.getElementById("lightbox");
-      var lightboxImg = lightbox.querySelector("img");
-
-      document.addEventListener("click", function (e) {
-        var item = e.target.closest ? e.target.closest(".item") : null;
-        if (!item) return;
-        var img = item.querySelector("img");
-        lightboxImg.src = img.currentSrc || img.src;
-        lightboxImg.alt = img.alt;
-        lightbox.showModal();
-      });
-
-      lightbox.querySelector(".close").addEventListener("click", function () { lightbox.close(); });
-      lightbox.addEventListener("click", function (e) {
-        if (e.target === lightbox) lightbox.close();
-      });
-
-
-      /* ---------- REPRODUCTOR ---------- */
-      var audio = document.getElementById("audio-player");
-      var playerBox = document.getElementById("music-player");
-      var playBtn = document.getElementById("play-btn");
-      var volume = document.getElementById("volume-slider");
-
-      audio.volume = parseFloat(volume.value);
-
-      /* ---------- MÚSICA AUTOMÁTICA ---------- */
-      /* true = suena sola; false = solo con el botón.
-         Los navegadores no dejan sonar sin que el visitante haga algo antes,
-         así que empieza con el primer clic, toque o tecla en la página. */
-      var AUTOPLAY = true;
-      var userPaused = false;
-      var startEvents = ["pointerdown", "pointerup", "touchend", "keydown"];
-
-      function stopWaiting() {
-        startEvents.forEach(function (ev) { document.removeEventListener(ev, startMusic, true); });
-      }
-
-      function startMusic(e) {
-        // Si el primer gesto es sobre el propio reproductor, manda el botón
-        if (e && e.target && e.target.closest && e.target.closest("#music-player")) { stopWaiting(); return; }
-        if (userPaused) { stopWaiting(); return; }
-        if (audio.networkState === 3 || audio.error) { stopWaiting(); return; }
-        audio.play().then(stopWaiting).catch(function () {});
-      }
-
-      if (AUTOPLAY) {
-        // Intento directo (algunos navegadores lo permiten) y, si no, al primer gesto
-        audio.play().catch(function () {});
-        startEvents.forEach(function (ev) { document.addEventListener(ev, startMusic, true); });
-      }
-
-      /* ---------- PANTALLA DE ENTRADA ---------- */
-      var entrance = document.getElementById("entrance");
-      var enterBtn = document.getElementById("enter-btn");
-
-      if (entrance && enterBtn) {
-        enterBtn.addEventListener("click", function () {
-          entrance.classList.add("is-hidden");
-          document.body.classList.remove("locked");
-          setTimeout(function () { entrance.hidden = true; }, 850);
-
-          // El clic en Enter es el gesto que permite reproducir el audio
-          if (AUTOPLAY && !userPaused && audio.networkState !== 3 && !audio.error) {
-            audio.play().catch(function () {});
-          }
-        });
-        enterBtn.focus();
-      } else {
-        document.body.classList.remove("locked");
-      }
-
-      var songLabel = playerBox.querySelector(".song");
-      var songText = songLabel.textContent;
-
-      // Si el audio no se encuentra o no se puede reproducir, lo indica en el propio reproductor
-      function audioFailed() {
-        playerBox.classList.remove("playing");
-        songLabel.textContent = "No se encuentra music.mp3";
-      }
-
-      audio.querySelectorAll("source").forEach(function (src) {
-        src.addEventListener("error", audioFailed);
-      });
-      audio.addEventListener("error", audioFailed);
-      audio.addEventListener("loadedmetadata", function () { songLabel.textContent = songText; });
-      window.addEventListener("load", function () {
-        if (audio.networkState === 3 || audio.error) audioFailed();
-      });
-
-      playBtn.addEventListener("click", function () {
-        if (audio.paused) {
-          // networkState 3 = el navegador no encontró ninguna fuente de audio
-          if (audio.networkState === 3 || audio.error) { audioFailed(); return; }
-          audio.play().catch(audioFailed);
-        } else {
-          userPaused = true;
-          audio.pause();
-        }
-      });
-
-      audio.addEventListener("play", function () {
-        playerBox.classList.add("playing");
-        playBtn.setAttribute("aria-label", "Pausar música");
-      });
-
-      audio.addEventListener("pause", function () {
-        playerBox.classList.remove("playing");
-        playBtn.setAttribute("aria-label", "Reproducir música");
-      });
-
-      volume.addEventListener("input", function () {
-        audio.volume = parseFloat(volume.value);
-      });
-
-      /* ---------- CURSOR ROSADO CON ESTELA ---------- */
-      var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-      var calmMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      if (finePointer && !calmMotion) {
-        var canvas = document.createElement("canvas");
-        canvas.className = "cursor-fx";
-        canvas.setAttribute("aria-hidden", "true");
-        document.body.appendChild(canvas);
-        var ctx = canvas.getContext("2d");
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-        var resize = function () {
-          canvas.width = window.innerWidth * dpr;
-          canvas.height = window.innerHeight * dpr;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        };
-        resize();
-        window.addEventListener("resize", resize);
-
-        var TRAIL_MS = 420;
-        var points = [];
-        var mouse = { x: 0, y: 0 };
-        var orb = { x: 0, y: 0 };
-        var active = false;
-        var hot = false;
-        var scale = 1;
-
-        document.addEventListener("mousemove", function (e) {
-          mouse.x = e.clientX;
-          mouse.y = e.clientY;
-          if (!active) { orb.x = mouse.x; orb.y = mouse.y; active = true; }
-          points.push({ x: e.clientX, y: e.clientY, t: performance.now() });
-          if (points.length > 80) points.shift();
-          hot = !!(e.target.closest && e.target.closest("a, button, label, input, .item"));
-        });
-
-        document.documentElement.addEventListener("mouseleave", function () {
-          active = false;
-          points.length = 0;
-        });
-
-        var frame = function (now) {
-          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-          if (active) {
-            var dark = root.getAttribute("data-theme") !== "light";
-            ctx.globalCompositeOperation = dark ? "lighter" : "source-over";
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-
-            while (points.length && now - points[0].t > TRAIL_MS) points.shift();
-
-            // Estela
-            for (var i = 1; i < points.length; i++) {
-              var a = points[i - 1];
-              var b = points[i];
-              var life = 1 - (now - b.t) / TRAIL_MS;
-              if (life <= 0) continue;
-              ctx.beginPath();
-              ctx.moveTo(a.x, a.y);
-              ctx.lineTo(b.x, b.y);
-              ctx.strokeStyle = "rgba(255, 79, 216, " + (0.85 * life) + ")";
-              ctx.lineWidth = 2 + 7 * life;
-              ctx.shadowColor = "#ff4fd8";
-              ctx.shadowBlur = 16 * life;
-              ctx.stroke();
-            }
-
-            // Orbe brillante que sigue al ratón con un pequeño retraso
-            orb.x += (mouse.x - orb.x) * 0.22;
-            orb.y += (mouse.y - orb.y) * 0.22;
-            scale += ((hot ? 1.7 : 1) - scale) * 0.2;
-
-            ctx.shadowBlur = 0;
-            var r = 18 * scale;
-            var g = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, r);
-            g.addColorStop(0, "rgba(255, 122, 230, 0.65)");
-            g.addColorStop(1, "rgba(255, 79, 216, 0)");
-            ctx.fillStyle = g;
-            ctx.beginPath();
-            ctx.arc(orb.x, orb.y, r, 0, Math.PI * 2);
-            ctx.fill();
-
-            if (hot) {
-              ctx.strokeStyle = "rgba(255, 154, 240, 0.9)";
-              ctx.lineWidth = 1.5;
-              ctx.beginPath();
-              ctx.arc(orb.x, orb.y, 14 * scale, 0, Math.PI * 2);
-              ctx.stroke();
-            }
-
-            ctx.shadowColor = "#ff4fd8";
-            ctx.shadowBlur = 10;
-            ctx.fillStyle = "#fff0fb";
-            ctx.beginPath();
-            ctx.arc(orb.x, orb.y, 3, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          requestAnimationFrame(frame);
-        };
-        requestAnimationFrame(frame);
-      }
-
-    });
-  </script>
 </body>
 </html>
