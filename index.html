@@ -1,725 +1,1261 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ZIVA - Gallery</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Pinyon+Script&display=swap" rel="stylesheet">
-    <!-- Iconos (FontAwesome) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                        script: ['Pinyon Script', 'cursive'],
-                    },
-                    colors: {
-                        neonPink: "#ff00ff",
-                        deepPurple: "#1a0b2e",
-                    },
-                    animation: {
-                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 3s linear infinite',
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ziva · Gallery</title>
 
-    <style>
-        /* --- RESET Y BASES --- */
-        body {
-            background-color: #050005; 
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
-            cursor: default;
-            -webkit-font-smoothing: antialiased; 
-            -moz-osx-font-smoothing: grayscale;
-            user-select: none;
-            -webkit-user-select: none;
-        }
+  <link rel="nofollow" href="https://justpaste.it/redirect/zivaindex/https%3A%2F%2Ffonts.googleapis.com">
+  <link rel="nofollow" href="https://justpaste.it/redirect/zivaindex/https%3A%2F%2Ffonts.gstatic.com" crossorigin>
+  <link href="https://justpaste.it/redirect/zivaindex/https%3A%2F%2Ffonts.googleapis.com%2Fcss2%3Ffamily%3DGreat%2BVibes%26amp%3Bfamily%3DIBM%2BPlex%2BSans%3Awght%40400%3B500%3B600%26amp%3Bdisplay%3Dswap" rel="nofollow">
 
-        /* --- VIDEO DE FONDO --- */
-        #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -50;
-            transition: filter 1.5s ease;
-            transform: translateZ(0); 
-        }
+  <style>
+    /* ============ TOKENS ============ */
+    :root {
+      --font: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --maxw: 1360px;
+      --cursor: u rl("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M4 2v20l5.5-5 3.6 8 3.4-1.5-3.6-7.8H21z' fill='%23ff4fd8' stroke='%23ffffff' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") 4 3, auto;
+    }
 
-        /* --- ESTILO TÍTULO ZIVA --- */
-        .text-ultimate {
-            display: inline-block; 
-            font-family: 'Pinyon Script', cursive;
-            font-size: 118px;
-            font-weight: 900;
-            text-align: center;
-            background-color: #ff29d1;
-            background-image: repeating-linear-gradient(45deg, #ff29d1 0px, #ff29d1 10px, #ff57db 10px, #ff57db 20px);
-            background-size: 200% 200%;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            -webkit-background-clip: text;
-            -moz-background-clip: text; 
-            background-clip: text;
-            -webkit-text-stroke: 0;
-            filter: drop-shadow(0 0 10px #570044);
-            animation: stripe-move-d1 3s linear infinite;
-            margin: 0;
-            line-height: 1.2;
-            padding: 0 10px; 
-        }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #130a17;
+      --bg-glow: rgba(163, 27, 171, .30);
+      --surface: #1c1022;
+      --surface-2: #28172f;
+      --menu: #2a1233;
+      --border: #3d2447;
+      --text: #f3eaf6;
+      --muted: #b8a0c2;
+      --accent: #A31BAB;
+      --accent-ink: #ffffff;
+      --shine: #ff7ae6;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .25);
+      --glow: rgba(163, 27, 171, .30);
+      --glow-strong: rgba(163, 27, 171, .55);
+    }
 
-        @keyframes stripe-move-d1 { 
-            0% { background-position: 0% 0%; } 
-            100% { background-position: 200% 200%; } 
-        }
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f8eef9;
+      --bg-glow: rgba(163, 27, 171, .16);
+      --surface: #ffffff;
+      --surface-2: #f5e8f7;
+      --menu: #ecd3ef;
+      --border: #e2c8e7;
+      --text: #2a1230;
+      --muted: #7a5f82;
+      --accent: #A31BAB;
+      --accent-ink: #ffffff;
+      --shine: #ff4fd8;
+      --shadow: 0 1px 2px rgba(42, 18, 48, .06), 0 8px 24px rgba(42, 18, 48, .08);
+      --glow: rgba(163, 27, 171, .20);
+      --glow-strong: rgba(163, 27, 171, .42);
+    }
 
-        @media (max-width: 768px) {
-            .text-ultimate { font-size: 59px; }
-        }
+    /* ============ BASE ============ */
+    *, *::before, *::after { box-sizing: border-box; 0; padding: 0; }
 
-        /* --- PESTAÑAS (TABS) --- */
-        .tab-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.7);
-            transition: all 0.3s ease;
-            -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
-            -webkit-tap-highlight-color: transparent;
-        }
-        .tab-btn.active {
-            background: rgba(255, 0, 255, 0.2);
-            border-color: #ff00ff;
-            color: white;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-        }
-        .tab-btn:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.4);
-        }
+    html { -webkit-text-size-adjust: 100%; }
 
-        /* --- TARJETAS --- */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateZ(0); 
-        }
-        .glass-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            background: rgba(255, 105, 180, 0.15);
-            border-color: rgba(255, 105, 180, 0.5);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-        }
+    body {
+      var(--font);
+      font-size: 16px;
+      1.55;
+      color: var(--text);
+      background-color: var(--bg);
+      background-image: radial-gradient(900px 420px at 50% 0%, var(--bg-glow), transparent 70%);
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      transition: background-color .2s ease, color .2s ease;
+    }
 
-        /* --- ESTILOS ESPECÍFICOS PARA SLIDER (PC BACKS GRANDE) --- */
-        .hide-scroll-bar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .hide-scroll-bar::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .slider-card {
-            /* TAMAÑO GRANDE PARA PC BACKS */
-            flex: 0 0 320px; /* Móvil: Grande */
-            scroll-snap-align: center;
-        }
-        @media (min-width: 768px) {
-            .slider-card {
-                flex: 0 0 500px; /* PC: Muy Grande */
-            }
-        }
+    img { display: block; max-width: 100%; }
 
-        /* --- PANTALLA DE INGRESO --- */
-        #entrance-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(20, 5, 20, 0.7); 
-            -webkit-backdrop-filter: blur(15px);
-            backdrop-filter: blur(15px);
-            transition: all 1s ease-in-out;
-        }
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
 
-        .entrance-hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(1.1);
-        }
+    /* ============ LAYOUT ============ */
+    .page {
+      width: 100%;
+      max-width: var(--maxw);
+      0 auto;
+      padding: 100px 24px 64px;
+    }
 
-        /* --- BOTÓN INGRESAR --- */
-        .btn-enter {
-            position: relative;
-            margin-top: 2rem;
-            padding: 15px 50px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-            color: #fff;
-            background: transparent;
-            border: 2px solid #ff00ff;
-            border-radius: 50px;
-            text-transform: uppercase;
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 10px #ff00ff, inset 0 0 10px #ff00ff;
-            z-index: 1;
-            -webkit-tap-highlight-color: transparent;
-        }
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+      28px;
+    }
 
-        .btn-enter::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-            transition: 0.5s;
-            z-index: -1;
-        }
+    .topbar .brand { grid-column: 2; }
+    .topbar .theme-toggle { grid-column: 3; justify-self: end; }
 
-        .btn-enter:hover::before {
-            left: 100%;
-            transition: 0.7s;
-        }
+    .brand {
+      display: inline-block;
+      "Great Vibes", "Brush Script MT", cursive;
+      font-size: 3rem;
+      font-weight: 400;
+      1.35;
+      padding: 0 .2em .1em;
+      text-align: center;
+      color: var(--text);
+      background: linear-gradient(110deg, var(--text) 38%, var(--shine) 50%, var(--text) 62%);
+      background-size: 250% 100%;
+      background-position: 100% 0;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: brand-shine 2.4s linear infinite;
+    }
 
-        .btn-enter:hover {
-            background: rgba(255, 0, 255, 0.2);
-            box-shadow: 0 0 50px #ff00ff, inset 0 0 20px #ff00ff;
-            transform: scale(1.1);
-            text-shadow: 0 0 10px rgba(255,255,255,0.8);
-            border-color: #fff;
-        }
+    @keyframes brand-shine {
+      from { background-position: 100% 0; }
+      to   { background-position: 0% 0; }
+    }
 
-        /* --- PARTICULAS DEL CURSOR --- */
-        .cursor-trail {
-            position: absolute; 
-            width: 8px;
-            height: 8px;
-            background: #ff00ff;
-            border-radius: 50%;
-            pointer-events: none;
-            box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
-            animation: fadeOutParticle 0.8s linear forwards;
-            z-index: 9999;
-        }
+    /* ============ THEME SWITCH (bombilla) ============ */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
 
-        @keyframes fadeOutParticle {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0.1) translate(0, 10px); }
-        }
-        
-        /* --- ESTILOS REPRODUCTOR & VOLUMEN --- */
-        .music-player {
-            background: rgba(255, 255, 255, 0.05);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 0, 255, 0.2);
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.1);
-            transform: translateZ(0);
-        }
-        .music-disc {
-            animation-play-state: paused;
-        }
-        .music-disc.playing {
-            animation: spin 3s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+    .switch {
+      position: relative;
+      width: 58px;
+      height: 30px;
+      flex: none;
+    }
 
-        /* Estilo del Slider de Volumen (Glass/Pink) */
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 80px;
-            background: transparent;
-            margin-left: 15px;
-        }
-        
-        input[type=range]:focus {
-            outline: none;
-        }
+    .switch input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      0;
+      z-index: 2;
+    }
 
-        /* Track (Barra) Chrome/Safari */
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 4px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-        }
-        
-        /* Thumb (Bolita) Chrome/Safari */
-        input[type=range]::-webkit-slider-thumb {
-            height: 12px;
-            width: 12px;
-            border-radius: 50%;
-            background: #ff00ff;
-            cursor: pointer;
-            -webkit-appearance: none;
-            margin-top: -4px; /* Centrar verticalmente */
-            box-shadow: 0 0 10px #ff00ff;
-        }
+    .switch .track {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      transition: background-color .25s ease, border-color .25s ease;
+      pointer-events: none;
+    }
 
-        /* Track Firefox */
-        input[type=range]::-moz-range-track {
-            width: 100%;
-            height: 4px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-        }
+    .switch .knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #2f1a39;
+      color: #b8a0c2;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+      transition: transform .3s cubic-bezier(.3, 1.4, .5, 1), background-color .25s ease, color .25s ease;
+      pointer-events: none;
+    }
 
-        /* Thumb Firefox */
-        input[type=range]::-moz-range-thumb {
-            height: 12px;
-            width: 12px;
-            border: none;
-            border-radius: 50%;
-            background: #ff00ff;
-            cursor: pointer;
-            box-shadow: 0 0 10px #ff00ff;
-        }
+    .switch .knob svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: fill .25s ease, filter .25s ease;
+    }
 
-        /* --- SCROLLBAR GLASS PINK --- */
-        ::-webkit-scrollbar { width: 12px; }
-        ::-webkit-scrollbar-track { background: rgba(20, 0, 20, 0.3); }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, rgba(255, 0, 255, 0.4), rgba(255, 105, 180, 0.6)); 
-            border: 3px solid rgba(0, 0, 0, 0); 
-            background-clip: padding-box;
-            border-radius: 10px; 
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, rgba(255, 0, 255, 0.7), rgba(255, 105, 180, 0.9)); 
-            border: 3px solid rgba(0, 0, 0, 0);
-            background-clip: padding-box;
-        }
-        
-        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        #lightbox {
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
-        }
-    </style>
+    /* Marcado = modo claro: el círculo salta al otro lado y la bombilla se enciende */
+    .switch input:checked + .track {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .switch input:checked ~ .knob {
+      transform: translateX(28px);
+      background: #ffffff;
+      color: #c98a00;
+    }
+
+    .switch input:checked ~ .knob svg {
+      fill: #ffd23f;
+      filter: drop-shadow(0 0 4px rgba(255, 200, 40, .95));
+    }
+
+    .switch input:focus-visible + .track {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ============ TABS ============ */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 6px;
+      24px;
+      background: var(--menu);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      position: relative;
+      z-index: 2;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      flex: 1 0 auto;
+      padding: 10px 14px;
+      white-space: nowrap;
+      font: inherit;
+      font-weight: 500;
+      font-size: .9rem;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: center;
+      transition: background-color .15s ease, color .15s ease;
+    }
+
+    .tab:hover { color: var(--text); background: rgba(163, 27, 171, .22); }
+
+    .tab[aria-selected="true"] {
+      color: var(--accent-ink);
+      background: var(--accent);
+    }
+
+    /* ============ PANELS ============ */
+    .panel {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      min-height: 288px;
+    }
+
+    .panel[hidden] { display: none; }
+
+    .panel:not([hidden]) { animation: panel-in .18s ease-out; }
+
+    @keyframes panel-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ============ GALLERIES ============ */
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .grid--backs    { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .grid--gifs     { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+
+    .item {
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+      cursor: zoom-in;
+      font: inherit;
+      color: inherit;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .item:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+    }
+
+    .item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .item--back    { aspect-ratio: 3 / 2; }
+    .item--gif     { aspect-ratio: 3.8 / 1; }
+
+    /* ============ GIFS (cajas 100x100, gif 80x80) ============ */
+    /* --cols = gifs por fila (máximo). Al haber más, bajan solos a la siguiente fila. */
+    .grid--gif {
+      --cols: 10;
+      --gap: 12px;
+      grid-template-columns: repeat(auto-fill, 100px);
+      justify-content: center;
+      column-gap: var(--gap);
+      row-gap: 18px;
+      align-items: start;
+      max-width: calc(var(--cols) * 100px + (var(--cols) - 1) * var(--gap));
+      0 auto;
+    }
+
+    .gif-box {
+      width: 100px;
+      height: 100px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      box-shadow: 0 0 16px var(--glow);
+      transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+    }
+
+    .gif-box:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 0 22px var(--glow-strong);
+    }
+
+    .gif-box img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+ 
+
+    /* Cada diseño lleva su título numerado debajo */
+    .cell {
+      0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .cell > .item { width: 100%; }
+
+    .cell figcaption {
+      width: 100%;
+      font-size: .75rem;
+      font-weight: 500;
+      1.25;
+      text-align: center;
+      color: var(--muted);
+      transition: color .18s ease;
+    }
+
+    .cell:hover figcaption { color: var(--text); }
+
+    .grid--empty { display: block; max-width: none; }
+
+    .empty-note {
+      padding: 20px;
+      text-align: center;
+      font-size: .95rem;
+      color: var(--muted);
+      background: var(--surface-2);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-md);
+    }
+
+    /* ============ REPRODUCTOR (asoma por detrás del menú) ============ */
+    .player-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      -14px;
+      padding-top: 6px;
+    }
+
+    .music-player {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px 22px;
+      border: 1px solid var(--border);
+      border-bottom: 0;
+      border-radius: 22px 22px 0 0;
+      background: var(--menu);
+      box-shadow: 0 -4px 22px var(--glow);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .music-player:hover,
+    .music-player:focus-within,
+    .music-player.playing {
+      transform: translateY(-5px);
+      box-shadow: 0 -6px 30px var(--glow-strong);
+    }
+
+    .disc {
+      width: 30px;
+      height: 30px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: conic-gradient(from 0deg, var(--accent), #ff4fd8, var(--accent));
+      box-shadow: 0 0 10px var(--glow-strong);
+    }
+
+    .disc svg { width: 14px; height: 14px; fill: currentColor; }
+
+    .music-player.playing .disc { animation: disc-spin 3s linear infinite; }
+
+    @keyframes disc-spin { to { transform: rotate(360deg); } }
+
+    .player-meta {
+      display: flex;
+      flex-direction: column;
+      1.2;
+      white-space: nowrap;
+    }
+
+    .player-meta .np {
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .player-meta .song {
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    .play-btn {
+      width: 30px;
+      height: 30px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      color: var(--accent-ink);
+      background: var(--accent);
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 12px var(--glow-strong);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 18px var(--glow-strong); }
+
+    .play-btn svg { width: 14px; height: 14px; fill: currentColor; }
+    .play-btn .ico-pause { display: none; }
+    .music-player.playing .play-btn .ico-play { display: none; }
+    .music-player.playing .play-btn .ico-pause { display: block; }
+
+    .eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 16px;
+    }
+
+    .eq span {
+      width: 3px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--accent);
+      transition: height .2s ease;
+    }
+
+    .music-player.playing .eq span { animation: eq-bounce .9s ease-in-out infinite; }
+    .music-player.playing .eq span:nth-child(2) { animation-delay: .15s; }
+    .music-player.playing .eq span:nth-child(3) { animation-delay: .3s; }
+    .music-player.playing .eq span:nth-child(4) { animation-delay: .45s; }
+
+    @keyframes eq-bounce {
+      0%, 100% { height: 4px; }
+      50%      { height: 16px; }
+    }
+
+    .vol {
+      width: 78px;
+      height: 14px;
+      0;
+      background: transparent;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .vol:focus { outline: none; }
+
+    .vol::-webkit-slider-runnable-track {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+    }
+
+    .vol::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      -4px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--glow-strong);
+    }
+
+    .vol::-moz-range-track { height: 4px; border-radius: 2px; background: var(--border); }
+
+    .vol::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--glow-strong);
+    }
+
+    @media (max-width: 640px) {
+      .eq { display: none; }
+      .music-player { gap: 10px; padding: 8px 16px 22px; }
+      .vol { width: 64px; }
+    }
+
+    /* ============ LIGHTBOX ============ */
+    .lightbox {
+      auto;
+      padding: 0;
+      max-width: min(92vw, 1100px);
+      max-height: 90vh;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .lightbox::backdrop { background: rgba(5, 6, 8, .78); }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 90vh;
+      0 auto;
+      object-fit: contain;
+    }
+
+    .lightbox .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      font: inherit;
+      font-size: 1.25rem;
+      1;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .lightbox .close:hover { border-color: var(--accent); }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 640px) {
+      .page { padding: 60px 14px 48px; }
+      .panel { padding: 16px; }
+      .brand { font-size: 2.3rem; }
+      .grid { gap: 14px; }
+      .grid--backs,
+      .grid--gifs { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* ============ PANTALLA DE ENTRADA ============ */
+    body.locked { overflow: hidden; }
+
+    .entrance {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      background: var(--bg);
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .entrance[hidden] { display: none; }
+
+    .entrance.is-hidden {
+      opacity: 0;
+      transform: scale(1.06);
+      pointer-events: none;
+    }
+
+    .brand--hero { font-size: 5rem; }
+
+    .enter-btn {
+      position: relative;
+      24px;
+      padding: 14px 52px;
+      overflow: hidden;
+      font: inherit;
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      .32em;
+      color: var(--text);
+      background: transparent;
+      border: 2px solid var(--accent);
+      border-radius: 999px;
+      box-shadow: 0 0 14px var(--glow-strong), inset 0 0 14px var(--glow);
+      cursor: pointer;
+      transition: transform .3s ease, box-shadow .3s ease, background-color .3s ease, border-color .3s ease;
+    }
+
+    .enter-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 122, 230, .55), transparent);
+      transition: left .7s ease;
+    }
+
+    .enter-btn:hover {
+      transform: scale(1.07);
+      border-color: var(--shine);
+      background: rgba(163, 27, 171, .28);
+      box-shadow: 0 0 40px var(--glow-strong), inset 0 0 20px var(--glow-strong);
+    }
+
+    .enter-btn:hover::before { left: 100%; }
+
+    @media (max-width: 640px) {
+      .brand--hero { font-size: 3.4rem; }
+      .enter-btn { padding: 12px 40px; }
+    }
+
+    /* ============ CURSOR ROSADO ============ */
+    @media (hover: hover) and (pointer: fine) {
+      html, html * { cursor: var(--cursor) !important; }
+      .lightbox::backdrop { cursor: var(--cursor) !important; }
+    }
+
+    .cursor-fx {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
 </head>
-<body>
+<body class="locked">
 
-    <!-- VIDEO DE FONDO -->
-    <video autoplay muted loop playsinline id="bg-video" style="filter: blur(10px) brightness(0.6);">
-        <!-- Provided video URL -->
-        <source src="https://cdn.pixabay.com/video/2025/10/18/310657_large.mp4" type="video/mp4">
-    </video>
+  <!-- PANTALLA DE ENTRADA: el clic en Enter permite que empiece la música.
+       Para quitarla, borra este bloque y el código "PANTALLA DE ENTRADA" del script. -->
+  <div class="entrance" id="entrance" role="dialog" aria-modal="true" aria-label="Entrada">
+    <div class="brand brand--hero">Ziva · Gallery</div>
+    <button class="enter-btn" id="enter-btn" type="button">Enter</button>
+  </div>
 
-    <!-- PANTALLA DE INGRESO -->
-    <div id="entrance-screen">
-        <h1 class="text-ultimate mb-4">Ziva</h1>
-        <button id="enter-btn" class="btn-enter">Enter</button>
-    </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <div id="main-content" class="opacity-0 transition-opacity duration-1000 delay-500">
-        
-        <div style="height: 65px; width: 100%;"></div>
+  <div class="page">
 
-        <main class="container mx-auto px-4 pb-20 relative z-10">
-            
-            <div class="text-center mb-8 mt-4">
-                <h1 class="text-ultimate">Ziva</h1>
-                <h2 class="text-5xl font-script text-pink-300 drop-shadow-lg mt-[-20px] relative z-10">Gallery</h2>
-            </div>
+    <header class="topbar">
+      <div class="brand">Ziva · Gallery </div>
 
-            <!-- PESTAÑAS (Añadido flex-wrap para mantener diseño responsivo con 4 botones) -->
-            <div class="flex justify-center gap-4 mb-10 z-20 relative flex-wrap">
-                <button id="tab-gifs" class="tab-btn active px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">GIF</button>
-                <button id="tab-pcbacks" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PCBACK</button>
-                <button id="tab-parpadeo" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PARPADEO</button>
-                <button id="tab-couples" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold tracking-wider uppercase focus:outline-none">PSTYLE</button>
-            </div>
+      <label class="theme-toggle" for="dark-mode-switch">
+        <span class="switch">
+          <input type="checkbox" id="dark-mode-switch" aria-label="Cambiar entre modo oscuro y modo claro">
+          <span class="track"></span>
+          <span class="knob">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 18h6"/>
+              <path d="M10 21.5h4"/>
+              <path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.6.5.9 1.2.9 1.9V16h6v-.1c0-.7.3-1.4.9-1.9A6.5 6.5 0 0 0 12 2.5z"/>
+            </svg>
+          </span>
+        </span>
+      </label>
+    </header>
 
-            <!-- CONTENEDOR DE LA GALERÍA -->
-            <div class="relative w-full max-w-[95vw] mx-auto group mb-20">
-                <!-- CONTENEDOR DINÁMICO -->
-                <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto">
-                    <!-- JS insertará imágenes aquí -->
-                </div>
-            </div>
-
-            <!-- FOOTER -->
-            <footer class="flex flex-col items-center justify-center mt-20 mb-10 pb-5 border-t border-pink-500/20 pt-10">
-                
-                <!-- Perfil -->
-                <div class="relative group cursor-pointer">
-                    <div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-pink-500 to-purple-600 shadow-[0_0_30px_rgba(255,0,255,0.4)] transition-transform duration-300 group-hover:scale-105">
-                        <img src="https://i.postimg.cc/kGnMYm25/anigif.gif" alt="Ziva Profile" class="w-full h-full rounded-full object-cover">
-                    </div>
-                    
-                    <div class="absolute bottom-2 right-2 flex items-center justify-center">
-                        <span class="relative flex h-5 w-5">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-5 w-5 bg-green-500 border-2 border-black"></span>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Nombre e ID -->
-                <div class="mt-4 text-center">
-                    <h3 class="text-3xl text-white font-script tracking-wide">Ziva</h3>
-                    <p class="text-pink-300/80 font-sans text-sm tracking-widest mt-1">(1531238343)</p>
-                </div>
-
-                <!-- Botón Find Me -->
-                <a href="https://xat.com/trade" target="_blank" class="mt-6 flex items-center gap-2 px-6 py-2 bg-black/40 hover:bg-pink-600/20 border border-pink-500/50 rounded-full transition-all duration-300 group">
-                    <i class="fa-solid fa-magnifying-glass text-pink-400 group-hover:text-white transition-colors"></i>
-                    <span class="text-pink-100 font-sans text-sm font-bold tracking-wider uppercase group-hover:text-white">Find me</span>
-                </a>
-
-                <!-- REPRODUCTOR DE MÚSICA CON VOLUMEN -->
-                <div class="mt-8 mb-4 music-player px-6 py-3 rounded-full flex items-center gap-4 flex-wrap justify-center sm:flex-nowrap">
-                    <div id="music-disc" class="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center music-disc">
-                        <i class="fa-solid fa-music text-[10px] text-white"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-xs text-pink-200 font-bold uppercase tracking-wider">Now Playing</span>
-                        <span class="text-[10px] text-white/60">Ziva's Favorite Song</span>
-                    </div>
-                    
-                    <div class="flex items-center gap-2 ml-0 sm:ml-2">
-                        <button id="play-btn" class="text-pink-400 hover:text-white transition-colors text-xl focus:outline-none">
-                            <i class="fa-solid fa-play"></i>
-                        </button>
-                        
-                        <!-- BARRA DE VOLUMEN -->
-                        <div class="flex items-center gap-1 group">
-                            <i class="fa-solid fa-volume-high text-xs text-pink-400/70"></i>
-                            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
-                        </div>
-                    </div>
-
-                    <!-- CANCIÓN: music.mp3 con LOOP activado -->
-                    <audio id="audio-player" preload="auto" loop>
-                        <source src="music.mp3" type="audio/mpeg">
-                        <source src="music.mp3" type="audio/mp3">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
-                </div>
-
-                <!-- FIRMA EAM96 -->
-                <div class="mt-4 text-center">
-                    <p class="text-[10px] text-gray-500/50 font-sans tracking-[0.2em] hover:text-pink-500/50 transition-colors duration-500 cursor-default">
-                        &copy;2026 Eam96 Xatspace Design
-                    </p>
-                </div>
-
-            </footer>
-
-        </main>
-    </div>
-
-    <!-- Modal Lightbox -->
-    <div id="lightbox" class="fixed inset-0 z-[200] bg-black/90 backdrop-blur-xl hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="relative max-w-4xl w-full flex flex-col items-center">
-            <button id="close-lightbox" class="absolute -top-12 right-0 text-white hover:text-pink-500 transition-colors focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <img id="lightbox-img" src="" alt="Full size" class="max-h-[80vh] w-auto rounded-lg border-2 border-pink-500/50 shadow-[0_0_50px_rgba(255,0,255,0.3)]">
-            <p id="lightbox-caption" class="mt-4 text-2xl text-white font-script tracking-wider"></p>
+    <!-- REPRODUCTOR: asoma por detrás del menú -->
+    <div class="player-wrap">
+      <div class="music-player" id="music-player">
+        <div class="disc" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>
         </div>
+        <div class="player-meta">
+          <span class="np">Now Playing</span>
+          <span class="song">Favorite Song</span>
+        </div>
+        <button class="play-btn" id="play-btn" type="button" aria-label="Reproducir música">
+          <svg class="ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+        </button>
+        <div class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <input class="vol" id="volume-slider" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Volumen">
+        <audio id="audio-player" preload="metadata" loop>
+          <source src="music.mp3" type="audio/mpeg">
+        </audio>
+      </div>
     </div>
 
-    <!-- Script de Funcionalidad -->
-    <script>
-        // --- BLOQUEO DE SEGURIDAD ---
-        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); }
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) { e.preventDefault(); }
-            if (e.ctrlKey && e.key === 'u') { e.preventDefault(); }
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <button class="tab" role="tab" id="tab1" data-tab="1" aria-controls="tabcontent1" aria-selected="true">GIF</button>
+      <button class="tab" role="tab" id="tab2" data-tab="2" aria-controls="tabcontent2" aria-selected="false" tabindex="-1">GIF 2 PHOTOS</button>
+      <button class="tab" role="tab" id="tab3" data-tab="3" aria-controls="tabcontent3" aria-selected="false" tabindex="-1">Parpadeo</button>
+      <button class="tab" role="tab" id="tab4" data-tab="4" aria-controls="tabcontent4" aria-selected="false" tabindex="-1">Pcback</button>
+      <button class="tab" role="tab" id="tab5" data-tab="5" aria-controls="tabcontent5" aria-selected="false" tabindex="-1">PstyleGif</button>
+      <button class="tab" role="tab" id="tab6" data-tab="6" aria-controls="tabcontent6" aria-selected="false" tabindex="-1">GIF Halloween</button>
+      <button class="tab" role="tab" id="tab7" data-tab="7" aria-controls="tabcontent7" aria-selected="false" tabindex="-1">GIF Winter</button>
+      <button class="tab" role="tab" id="tab8" data-tab="8" aria-controls="tabcontent8" aria-selected="false" tabindex="-1">GIF Easter</button>
+      <button class="tab" role="tab" id="tab9" data-tab="9" aria-controls="tabcontent9" aria-selected="false" tabindex="-1">Pcback Easter</button>
+      <button class="tab" role="tab" id="tab10" data-tab="10" aria-controls="tabcontent10" aria-selected="false" tabindex="-1">Pcback Winter</button>
+      <button class="tab" role="tab" id="tab11" data-tab="11" aria-controls="tabcontent11" aria-selected="false" tabindex="-1">Pcback Halloween</button>
+    </nav>
+
+    <main>
+
+      <!-- TAB 1: GIF -->
+      <section id="tabcontent1" class="panel" role="tabpanel" aria-labelledby="tab1">
+        <div class="grid grid--gif" data-gallery="gif"></div>
+      </section>
+
+      <!-- TAB 2: GIF 2 PHOTOS -->
+      <section id="tabcontent2" class="panel" role="tabpanel" aria-labelledby="tab2" hidden>
+        <div class="grid grid--gif" data-label="GIF 2 PHOTOS">
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 1"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 2"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 3"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 4"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 5"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 6"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 7"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 8"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 9"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 10"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 11"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 12"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: Parpadeo -->
+      <section id="tabcontent3" class="panel" role="tabpanel" aria-labelledby="tab3" hidden>
+        <div class="grid grid--gif" data-gallery="parpadeo"></div>
+      </section>
+
+      <!-- TAB 4: Pcback -->
+      <section id="tabcontent4" class="panel" role="tabpanel" aria-labelledby="tab4" hidden>
+        <div class="grid grid--backs" data-gallery="pcback"></div>
+      </section>
+
+      <!-- TAB 5: PstyleGif -->
+      <section id="tabcontent5" class="panel" role="tabpanel" aria-labelledby="tab5" hidden>
+        <div class="grid grid--gifs" data-gallery="pstyle"></div>
+      </section>
+
+      <!-- TAB 6: GIF Halloween -->
+      <section id="tabcontent6" class="panel" role="tabpanel" aria-labelledby="tab6" hidden>
+        <div class="grid grid--gif" data-label="GIF Halloween">
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 1"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 2"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 3"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 4"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 5"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 6"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 7"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 8"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 9"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 10"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 11"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 12"></div>
+        </div>
+      </section>
+
+      <!-- TAB 7: GIF Winter -->
+      <section id="tabcontent7" class="panel" role="tabpanel" aria-labelledby="tab7" hidden>
+        <div class="grid grid--gif" data-label="GIF Winter">
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 1"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 2"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 3"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 4"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 5"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 6"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 7"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 8"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 9"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 10"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 11"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 12"></div>
+        </div>
+      </section>
+
+      <!-- TAB 8: GIF Easter -->
+      <section id="tabcontent8" class="panel" role="tabpanel" aria-labelledby="tab8" hidden>
+        <div class="grid grid--gif" data-label="GIF Easter">
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 1"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 2"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 3"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 4"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 5"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 6"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 7"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 8"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 9"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 10"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 11"></div>
+          <div class="gif-box"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Gif 12"></div>
+        </div>
+      </section>
+
+      <!-- TAB 9: Pcback Easter -->
+      <section id="tabcontent9" class="panel" role="tabpanel" aria-labelledby="tab9" hidden>
+        <div class="grid grid--backs" data-label="Pcback Easter">
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 1"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 2"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 3"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 4"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 5"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 6"></button>
+        </div>
+      </section>
+
+      <!-- TAB 10: Pcback Winter -->
+      <section id="tabcontent10" class="panel" role="tabpanel" aria-labelledby="tab10" hidden>
+        <div class="grid grid--backs" data-label="Pcback Winter">
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 1"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 2"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 3"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 4"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 5"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 6"></button>
+        </div>
+      </section>
+
+      <!-- TAB 11: Pcback Halloween -->
+      <section id="tabcontent11" class="panel" role="tabpanel" aria-labelledby="tab11" hidden>
+        <div class="grid grid--backs" data-label="Pcback Halloween">
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 1"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 2"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 3"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 4"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 5"></button>
+          <button class="item item--back" type="button"><img loading="lazy" src="https://xatimg.com/image/3z5hlFVl19dD.jpg" alt="Fondo 6"></button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Visor de imágenes -->
+  <dialog class="lightbox" id="lightbox" aria-label="Vista ampliada">
+    <button class="close" type="button" aria-label="Cerrar">&times;</button>
+    <img alt="">
+  </dialog>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var root = document.documentElement;
+      var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+      var panels = Array.prototype.slice.call(document.querySelectorAll(".panel"));
+      var themeSwitch = document.getElementById("dark-mode-switch");
+
+      /* ---------- TABS ---------- */
+      function activateTab(tab, moveFocus) {
+        var target = tab.getAttribute("data-tab");
+
+        tabs.forEach(function (t) {
+          var selected = t === tab;
+          t.setAttribute("aria-selected", selected ? "true" : "false");
+          t.tabIndex = selected ? 0 : -1;
         });
 
-        // --- VARIABLES GLOBALES DE LÍMITES PC(PCBACK) (EDITABLES) ---
-        const MAX_PC = 150;
-        const LIMITE_PARPADEO = 50;
-        const LIMITE_COUPLES = 50;
-
-        // --- LISTAS DE IMÁGENES AUTOMÁTICAS ---
-        const galleryImages = [];
-        for (let i = 1; i <= 300; i++) { // Limited to 60 for better preview performance, you can change it back to 190
-            galleryImages.push({ src: `${i}.gif` });
-        }
-
-        const parpadeoImages = [];
-        for (let i = 1; i <= LIMITE_PARPADEO; i++) {
-            parpadeoImages.push({ src: `pp${i}.gif` });
-        }
-
-        const couplesImages = [];
-        for (let i = 1; i <= LIMITE_COUPLES; i++) {
-            couplesImages.push({ src: `ps${i}.gif` });
-        }
-
-        const pcBackImages = [];
-        for (let i = 1; i <= MAX_PC; i++) {
-            pcBackImages.push({ src: `pc${i}.gif` });
-        }
-
-        // --- VARIABLES GLOBALES ---
-        let currentTab = 'gifs'; 
-        const tabGifs = document.getElementById('tab-gifs');
-        const tabPcBacks = document.getElementById('tab-pcbacks');
-        const tabParpadeo = document.getElementById('tab-parpadeo');
-        const tabCouples = document.getElementById('tab-couples'); 
-        const galleryContainer = document.getElementById('gallery-container');
-        
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxCaption = document.getElementById('lightbox-caption');
-        const closeLightbox = document.getElementById('close-lightbox');
-
-        const audioPlayer = document.getElementById('audio-player');
-        const musicDisc = document.getElementById('music-disc');
-        const playBtn = document.getElementById('play-btn');
-        const volumeSlider = document.getElementById('volume-slider');
-        let isPlaying = false;
-
-        // CLASES PARA CADA MODO
-        const gifsGridClasses = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 mx-auto";
-        const pcBacksGridClasses = "grid grid-cols-2 md:grid-cols-4 gap-4 mx-auto w-fit justify-items-center";
-
-        // --- MANEJO DE PESTAÑAS ---
-        tabGifs.addEventListener('click', () => {
-            currentTab = 'gifs';
-            updateActiveTab(tabGifs);
-            renderGallery();
+        panels.forEach(function (p) {
+          p.hidden = p.id !== "tabcontent" + target;
         });
 
-        tabPcBacks.addEventListener('click', () => {
-            currentTab = 'pcbacks';
-            updateActiveTab(tabPcBacks);
-            renderGallery();
-        });
+        if (moveFocus) tab.focus();
+      }
 
-        tabParpadeo.addEventListener('click', () => {
-            currentTab = 'parpadeo';
-            updateActiveTab(tabParpadeo);
-            renderGallery();
-        });
+      tabs.forEach(function (tab, i) {
+        tab.addEventListener("click", function () { activateTab(tab, false); });
 
-        tabCouples.addEventListener('click', () => {
-            currentTab = 'couples';
-            updateActiveTab(tabCouples);
-            renderGallery();
+        // Navegación con flechas, Inicio y Fin
+        tab.addEventListener("keydown", function (e) {
+          var next = null;
+          if (e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+          if (e.key === "ArrowLeft")  next = tabs[(i - 1 + tabs.length) % tabs.length];
+          if (e.key === "Home") next = tabs[0];
+          if (e.key === "End")  next = tabs[tabs.length - 1];
+          if (next) { e.preventDefault(); activateTab(next, true); }
         });
+      });
 
-        function updateActiveTab(activeButton) {
-            [tabGifs, tabPcBacks, tabParpadeo, tabCouples].forEach(btn => btn.classList.remove('active'));
-            activeButton.classList.add('active');
+      /* ---------- MODO OSCURO (por defecto) ---------- */
+      function applyTheme(dark) {
+        root.setAttribute("data-theme", dark ? "dark" : "light");
+        themeSwitch.checked = !dark;
+      }
+
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      applyTheme(saved ? saved === "dark" : true);
+
+      themeSwitch.addEventListener("change", function () {
+        var dark = !this.checked;
+        applyTheme(dark);
+        try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
+      });
+
+      /* ---------- GALERÍAS AUTOMÁTICAS ---------- */
+      /* BASE_PATH = carpeta donde están tus imágenes, relativa a este index.html.
+         "" = la misma carpeta que el index.html.  Ejemplo: "gifs/" si las metes en una carpeta llamada gifs.
+         Cambia "count" por el número de archivos que tengas en cada sección.
+         Nombres: GIF 1.gif, 2.gif...  |  Parpadeo pp1.gif...  |  Pcback pc1.gif...  |  Pstyle ps1.gif... */
+      var BASE_PATH = "";
+
+      var GALLERIES = {
+        gif:      { prefix: "",   count: 195, ext: "gif", type: "gif",    label: "GIF" },
+        parpadeo: { prefix: "pp", count: 18,  ext: "gif", type: "gif",    label: "Parpadeo" },
+        pcback:   { prefix: "pc", count: 80,  ext: "gif", type: "back",   label: "Pcback" },
+        pstyle:   { prefix: "ps", count: 26,  ext: "gif", type: "banner", label: "Pstyle" }
+      };
+
+      document.querySelectorAll("[data-gallery]").forEach(function (box) {
+        var cfg = GALLERIES[box.getAttribute("data-gallery")];
+        if (!cfg) return;
+
+        var settled = 0;
+        var loaded = 0;
+
+        function checkDone() {
+          settled++;
+          if (settled < cfg.count || loaded > 0) return;
+          // Ninguna imagen cargó: mostramos un aviso en vez de dejar la sección vacía
+          box.classList.add("grid--empty");
+          var note = document.createElement("p");
+          note.className = "empty-note";
+          note.textContent = "No se encuentran las imágenes de esta sección. Busca " +
+            BASE_PATH + cfg.prefix + "1." + cfg.ext + ", " + BASE_PATH + cfg.prefix + "2." + cfg.ext +
+            "… en la misma carpeta que el index.html (o cambia BASE_PATH en el script).";
+          box.appendChild(note);
         }
 
-        // --- EFECTO DE PARTÍCULAS ---
-        function createParticle(x, y) {
-            const particle = document.createElement('div');
-            particle.classList.add('cursor-trail');
-            particle.style.left = x + 'px';
-            particle.style.top = y + 'px';
-            document.body.appendChild(particle);
-            setTimeout(() => { particle.remove(); }, 800);
+        for (var i = 1; i <= cfg.count; i++) {
+          var img = document.createElement("img");
+          img.loading = "lazy";
+          img.decoding = "async";
+          img.alt = cfg.label + " " + i;
+
+          var el;
+          if (cfg.type === "gif") {
+            el = document.createElement("div");
+            el.className = "gif-box";
+          } else {
+            el = document.createElement("button");
+            el.type = "button";
+            el.className = "item " + (cfg.type === "back" ? "item--back" : "item--gif");
+          }
+
+          // Cada diseño va con su título numerado debajo (el número coincide con el del archivo)
+          var cell = document.createElement("figure");
+          cell.className = "cell";
+          var cap = document.createElement("figcaption");
+          cap.textContent = cfg.label + " " + i;
+
+          // Si falta algún archivo suelto, su caja se elimina sin dejar iconos rotos
+          img.addEventListener("error", (function (node) {
+            return function () { node.remove(); checkDone(); };
+          })(cell));
+          img.addEventListener("load", function () { loaded++; checkDone(); });
+
+          img.src = BASE_PATH + cfg.prefix + i + "." + cfg.ext;
+          el.appendChild(img);
+          cell.appendChild(el);
+          cell.appendChild(cap);
+          box.appendChild(cell);
         }
-        document.addEventListener('mousemove', (e) => createParticle(e.pageX, e.pageY));
-        document.addEventListener('touchmove', (e) => {
-            const touch = e.touches[0];
-            createParticle(touch.pageX, touch.pageY);
-        }, { passive: true });
+      });
 
-        // --- LÓGICA DE INGRESO ---
-        const enterBtn = document.getElementById('enter-btn');
-        const entranceScreen = document.getElementById('entrance-screen');
-        const mainContent = document.getElementById('main-content');
-        const bgVideo = document.getElementById('bg-video');
+      /* Secciones con imágenes de relleno: también numeradas (GIF Halloween 1, 2, 3...) */
+      document.querySelectorAll(".grid[data-label]:not([data-gallery])").forEach(function (grid) {
+        var label = grid.getAttribute("data-label");
+        Array.prototype.slice.call(grid.children).forEach(function (el, idx) {
+          var cell = document.createElement("figure");
+          cell.className = "cell";
+          var cap = document.createElement("figcaption");
+          cap.textContent = label + " " + (idx + 1);
+          grid.insertBefore(cell, el);
+          cell.appendChild(el);
+          cell.appendChild(cap);
+        });
+      });
 
-        enterBtn.addEventListener('click', () => {
-            entranceScreen.classList.add('entrance-hidden');
-            bgVideo.style.filter = "blur(3px) brightness(0.4)";
-            mainContent.classList.remove('opacity-0');
-            
-            bgVideo.play().catch(e => console.log("Video auto-play prevented"));
+      /* ---------- VISOR DE IMÁGENES ---------- */
+      var lightbox = document.getElementById("lightbox");
+      var lightboxImg = lightbox.querySelector("img");
 
-            audioPlayer.volume = parseFloat(volumeSlider.value);
-            const playPromise = audioPlayer.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    isPlaying = true;
-                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                    musicDisc.classList.add('playing');
-                }).catch(error => {
-                    console.log("Audio not played yet due to lack of source file in preview env.");
-                });
+      document.addEventListener("click", function (e) {
+        var item = e.target.closest ? e.target.closest(".item") : null;
+        if (!item) return;
+        var img = item.querySelector("img");
+        lightboxImg.src = img.currentSrc || img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.showModal();
+      });
+
+      lightbox.querySelector(".close").addEventListener("click", function () { lightbox.close(); });
+      lightbox.addEventListener("click", function (e) {
+        if (e.target === lightbox) lightbox.close();
+      });
+
+
+      /* ---------- REPRODUCTOR ---------- */
+      var audio = document.getElementById("audio-player");
+      var playerBox = document.getElementById("music-player");
+      var playBtn = document.getElementById("play-btn");
+      var volume = document.getElementById("volume-slider");
+
+      audio.volume = parseFloat(volume.value);
+
+      /* ---------- MÚSICA AUTOMÁTICA ---------- */
+      /* true = suena sola; false = solo con el botón.
+         Los navegadores no dejan sonar sin que el visitante haga algo antes,
+         así que empieza con el primer clic, toque o tecla en la página. */
+      var AUTOPLAY = true;
+      var userPaused = false;
+      var startEvents = ["pointerdown", "pointerup", "touchend", "keydown"];
+
+      function stopWaiting() {
+        startEvents.forEach(function (ev) { document.removeEventListener(ev, startMusic, true); });
+      }
+
+      function startMusic(e) {
+        // Si el primer gesto es sobre el propio reproductor, manda el botón
+        if (e && e.target && e.target.closest && e.target.closest("#music-player")) { stopWaiting(); return; }
+        if (userPaused) { stopWaiting(); return; }
+        if (audio.networkState === 3 || audio.error) { stopWaiting(); return; }
+        audio.play().then(stopWaiting).catch(function () {});
+      }
+
+      if (AUTOPLAY) {
+        // Intento directo (algunos navegadores lo permiten) y, si no, al primer gesto
+        audio.play().catch(function () {});
+        startEvents.forEach(function (ev) { document.addEventListener(ev, startMusic, true); });
+      }
+
+      /* ---------- PANTALLA DE ENTRADA ---------- */
+      var entrance = document.getElementById("entrance");
+      var enterBtn = document.getElementById("enter-btn");
+
+      if (entrance && enterBtn) {
+        enterBtn.addEventListener("click", function () {
+          entrance.classList.add("is-hidden");
+          document.body.classList.remove("locked");
+          setTimeout(function () { entrance.hidden = true; }, 850);
+
+          // El clic en Enter es el gesto que permite reproducir el audio
+          if (AUTOPLAY && !userPaused && audio.networkState !== 3 && !audio.error) {
+            audio.play().catch(function () {});
+          }
+        });
+        enterBtn.focus();
+      } else {
+        document.body.classList.remove("locked");
+      }
+
+      var songLabel = playerBox.querySelector(".song");
+      var songText = songLabel.textContent;
+
+      // Si el audio no se encuentra o no se puede reproducir, lo indica en el propio reproductor
+      function audioFailed() {
+        playerBox.classList.remove("playing");
+        songLabel.textContent = "No se encuentra music.mp3";
+      }
+
+      audio.querySelectorAll("source").forEach(function (src) {
+        src.addEventListener("error", audioFailed);
+      });
+      audio.addEventListener("error", audioFailed);
+      audio.addEventListener("loadedmetadata", function () { songLabel.textContent = songText; });
+      window.addEventListener("load", function () {
+        if (audio.networkState === 3 || audio.error) audioFailed();
+      });
+
+      playBtn.addEventListener("click", function () {
+        if (audio.paused) {
+          // networkState 3 = el navegador no encontró ninguna fuente de audio
+          if (audio.networkState === 3 || audio.error) { audioFailed(); return; }
+          audio.play().catch(audioFailed);
+        } else {
+          userPaused = true;
+          audio.pause();
+        }
+      });
+
+      audio.addEventListener("play", function () {
+        playerBox.classList.add("playing");
+        playBtn.setAttribute("aria-label", "Pausar música");
+      });
+
+      audio.addEventListener("pause", function () {
+        playerBox.classList.remove("playing");
+        playBtn.setAttribute("aria-label", "Reproducir música");
+      });
+
+      volume.addEventListener("input", function () {
+        audio.volume = parseFloat(volume.value);
+      });
+
+      /* ---------- CURSOR ROSADO CON ESTELA ---------- */
+      var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      var calmMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (finePointer && !calmMotion) {
+        var canvas = document.createElement("canvas");
+        canvas.className = "cursor-fx";
+        canvas.setAttribute("aria-hidden", "true");
+        document.body.appendChild(canvas);
+        var ctx = canvas.getContext("2d");
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        var resize = function () {
+          canvas.width = window.innerWidth * dpr;
+          canvas.height = window.innerHeight * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+        resize();
+        window.addEventListener("resize", resize);
+
+        var TRAIL_MS = 420;
+        var points = [];
+        var mouse = { x: 0, y: 0 };
+        var orb = { x: 0, y: 0 };
+        var active = false;
+        var hot = false;
+        var scale = 1;
+
+        document.addEventListener("mousemove", function (e) {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+          if (!active) { orb.x = mouse.x; orb.y = mouse.y; active = true; }
+          points.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+          if (points.length > 80) points.shift();
+          hot = !!(e.target.closest && e.target.closest("a, button, label, input, .item"));
+        });
+
+        document.documentElement.addEventListener("mouseleave", function () {
+          active = false;
+          points.length = 0;
+        });
+
+        var frame = function (now) {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+          if (active) {
+            var dark = root.getAttribute("data-theme") !== "light";
+            ctx.globalCompositeOperation = dark ? "lighter" : "source-over";
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+
+            while (points.length && now - points[0].t > TRAIL_MS) points.shift();
+
+            // Estela
+            for (var i = 1; i < points.length; i++) {
+              var a = points[i - 1];
+              var b = points[i];
+              var life = 1 - (now - b.t) / TRAIL_MS;
+              if (life <= 0) continue;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.strokeStyle = "rgba(255, 79, 216, " + (0.85 * life) + ")";
+              ctx.lineWidth = 2 + 7 * life;
+              ctx.shadowColor = "#ff4fd8";
+              ctx.shadowBlur = 16 * life;
+              ctx.stroke();
             }
-        });
 
-        // --- REPRODUCTOR DE MÚSICA ---
-        playBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                audioPlayer.pause();
-                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                musicDisc.classList.remove('playing');
-            } else {
-                audioPlayer.play().catch(e => console.log("Music file not found in preview"));
-                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                musicDisc.classList.add('playing');
-            }
-            isPlaying = !isPlaying;
-        });
+            // Orbe brillante que sigue al ratón con un pequeño retraso
+            orb.x += (mouse.x - orb.x) * 0.22;
+            orb.y += (mouse.y - orb.y) * 0.22;
+            scale += ((hot ? 1.7 : 1) - scale) * 0.2;
 
-        volumeSlider.addEventListener('input', (e) => {
-            audioPlayer.volume = e.target.value;
-        });
+            ctx.shadowBlur = 0;
+            var r = 18 * scale;
+            var g = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, r);
+            g.addColorStop(0, "rgba(255, 122, 230, 0.65)");
+            g.addColorStop(1, "rgba(255, 79, 216, 0)");
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(orb.x, orb.y, r, 0, Math.PI * 2);
+            ctx.fill();
 
-        // --- RENDERIZADO HÍBRIDO ---
-        function renderGallery() {
-            galleryContainer.innerHTML = '';
-            
-            // Reutiliza los estilos "GIF" para Parpadeo y Couples
-            const isGifStyle = ['gifs', 'parpadeo', 'couples'].includes(currentTab);
-            
-            if (isGifStyle) {
-                galleryContainer.className = gifsGridClasses;
-            } else {
-                galleryContainer.className = pcBacksGridClasses;
+            if (hot) {
+              ctx.strokeStyle = "rgba(255, 154, 240, 0.9)";
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.arc(orb.x, orb.y, 14 * scale, 0, Math.PI * 2);
+              ctx.stroke();
             }
 
-            let dataToRender;
-            let prefix;
+            ctx.shadowColor = "#ff4fd8";
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = "#fff0fb";
+            ctx.beginPath();
+            ctx.arc(orb.x, orb.y, 3, 0, Math.PI * 2);
+            ctx.fill();
+          }
 
-            if (currentTab === 'gifs') {
-                dataToRender = galleryImages;
-                prefix = 'GIF';
-            } else if (currentTab === 'pcbacks') {
-                dataToRender = pcBackImages;
-                prefix = 'PC BACK';
-            } else if (currentTab === 'parpadeo') {
-                dataToRender = parpadeoImages;
-                prefix = 'PARPADEO';
-            } else if (currentTab === 'couples') {
-                dataToRender = couplesImages;
-                prefix = 'PSTYLE';
-            }
+          requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      }
 
-            dataToRender.forEach((item, index) => {
-                const autoTitle = `${prefix} ${index + 1}`; 
-                
-                const card = document.createElement('div');
-                card.style.animationDelay = `${index * 30}ms`; 
-
-                let imgContainerClass = "";
-                let objectFitClass = "";
-
-                if (isGifStyle) {
-                    card.className = 'glass-card rounded-lg p-2 flex flex-col items-center justify-between cursor-pointer group animate-fade-in hover:z-10 relative';
-                    imgContainerClass = "w-full h-32 md:h-40 flex items-center justify-center overflow-hidden rounded-md bg-black/20 mb-2 relative";
-                    objectFitClass = "object-contain max-w-full max-h-full";
-                } else {
-                    card.className = 'glass-card rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer group animate-fade-in relative';
-                    imgContainerClass = "w-[176px] h-[146px] flex items-center justify-center overflow-hidden rounded-lg bg-black/20 mb-2 relative shadow-lg";
-                    objectFitClass = "w-full h-full object-cover"; 
-                }
-
-                // Add onerror fallback logic to make sure the preview looks nice when local images are missing
-                const fallbackImgSrc = `https://placehold.co/400x400/1a0b2e/ff00ff?text=${autoTitle.replace(' ', '+')}`;
-
-                card.innerHTML = `
-                    <div class="${imgContainerClass}">
-                        <div class="absolute inset-0 bg-pink-500/0 group-hover:bg-pink-500/10 transition-colors duration-300 z-10"></div>
-                        <img src="${encodeURI(item.src)}" alt="${autoTitle}" loading="lazy" 
-                             class="${objectFitClass} transition-transform duration-500 group-hover:scale-105"
-                             onerror="this.onerror=null; this.src='${fallbackImgSrc}';">
-                    </div>
-                    <div class="w-full text-center border-t border-white/10 pt-2">
-                        <span class="text-pink-300 font-bold text-sm tracking-wider group-hover:text-white transition-colors uppercase font-sans">${autoTitle}</span>
-                    </div>
-                `;
-
-                card.addEventListener('click', () => {
-                    openLightbox(item.src, autoTitle);
-                });
-
-                galleryContainer.appendChild(card);
-            });
-        }
-
-        // --- LIGHTBOX ---
-        function openLightbox(src, title) {
-            // Apply same fallback check for the lightbox
-            const tempImg = new Image();
-            tempImg.onerror = () => { lightboxImg.src = `https://placehold.co/800x600/1a0b2e/ff00ff?text=${title.replace(' ', '+')}`; };
-            tempImg.onload = () => { lightboxImg.src = src; };
-            tempImg.src = src;
-
-            lightboxCaption.textContent = title;
-            lightbox.classList.remove('hidden');
-            setTimeout(() => { lightbox.classList.remove('opacity-0'); }, 10);
-        }
-
-        function hideLightbox() {
-            lightbox.classList.add('opacity-0');
-            setTimeout(() => {
-                lightbox.classList.add('hidden');
-                lightboxImg.src = '';
-            }, 300);
-        }
-
-        closeLightbox.addEventListener('click', hideLightbox);
-        lightbox.addEventListener('click', (e) => {
-            if(e.target === lightbox) hideLightbox();
-        });
-
-        // Inicializar galería
-        renderGallery();
-
-    </script>
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
